@@ -1,0 +1,6 @@
+**/node_modules/*
+**/out/*
+**/.next/*
+setup-test.js
+jest.setup.ts
+
