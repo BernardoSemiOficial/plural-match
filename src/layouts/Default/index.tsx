@@ -10,11 +10,8 @@ export const Default = ({ children }: DefaultProps) => {
   return (
     <ThemeProvider theme={globalThemeMUI}>
       <div className={S.container}>
-        <div>
-          <Header />
-          {children}
-          <Footer />
-        </div>
+        <Header />
+        {children}
       </div>
     </ThemeProvider>
   )
