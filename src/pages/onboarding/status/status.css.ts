@@ -24,10 +24,6 @@ export const containerButton = style({
   flexDirection: 'column',
 })
 
-export const buttonPrimary = style({
-  marginBottom: 8,
-})
-
 export const title = style({
   fontSize: '20px',
   color: '#141200',

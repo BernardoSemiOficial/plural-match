@@ -23,13 +23,11 @@ const OnboardingStatus = () => {
         </Typography>
       </div>
 
-      <div className={S.containerButton}>
-        <Link href={''}>
-          <Button className={S.buttonPrimary} variant='contained'>
-            Fazer login
-          </Button>
-        </Link>
-      </div>
+      <Link href={''}>
+        <Button className={S.buttonPrimary} variant='contained'>
+          Fazer login
+        </Button>
+      </Link>
     </div>
   )
 }
