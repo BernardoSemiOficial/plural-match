@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 import { Default } from '@/layouts/Default'
 import { Button, TextField, Typography } from '@mui/material'
 
-import * as S from './email-check.css.ts'
+import * as S from './email-check.css'
 
 const EmailCheck = () => {
   return (
