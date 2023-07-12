@@ -12,7 +12,6 @@ export const Default = ({ children }: DefaultProps) => {
       <div className={S.container}>
         <Header />
         {children}
-        <Footer />
       </div>
     </ThemeProvider>
   )

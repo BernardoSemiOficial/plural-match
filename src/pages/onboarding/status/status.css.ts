@@ -11,6 +11,14 @@ export const container = style({
   alignSelf: 'center',
 })
 
+export const content = style({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
 export const containerButton = style({
   display: 'flex',
   flexDirection: 'column',

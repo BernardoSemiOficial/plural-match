@@ -8,6 +8,7 @@ import { Default } from '../../../layouts/Default'
 import svg from '../../../assets/svg/onboarding-landing.svg'
 
 import * as S from './landing.css'
+import Link from 'next/link'
 
 const OnboardingLanding = () => {
   return (
@@ -23,13 +24,15 @@ const OnboardingLanding = () => {
       <Image src={svg} />
 
       <div className={S.containerButton}>
-        <Button
-          className={S.buttonPrimary}
-          startIcon={<BusinessIcon />}
-          variant='outlined'
-        >
-          Profissionais
-        </Button>
+        <Link href={'/onboarding/company/personal-information'}>
+          <Button
+            className={S.buttonPrimary}
+            startIcon={<BusinessIcon />}
+            variant='outlined'
+          >
+            Profissionais
+          </Button>
+        </Link>
         <Button startIcon={<PersonIcon />} variant='contained'>
           Vaga de trabalho
         </Button>
