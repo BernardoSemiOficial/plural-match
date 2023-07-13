@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 
 import { Default } from '@/layouts/Default'
 import { Button, TextField, Typography } from '@mui/material'
+import Link from 'next/link'
 
 import * as S from './email-check.css'
 
@@ -24,14 +25,16 @@ const EmailCheck = () => {
         placeholder='E-mail'
         sx={{ marginTop: '24px' }}
       />
-      <Button
-        fullWidth
-        variant='contained'
-        size='medium'
-        sx={{ marginTop: '36px' }}
-      >
-        Continuar
-      </Button>
+      <Link href='personal-information'>
+        <Button
+          fullWidth
+          variant='contained'
+          size='medium'
+          sx={{ marginTop: '36px' }}
+        >
+          Continuar
+        </Button>
+      </Link>
     </section>
   )
 }
