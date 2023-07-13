@@ -39,7 +39,7 @@ const CompanyCredentials = () => {
         />
       </div>
 
-      <Link href='/onboarding/status'>
+      <Link href='/status'>
         <Button
           fullWidth
           variant='contained'

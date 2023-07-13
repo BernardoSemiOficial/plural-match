@@ -1,11 +1,9 @@
-import { ReactElement, ReactNode } from 'react'
-
+import { ReactElement } from 'react'
 import { Button, Typography } from '@mui/material'
-import BusinessIcon from '@mui/icons-material/Business'
-import PersonIcon from '@mui/icons-material/Person'
 import Image from 'next/image'
-import { Default } from '../../../layouts/Default'
-import svg from '../../../assets/svg/success-registration.svg'
+
+import { Default } from '../../layouts/Default'
+import svg from '../../assets/svg/success-registration.svg'
 
 import * as S from './status.css'
 import Link from 'next/link'
@@ -24,9 +22,7 @@ const OnboardingStatus = () => {
       </div>
 
       <Link href={''}>
-        <Button className={S.buttonPrimary} variant='contained'>
-          Fazer login
-        </Button>
+        <Button variant='contained'>Fazer login</Button>
       </Link>
     </div>
   )
