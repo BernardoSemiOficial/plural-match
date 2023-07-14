@@ -47,7 +47,7 @@ const Home = () => {
         </Box>
 
         <Box className={S.buttons}>
-          <Link href='/onboarding/status'>
+          <Link href='/home/onboarding'>
             <Button
               fullWidth
               variant='outlined'
