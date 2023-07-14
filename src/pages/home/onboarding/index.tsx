@@ -7,10 +7,10 @@ import Image from 'next/image'
 import { Default } from '../../../layouts/Default'
 import svg from '../../../assets/svg/onboarding-landing.svg'
 
-import * as S from './landing.css'
+import * as S from './onboarding.css'
 import Link from 'next/link'
 
-const OnboardingLanding = () => {
+const HomeOnboarding = () => {
   return (
     <div className={S.container}>
       <div>
@@ -24,7 +24,7 @@ const OnboardingLanding = () => {
       <Image src={svg} />
 
       <div className={S.containerButton}>
-        <Link href={'/onboarding/company/personal-information'}>
+        <Link href={'/company/onboarding/personal-information'}>
           <Button
             className={S.buttonPrimary}
             startIcon={<BusinessIcon />}
@@ -41,8 +41,8 @@ const OnboardingLanding = () => {
   )
 }
 
-OnboardingLanding.getLayout = function getLayout(page: ReactElement) {
+HomeOnboarding.getLayout = function getLayout(page: ReactElement) {
   return <Default>{page}</Default>
 }
 
-export default OnboardingLanding
+export default HomeOnboarding

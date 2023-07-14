@@ -1,16 +1,23 @@
-import { ReactElement, ReactNode } from 'react'
-
+import { ReactElement } from 'react'
 import { Button, Typography } from '@mui/material'
-import BusinessIcon from '@mui/icons-material/Business'
-import PersonIcon from '@mui/icons-material/Person'
 import Image from 'next/image'
-import { Default } from '../../../layouts/Default'
-import svg from '../../../assets/svg/success-registration.svg'
+
+import { Default } from '../../layouts/Default'
+import svg from '../../assets/svg/success-registration.svg'
 
 import * as S from './status.css'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const OnboardingStatus = () => {
+  const route = useRouter()
+  const nextRoute: any = route.query?.['next-route']
+
+  const routes: any = {
+    'company-home': '/company/home',
+    'candidate-home': '/candiate/home',
+  }
+
   return (
     <div className={S.container}>
       <div className={S.content}>
@@ -23,10 +30,8 @@ const OnboardingStatus = () => {
         </Typography>
       </div>
 
-      <Link href={''}>
-        <Button className={S.buttonPrimary} variant='contained'>
-          Fazer login
-        </Button>
+      <Link href={{ pathname: `${routes[nextRoute]}` }}>
+        <Button variant='contained'>Fazer logins</Button>
       </Link>
     </div>
   )

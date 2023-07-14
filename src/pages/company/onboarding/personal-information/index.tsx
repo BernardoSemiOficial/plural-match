@@ -89,7 +89,7 @@ const CompanyPersonalInformation = () => {
         />
       </div>
 
-      <Link href='/onboarding/company/credentials'>
+      <Link href='/company/onboarding/credentials'>
         <Button
           fullWidth
           variant='contained'
