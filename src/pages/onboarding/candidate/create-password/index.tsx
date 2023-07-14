@@ -45,7 +45,7 @@ const SelfDeclaration = () => {
           placeholder='Senha'
           sx={{ marginTop: '16px' }}
         />
-        <Link href='soft-skills'>
+        <Link href='/onboarding/status'>
           <Button
             fullWidth
             variant='contained'
