@@ -39,7 +39,9 @@ const CompanyCredentials = () => {
         />
       </div>
 
-      <Link href='/status'>
+      <Link
+        href={{ pathname: '/status', query: { 'next-route': 'company-home' } }}
+      >
         <Button
           fullWidth
           variant='contained'

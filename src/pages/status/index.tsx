@@ -7,8 +7,17 @@ import svg from '../../assets/svg/success-registration.svg'
 
 import * as S from './status.css'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const OnboardingStatus = () => {
+  const route = useRouter()
+  const nextRoute: any = route.query?.['next-route']
+
+  const routes: any = {
+    'company-home': '/company/home',
+    'candidate-home': '/candiate/home',
+  }
+
   return (
     <div className={S.container}>
       <div className={S.content}>
@@ -21,8 +30,8 @@ const OnboardingStatus = () => {
         </Typography>
       </div>
 
-      <Link href={''}>
-        <Button variant='contained'>Fazer login</Button>
+      <Link href={{ pathname: `${routes[nextRoute]}` }}>
+        <Button variant='contained'>Fazer logins</Button>
       </Link>
     </div>
   )
