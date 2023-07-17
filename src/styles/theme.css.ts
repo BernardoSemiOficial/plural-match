@@ -171,7 +171,6 @@ const colors = createThemeContract({
 })
 
 export const vars = { ...globalTheme, colors }
-// export const vars = { ...globalTheme, color: colors }
 
 export const lightTheme = createTheme(colors, {
   primary: hexColors.yellow[700],

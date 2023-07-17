@@ -31,8 +31,9 @@ export const content = style([
 export const actions = style([
   {
     position: 'absolute',
-    bottom: '0',
+    bottom: '0px',
     paddingBottom: '30px',
+    paddingInline: '30px',
     width: '100%',
   },
   greaterThan({
