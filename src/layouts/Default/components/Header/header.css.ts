@@ -20,4 +20,5 @@ export const title = style({
   color: '#FDF7F8',
   fontFamily: 'Bebas Neue, sans-serif',
   letterSpacing: '1.25px',
+  textAlign: 'center',
 })
