@@ -31,7 +31,7 @@ const recruiters = [
   },
 ]
 
-const CompanyPersonalInformation = () => {
+const Company = () => {
   const [open, setOpen] = useState(false)
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
@@ -135,8 +135,8 @@ const CompanyPersonalInformation = () => {
   )
 }
 
-CompanyPersonalInformation.getLayout = function getLayout(page: ReactElement) {
+Company.getLayout = function getLayout(page: ReactElement) {
   return <Default>{page}</Default>
 }
 
-export default CompanyPersonalInformation
+export default Company
