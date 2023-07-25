@@ -25,25 +25,25 @@ git clone https://github.com/BernardoSemiOficial/plural-match.git
 Instale todas as dependências do projeto
 
 ```sh
-yarn install
+npm install
 ```
 
 Para executar o projeto (localhost:3000)
 
 ```sh
-yarn dev
+npm dev
 ```
 
 Para rodar o build do projeto
 
 ```sh
-yarn build
+npm build
 ```
 
 Para executar o projeto a partir do build gerado
 
 ```sh
-yarn start
+npm start
 ```
 
 ---
