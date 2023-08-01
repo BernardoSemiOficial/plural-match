@@ -17,6 +17,7 @@ export enum PublicRoutes {
 }
 
 export enum PrivateRoutes {
-  COMPANY = '/company',
-  CANDIDATE = '/candidate',
+  COMPANY = '/logged/company',
+  JOBS = '/logged/jobs',
+  PEOPLES = '/logged/peoples',
 }
