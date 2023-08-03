@@ -36,7 +36,7 @@ const MenuProps = {
   },
 }
 
-const Peoples = () => {
+const Jobs = () => {
   const [filters, setFilters] = useState<string[]>([])
 
   const handleChangeSelectFilter = (
@@ -59,9 +59,9 @@ const Peoples = () => {
           size='small'
           variant='outlined'
           margin='dense'
-          id='candidates'
-          type='candidates'
-          placeholder='Pesquise por um candidato'
+          id='peoples'
+          type='peoples'
+          placeholder='Pesquise por uma vaga'
         />
       </Box>
       <Box mt={2} maxWidth={300}>
@@ -125,8 +125,8 @@ const Peoples = () => {
   )
 }
 
-Peoples.getLayout = function getLayout(page: ReactElement) {
+Jobs.getLayout = function getLayout(page: ReactElement) {
   return <Default>{page}</Default>
 }
 
-export default Peoples
+export default Jobs

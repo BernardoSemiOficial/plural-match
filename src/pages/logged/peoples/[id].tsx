@@ -4,13 +4,19 @@ import { createUUID } from '@/helpers/createUUID'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { hardSkills, softSkills } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
+import CreateIcon from '@mui/icons-material/Create'
 import {
   Avatar,
   Box,
   Button,
   Chip,
   Divider,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
   MenuItem,
   Modal,
   TextField,
@@ -21,7 +27,6 @@ import { useRouter } from 'next/router'
 const People = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [filters, setFilters] = useState<string[]>([])
 
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
@@ -30,6 +35,9 @@ const People = () => {
 
   return (
     <Container>
+      <Box textAlign='right'>
+        <CreateIcon color='primary' fontSize='large' />
+      </Box>
       <Avatar sx={{ bgcolor: '#BA2649' }}>
         {firstLetterOfFirstAndLastName('Bernardo Pereira')}
       </Avatar>
@@ -57,6 +65,7 @@ const People = () => {
           color='primary'
           label={'Presencial'}
           size='medium'
+          sx={{ fontSize: '15px' }}
         />
         <Chip
           key={createUUID()}
@@ -65,6 +74,7 @@ const People = () => {
           color='primary'
           label={'CLT'}
           size='medium'
+          sx={{ fontSize: '15px' }}
         />
         <Chip
           key={createUUID()}
@@ -73,6 +83,7 @@ const People = () => {
           color='primary'
           label={'A combinar'}
           size='medium'
+          sx={{ fontSize: '15px' }}
         />
         <Chip
           key={createUUID()}
@@ -81,10 +92,59 @@ const People = () => {
           color='primary'
           label={'Classe Social D'}
           size='medium'
+          sx={{ fontSize: '15px' }}
         />
       </Box>
       <Divider />
       <Box mt={3}>
+        <Box>
+          <Typography variant='subtitle1' fontWeight='bold'>
+            Soft skills
+          </Typography>
+          <Box
+            mt={1}
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+            }}
+          >
+            {softSkills.map(softSkill => (
+              <Chip
+                key={createUUID()}
+                variant='filled'
+                color='primary'
+                label={softSkill}
+                sx={{ fontSize: '15px' }}
+              />
+            ))}
+          </Box>
+        </Box>
+        <Box mt={2}>
+          <Typography variant='subtitle1' fontWeight='bold'>
+            Hard skills
+          </Typography>
+          <Box
+            mt={1}
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+            }}
+          >
+            {hardSkills.map(hardSkill => (
+              <Chip
+                key={createUUID()}
+                variant='filled'
+                color='primary'
+                label={hardSkill}
+                sx={{ fontSize: '15px' }}
+              />
+            ))}
+          </Box>
+        </Box>
+      </Box>
+      <Box my={3}>
         <Button
           fullWidth
           variant='contained'
@@ -94,9 +154,28 @@ const People = () => {
           CONVIDAR
         </Button>
       </Box>
+      <Divider />
+      <Box mt={1}>
+        <List
+          sx={{ width: '100%', bgcolor: 'background.paper' }}
+          subheader={
+            <ListSubheader component='div' id='nested-list-subheader'>
+              VAGAS CANDIDATADAS
+            </ListSubheader>
+          }
+        >
+          <ListItemButton>
+            <ListItemText primary='Desenvolvedor Sênior #14' />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemText primary='Desenvolvedor Fullstack #15' />
+          </ListItemButton>
+        </List>
+      </Box>
+      <Divider />
       <Box mt={3}>
         <Box>
-          <Typography variant='subtitle2' fontWeight='bold'>
+          <Typography variant='subtitle1' fontWeight='bold'>
             Sobre
           </Typography>
           <Typography variant='body1'>
@@ -106,7 +185,7 @@ const People = () => {
           </Typography>
         </Box>
         <Box mt={4}>
-          <Typography variant='subtitle2' fontWeight='bold'>
+          <Typography variant='subtitle1' fontWeight='bold'>
             Experiência profissional
           </Typography>
           <Typography variant='body1'>
@@ -116,7 +195,7 @@ const People = () => {
           </Typography>
         </Box>
         <Box mt={4}>
-          <Typography variant='subtitle2' fontWeight='bold'>
+          <Typography variant='subtitle1' fontWeight='bold'>
             Experiência acadêmica
           </Typography>
           <Typography variant='body1'>
@@ -126,7 +205,7 @@ const People = () => {
           </Typography>
         </Box>
         <Box mt={4}>
-          <Typography variant='subtitle2' fontWeight='bold'>
+          <Typography variant='subtitle1' fontWeight='bold'>
             Sonhos e objetivos
           </Typography>
           <Typography variant='body1'>

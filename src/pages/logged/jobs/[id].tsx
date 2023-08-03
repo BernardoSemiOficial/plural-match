@@ -36,7 +36,7 @@ const MenuProps = {
   },
 }
 
-const Peoples = () => {
+const Job = () => {
   const [filters, setFilters] = useState<string[]>([])
 
   const handleChangeSelectFilter = (
@@ -125,8 +125,8 @@ const Peoples = () => {
   )
 }
 
-Peoples.getLayout = function getLayout(page: ReactElement) {
+Job.getLayout = function getLayout(page: ReactElement) {
   return <Default>{page}</Default>
 }
 
-export default Peoples
+export default Job

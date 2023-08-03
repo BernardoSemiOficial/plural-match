@@ -9,20 +9,9 @@ import { PublicRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { hardSkills } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
 import Link from 'next/link'
-
-const hardSkillsAvailable = [
-  'Oracle',
-  'JavaScript',
-  'React JS',
-  'Java',
-  'PHP',
-  'Vue JS',
-  'Angular JS',
-  'Python',
-  'C#',
-]
 
 const HardSkills = () => {
   const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
@@ -49,7 +38,7 @@ const HardSkills = () => {
             gap: '8px',
           }}
         >
-          {hardSkillsAvailable.map(softSkill => (
+          {hardSkills.map(softSkill => (
             <Chip
               key={createUUID()}
               clickable

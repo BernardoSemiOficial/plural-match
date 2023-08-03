@@ -9,20 +9,9 @@ import { PublicRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { softSkills } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
 import Link from 'next/link'
-
-const softSkillsAvailable = [
-  'Liderança',
-  'Comunicação',
-  'Flexibilidade',
-  'Trabalho em equipe',
-  'Resiliência',
-  'Criatividade',
-  'Ética',
-  'Proatividade',
-  'Empatia',
-]
 
 const SoftSkills = () => {
   const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
@@ -49,7 +38,7 @@ const SoftSkills = () => {
             gap: '8px',
           }}
         >
-          {softSkillsAvailable.map(softSkill => (
+          {softSkills.map(softSkill => (
             <Chip
               key={createUUID()}
               clickable
