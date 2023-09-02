@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react'
 
 import { AvatarDescription } from '@/components/AvatarDescription'
 import { CandidatedVacancies } from '@/components/CandidatedVacancies'
+import { Modal } from '@/components/Modal'
 import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
@@ -15,7 +16,6 @@ import {
   Button,
   Divider,
   MenuItem,
-  Modal,
   TextField,
   Typography,
 } from '@mui/material'
@@ -115,20 +115,8 @@ const People = () => {
           />
         </Box>
       </Box>
-      <Modal open={open} onClose={handleClickClose}>
-        <Box
-          p={4}
-          borderRadius={4}
-          position='absolute'
-          top='50%'
-          left='50%'
-          bgcolor='#ffffff'
-          width={'100%'}
-          maxWidth={'400px'}
-          sx={{
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+      <Modal maxWidth='xs' fullWidth open={open} onClose={handleClickClose}>
+        <Box p={4} borderRadius={4}>
           <Typography variant='subtitle1' fontWeight='400'>
             Selecione a vaga
           </Typography>
