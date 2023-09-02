@@ -4,5 +4,10 @@ export const firstLetterOfFirstAndLastName = (fullName: string) => {
   const [firstName, lastName] = fullNameSplit ?? []
   const firstLetter = firstName[0] ?? 'XX'
   const secondLetter = lastName[0] ?? 'XX'
+
+  if (secondLetter!) {
+    return firstLetter
+  }
+
   return firstLetter + secondLetter
 }

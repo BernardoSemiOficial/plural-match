@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 
-import { AvatarDescription } from '@/components/AvatarDescription'
 import { CandidatedVacancies } from '@/components/CandidatedVacancies'
+import { ModalSelectJob } from '@/components/ModalSelectJob'
 import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
 import { hardSkills, softSkills } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
-import CreateIcon from '@mui/icons-material/Create'
-import { Box, Button, Divider, Tab, Tabs } from '@mui/material'
-import { ModalSelectJob } from '@/components/ModalSelectJob'
+import { Box, Button, Divider } from '@mui/material'
+import { HeaderProfile } from '../HeaderProfile'
 
 export const JobDetails: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -18,12 +17,7 @@ export const JobDetails: React.FC = () => {
   const handleClickClose = () => setOpen(false)
   return (
     <Box>
-      <Box textAlign='right'>
-        <CreateIcon color='primary' fontSize='large' />
-      </Box>
-      <AvatarDescription
-        people={{ name: 'Bernardo Pereira Oliveira', age: '18 anos' }}
-      />
+      <HeaderProfile title='Bernardo Pereira Oliveira' description='18 anos' />
       <Divider />
       <Box
         my={2}
