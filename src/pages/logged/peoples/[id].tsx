@@ -1,22 +1,19 @@
 import { ReactElement, useState } from 'react'
 
+import { AvatarDescription } from '@/components/AvatarDescription'
+import { CandidatedVacancies } from '@/components/CandidatedVacancies'
+import { SectionDescription } from '@/components/SectionDescription'
 import { createUUID } from '@/helpers/createUUID'
-import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkills, softSkills } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
 import CreateIcon from '@mui/icons-material/Create'
 import {
-  Avatar,
   Box,
   Button,
   Chip,
   Divider,
-  List,
-  ListItemButton,
-  ListItemText,
-  ListSubheader,
   MenuItem,
   Modal,
   TextField,
@@ -38,17 +35,9 @@ const People = () => {
       <Box textAlign='right'>
         <CreateIcon color='primary' fontSize='large' />
       </Box>
-      <Avatar sx={{ bgcolor: '#BA2649' }}>
-        {firstLetterOfFirstAndLastName('Bernardo Pereira')}
-      </Avatar>
-      <Box mt={2}>
-        <Typography variant='h5' fontWeight='bold'>
-          Bernardo Pereira Oliveira
-        </Typography>
-      </Box>
-      <Box mb={1}>
-        <Typography variant='h5'>18 anos</Typography>
-      </Box>
+      <AvatarDescription
+        people={{ name: 'Bernardo Pereira Oliveira', age: '18 anos' }}
+      />
       <Divider />
       <Box
         my={2}
@@ -156,63 +145,44 @@ const People = () => {
       </Box>
       <Divider />
       <Box mt={1}>
-        <List
-          sx={{ width: '100%', bgcolor: 'background.paper' }}
-          subheader={
-            <ListSubheader component='div' id='nested-list-subheader'>
-              VAGAS CANDIDATADAS
-            </ListSubheader>
-          }
-        >
-          <ListItemButton>
-            <ListItemText primary='Desenvolvedor Sênior #14' />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemText primary='Desenvolvedor Fullstack #15' />
-          </ListItemButton>
-        </List>
+        <CandidatedVacancies
+          vacancies={[
+            'Desenvolvedor Sênior #14',
+            'Desenvolvedor Fullstack #15',
+          ]}
+        />
       </Box>
       <Divider />
       <Box mt={3}>
-        <Box>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Sobre
-          </Typography>
-          <Typography variant='body1'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+        <SectionDescription
+          title='Sobre'
+          description='Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.
-          </Typography>
+            since the 1500s.'
+        />
+        <Box mt={4}>
+          <SectionDescription
+            title='Experiência profissional'
+            description='Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry standard dummy text ever
+            since the 1500s.'
+          />
         </Box>
         <Box mt={4}>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Experiência profissional
-          </Typography>
-          <Typography variant='body1'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+          <SectionDescription
+            title='Experiência acadêmica'
+            description='Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.
-          </Typography>
+            since the 1500s.'
+          />
         </Box>
         <Box mt={4}>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Experiência acadêmica
-          </Typography>
-          <Typography variant='body1'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+          <SectionDescription
+            title='Sonhos e objetivos'
+            description='Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.
-          </Typography>
-        </Box>
-        <Box mt={4}>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Sonhos e objetivos
-          </Typography>
-          <Typography variant='body1'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.
-          </Typography>
+            since the 1500s.'
+          />
         </Box>
       </Box>
       <Modal open={open} onClose={handleClickClose}>
