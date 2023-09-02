@@ -1,13 +1,13 @@
 import { ReactElement, useState } from 'react'
 
+import { DropDownFilter } from '@/components/DropdownFilter'
+import { InputSearch } from '@/components/InputSearch'
+import { ItemList } from '@/components/ItemList'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { MOCK_CANDIDATES } from '@/mocks/candidates'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, Typography } from '@mui/material'
-import { DropDownFilter } from '@/components/DropdownFilter'
-import { ItemList } from '@/components/ItemList'
-import { InputSearch } from '@/components/InputSearch'
 
 const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])

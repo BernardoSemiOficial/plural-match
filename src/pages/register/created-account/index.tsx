@@ -18,7 +18,7 @@ const CreatedAccount = () => {
   const goToPage =
     routerQuery?.[QueryKeys.USER_TYPE] === QueryValues.USER_TYPE_COMPANY
       ? PrivateRoutes.COMPANY
-      : PrivateRoutes.CANDIDATE
+      : PrivateRoutes.JOBS
 
   return (
     <Container>
