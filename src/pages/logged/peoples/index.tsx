@@ -37,7 +37,17 @@ const Peoples = () => {
 
       <Box mt={4}>
         {MOCK_CANDIDATES?.map(candidate => (
-          <ItemList {...{ candidate }} />
+          <ItemList
+            {...{
+              item: {
+                id: candidate.id,
+                title: candidate.name,
+                subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
+                descrition: candidate.city,
+                subDescription: candidate.state,
+              },
+            }}
+          />
         ))}
       </Box>
     </Container>

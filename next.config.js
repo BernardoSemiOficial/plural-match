@@ -5,6 +5,9 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ['logodownload.org'],
+  },
 }
 
 module.exports = withVanillaExtract(nextConfig)
