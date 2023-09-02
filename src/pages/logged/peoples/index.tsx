@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react'
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
+import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { MOCK_CANDIDATES } from '@/mocks/candidates'
@@ -39,6 +40,7 @@ const Peoples = () => {
       <Box mt={4}>
         {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (
           <ItemList
+            key={createUUID()}
             {...{
               item: {
                 id: candidate.id,

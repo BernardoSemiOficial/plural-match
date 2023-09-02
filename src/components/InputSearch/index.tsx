@@ -1,5 +1,7 @@
 import React from 'react'
-import { Box, TextField, TextFieldProps } from '@mui/material'
+
+import type { TextFieldProps } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 
 export const InputSearch: React.FC<TextFieldProps> = ({
   placeholder,
