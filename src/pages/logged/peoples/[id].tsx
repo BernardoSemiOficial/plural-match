@@ -2,8 +2,9 @@ import { ReactElement, useState } from 'react'
 
 import { AvatarDescription } from '@/components/AvatarDescription'
 import { CandidatedVacancies } from '@/components/CandidatedVacancies'
+import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
-import { createUUID } from '@/helpers/createUUID'
+import { SectionKeywords } from '@/components/SectionKeywords'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkills, softSkills } from '@/mocks/skills'
@@ -12,7 +13,6 @@ import CreateIcon from '@mui/icons-material/Create'
 import {
   Box,
   Button,
-  Chip,
   Divider,
   MenuItem,
   Modal,
@@ -47,90 +47,20 @@ const People = () => {
           gap: '8px',
         }}
       >
-        <Chip
-          key={createUUID()}
-          icon={<Work fontSize='small' />}
-          variant='outlined'
-          color='primary'
-          label={'Presencial'}
-          size='medium'
-          sx={{ fontSize: '15px' }}
-        />
-        <Chip
-          key={createUUID()}
-          icon={<Home fontSize='small' />}
-          variant='outlined'
-          color='primary'
-          label={'CLT'}
-          size='medium'
-          sx={{ fontSize: '15px' }}
-        />
-        <Chip
-          key={createUUID()}
-          icon={<Paid fontSize='small' />}
-          variant='outlined'
-          color='primary'
-          label={'A combinar'}
-          size='medium'
-          sx={{ fontSize: '15px' }}
-        />
-        <Chip
-          key={createUUID()}
-          icon={<Info fontSize='small' />}
-          variant='outlined'
-          color='primary'
-          label={'Classe Social D'}
-          size='medium'
-          sx={{ fontSize: '15px' }}
+        <SectionKeywords
+          keywords={[
+            { icon: <Work fontSize='small' />, label: 'Presencial' },
+            { icon: <Home fontSize='small' />, label: 'CLT' },
+            { icon: <Paid fontSize='small' />, label: 'A combinar' },
+            { icon: <Info fontSize='small' />, label: 'Classe Social D' },
+          ]}
         />
       </Box>
       <Divider />
       <Box mt={3}>
-        <Box>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Soft skills
-          </Typography>
-          <Box
-            mt={1}
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}
-          >
-            {softSkills.map(softSkill => (
-              <Chip
-                key={createUUID()}
-                variant='filled'
-                color='primary'
-                label={softSkill}
-                sx={{ fontSize: '15px' }}
-              />
-            ))}
-          </Box>
-        </Box>
+        <SectionChips title='Soft skills' labels={softSkills} />
         <Box mt={2}>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            Hard skills
-          </Typography>
-          <Box
-            mt={1}
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}
-          >
-            {hardSkills.map(hardSkill => (
-              <Chip
-                key={createUUID()}
-                variant='filled'
-                color='primary'
-                label={hardSkill}
-                sx={{ fontSize: '15px' }}
-              />
-            ))}
-          </Box>
+          <SectionChips title='Hard skills' labels={hardSkills} />
         </Box>
       </Box>
       <Box my={3}>
