@@ -1,6 +1,6 @@
 import {
-  JSXElementConstructor,
   ReactElement,
+  ReactNode,
   createContext,
   useCallback,
   useEffect,
@@ -12,7 +12,8 @@ import { PublicRoutes } from '@/enums/routes'
 import { useRouter } from 'next/router'
 
 type RegisterCandidateProviderProps = {
-  children: ReactElement<any, string | JSXElementConstructor<any>>
+  children: ReactElement | ReactNode
+  // ReactElement<any, string | JSXElementConstructor<any>>
 }
 
 type RegisterCandidateContext = {
