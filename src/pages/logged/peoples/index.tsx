@@ -26,7 +26,12 @@ const Peoples = () => {
       <Typography variant='h4' fontWeight='bold'>
         Buscar
       </Typography>
-      <InputSearch />
+
+      <InputSearch
+        placeholder='Pesquise por um candidato'
+        id='candidates'
+        type='candidates'
+      />
 
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
