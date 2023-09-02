@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react'
 
 import recruiterAdd from '@/assets/svg/add-recruiter.svg'
+import { Modal } from '@/components/Modal'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
@@ -11,7 +12,6 @@ import {
   Button,
   Divider,
   Fab,
-  Modal,
   Stack,
   TextField,
   Typography,
@@ -48,18 +48,8 @@ const Company = () => {
       <Typography variant='h6' mt={4}>
         Recrutadores
       </Typography>
-      <Modal open={open} onClose={handleClickClose}>
-        <Box
-          p={4}
-          borderRadius={4}
-          position='absolute'
-          top='50%'
-          left='50%'
-          bgcolor='#ffffff'
-          sx={{
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+      <Modal maxWidth='xs' fullWidth open={open} onClose={handleClickClose}>
+        <Box p={4} borderRadius={4}>
           <Typography variant='h6' fontWeight='400'>
             Adicionar um recrutador
           </Typography>
