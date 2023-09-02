@@ -1,7 +1,11 @@
 import React from 'react'
-import { Box, TextField, Typography } from '@mui/material'
+import { Box, TextField, TextFieldProps } from '@mui/material'
 
-export const InputSearch: React.FC = () => {
+export const InputSearch: React.FC<TextFieldProps> = ({
+  placeholder,
+  id,
+  type,
+}) => {
   return (
     <Box mt={1}>
       <TextField
@@ -9,9 +13,7 @@ export const InputSearch: React.FC = () => {
         size='small'
         variant='outlined'
         margin='dense'
-        id='candidates'
-        type='candidates'
-        placeholder='Pesquise por um candidato'
+        {...{ placeholder, type, id }}
       />
     </Box>
   )
