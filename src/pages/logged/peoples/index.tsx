@@ -4,10 +4,11 @@ import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { MOCK_CANDIDATES } from '@/mocks/candidates'
 import type { SelectChangeEvent } from '@mui/material'
-import { Box, Typography } from '@mui/material'
+import { Box, Fab, Typography } from '@mui/material'
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { ItemList } from '@/components/ItemList'
 import { InputSearch } from '@/components/InputSearch'
+import { AddOutlined } from '@mui/icons-material'
 
 const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])
@@ -36,7 +37,7 @@ const Peoples = () => {
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
       <Box mt={4}>
-        {MOCK_CANDIDATES?.map(candidate => (
+        {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (
           <ItemList
             {...{
               item: {
@@ -50,6 +51,21 @@ const Peoples = () => {
           />
         ))}
       </Box>
+
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '40px',
+          width: '100%',
+          maxWidth: '700px',
+          justifyContent: 'flex-end',
+          display: 'flex',
+        }}
+      >
+        <Fab color='primary' aria-label='add'>
+          <AddOutlined />
+        </Fab>
+      </div>
     </Container>
   )
 }
