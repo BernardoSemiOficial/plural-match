@@ -1,7 +1,7 @@
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
 import { Button, MobileStepper as MobileStepperMUI } from '@mui/material'
 
-interface MobileStepper {
+interface MobileStepperProps {
   steps: number
   activeStep: number
   handleClickNext: () => void
@@ -13,7 +13,7 @@ export const MobileStepper = ({
   activeStep,
   handleClickNext,
   handleClickBack,
-}: MobileStepper) => {
+}: MobileStepperProps) => {
   return (
     <MobileStepperMUI
       variant='progress'

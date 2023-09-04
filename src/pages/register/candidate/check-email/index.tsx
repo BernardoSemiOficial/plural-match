@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from 'react'
 
 import {
-  RegisterCandidateContext,
+  registerCandidateContext,
   RegisterCandidateProvider,
 } from '@/context/RegisterCandidateContext'
 import { PublicRoutes } from '@/enums/routes'
@@ -11,7 +11,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import Link from 'next/link'
 
 const CheckEmail = () => {
-  const { candidate } = useContext(RegisterCandidateContext)
+  const { candidate } = useContext(registerCandidateContext)
 
   return (
     <Container>
