@@ -1,6 +1,9 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import React from 'react'
 import { HeaderProfile } from '../HeaderProfile'
+import { ItemList } from '../ItemList'
+import { MOCK_CANDIDATES } from '@/mocks/candidates'
+import { createUUID } from '@/helpers/createUUID'
 
 export const JobSelectionProcess: React.FC = () => {
   return (
@@ -10,6 +13,25 @@ export const JobSelectionProcess: React.FC = () => {
       </Typography>
 
       <HeaderProfile title='Nubank SP' description='São Paulo, Campinas' />
+
+      <Box my={2}>
+        <Divider />
+      </Box>
+
+      {MOCK_CANDIDATES?.map(candidate => (
+        <ItemList
+          key={createUUID()}
+          {...{
+            item: {
+              id: candidate.id,
+              title: candidate.name,
+              subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
+              descrition: candidate.city,
+              subDescription: candidate.state,
+            },
+          }}
+        />
+      ))}
     </Box>
   )
 }
