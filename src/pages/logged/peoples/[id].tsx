@@ -15,7 +15,12 @@ const People = () => {
 
   return (
     <Container>
-      <Tabs value={value} onChange={handleChange} centered>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        centered
+        style={{ marginBottom: 32 }}
+      >
         <Tab label='Vaga' />
         <Tab label='Processo seletivo' />
       </Tabs>
