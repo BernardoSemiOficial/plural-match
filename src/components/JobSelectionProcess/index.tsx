@@ -1,9 +1,11 @@
-import { Box, Divider, Typography } from '@mui/material'
 import React from 'react'
+
+import { createUUID } from '@/helpers/createUUID'
+import { MOCK_CANDIDATES } from '@/mocks/candidates'
+import { Box, Divider, Typography } from '@mui/material'
+
 import { HeaderProfile } from '../HeaderProfile'
 import { ItemList } from '../ItemList'
-import { MOCK_CANDIDATES } from '@/mocks/candidates'
-import { createUUID } from '@/helpers/createUUID'
 
 export const JobSelectionProcess: React.FC = () => {
   return (

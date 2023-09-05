@@ -5,7 +5,7 @@ export const firstLetterOfFirstAndLastName = (fullName: string) => {
   const firstLetter = firstName?.[0] ?? 'XX'
   const secondLetter = lastName?.[0] ?? 'XX'
 
-  if (secondLetter!) {
+  if (!secondLetter) {
     return firstLetter
   }
 

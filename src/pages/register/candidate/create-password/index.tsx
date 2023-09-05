@@ -2,7 +2,7 @@ import { ReactElement, useContext } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
-  RegisterCandidateContext,
+  registerCandidateContext,
   RegisterCandidateProvider,
 } from '@/context/RegisterCandidateContext'
 import { QueryKeys, QueryValues } from '@/enums/querys'
@@ -14,7 +14,7 @@ import Link from 'next/link'
 
 const CreatePassword = () => {
   const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(RegisterCandidateContext)
+    useContext(registerCandidateContext)
 
   return (
     <Container>

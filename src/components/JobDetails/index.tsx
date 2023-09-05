@@ -8,6 +8,7 @@ import { SectionKeywords } from '@/components/SectionKeywords'
 import { hardSkills, softSkills } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
 import { Box, Button, Divider } from '@mui/material'
+
 import { HeaderProfile } from '../HeaderProfile'
 
 export const JobDetails: React.FC = () => {

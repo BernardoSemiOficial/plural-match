@@ -2,7 +2,7 @@ import { ReactElement, useContext } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
-  RegisterCandidateContext,
+  registerCandidateContext,
   RegisterCandidateProvider,
 } from '@/context/RegisterCandidateContext'
 import { PublicRoutes } from '@/enums/routes'
@@ -15,7 +15,7 @@ import Link from 'next/link'
 
 const HardSkills = () => {
   const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(RegisterCandidateContext)
+    useContext(registerCandidateContext)
 
   return (
     <Container>

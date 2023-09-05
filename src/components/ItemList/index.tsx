@@ -1,12 +1,8 @@
 import React from 'react'
 
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
-
 import { Avatar, Box, Divider, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
 
 export const ItemList: React.FC<{
   item: {
@@ -26,6 +22,7 @@ export const ItemList: React.FC<{
             width={40}
             height={40}
             style={{ borderRadius: 8 }}
+            alt='banco brasileiro NuBank'
             src={
               'https://logodownload.org/wp-content/uploads/2019/08/nubank-logo-2.png'
             }

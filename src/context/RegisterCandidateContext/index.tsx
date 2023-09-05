@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 
 type RegisterCandidateProviderProps = {
   children: ReactElement | ReactNode
-  // ReactElement<any, string | JSXElementConstructor<any>>
+  // ReactElement<any, string | JSXElementConstructor<any>>'
 }
 
 type RegisterCandidateContext = {
@@ -24,7 +24,7 @@ type RegisterCandidateContext = {
   handleClickBackStep: () => void
 }
 
-export const RegisterCandidateContext = createContext(
+export const registerCandidateContext = createContext(
   {} as RegisterCandidateContext
 )
 
@@ -101,8 +101,8 @@ export const RegisterCandidateProvider = ({
   )
 
   return (
-    <RegisterCandidateContext.Provider value={candidateContext}>
+    <registerCandidateContext.Provider value={candidateContext}>
       {children}
-    </RegisterCandidateContext.Provider>
+    </registerCandidateContext.Provider>
   )
 }
