@@ -3,7 +3,17 @@ import { ReactElement } from 'react'
 import { stagesSelectionProcess } from '@/enums/selection-process'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { Box, Divider, MenuItem, TextField, Typography } from '@mui/material'
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import {
+  Box,
+  Button,
+  Divider,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 const RegisterJob = () => {
   return (
@@ -98,14 +108,29 @@ const RegisterJob = () => {
       <Box my={3}>
         <Divider />
       </Box>
-      <Typography variant='h6' fontWeight='400'>
-        Etapas do processo seletivo
-      </Typography>
+      <Stack
+        direction='row'
+        spacing={2}
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        <Typography variant='h6' fontWeight='400'>
+          Etapas do processo seletivo
+        </Typography>
+        <AddCircleOutlinedIcon color='primary' fontSize={'large'} />
+      </Stack>
 
-      <Box mt={3}>
+      <Stack
+        mt={3}
+        direction='row'
+        spacing={5}
+        justifyContent='space-between'
+        alignItems={'flex-start'}
+      >
         <TextField
           select
           fullWidth
+          size='small'
           label='Selecione o tipo'
           helperText='Selecione qual a etapa'
         >
@@ -115,7 +140,8 @@ const RegisterJob = () => {
             </MenuItem>
           ))}
         </TextField>
-      </Box>
+        <DeleteOutlineOutlinedIcon fontSize={'medium'} />
+      </Stack>
       <Box mt={1}>
         <TextField
           fullWidth
@@ -141,6 +167,11 @@ const RegisterJob = () => {
           type='text'
           placeholder='Links úteis'
         />
+      </Box>
+      <Box mt={3}>
+        <Button fullWidth color='success' variant='contained' size='medium'>
+          SALVAR
+        </Button>
       </Box>
     </Container>
   )
