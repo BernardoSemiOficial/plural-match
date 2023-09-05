@@ -10,7 +10,7 @@ interface AvatarDescriptionProps {
 
 export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
   return (
-    <Stack direction='row' spacing={2}>
+    <Stack direction='row' spacing={2} alignItems={'center'}>
       <Avatar sx={{ bgcolor: '#BA2649' }}>
         {firstLetterOfFirstAndLastName(people.name)}
       </Avatar>
