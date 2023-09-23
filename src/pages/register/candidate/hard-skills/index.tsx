@@ -9,7 +9,7 @@ import { PublicRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { hardSkills } from '@/mocks/skills'
+import { hardSkillsAvailable } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
 import Link from 'next/link'
 
@@ -38,7 +38,7 @@ const HardSkills = () => {
             gap: '8px',
           }}
         >
-          {hardSkills.map(softSkill => (
+          {hardSkillsAvailable.map(softSkill => (
             <Chip
               key={createUUID()}
               clickable

@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import {
   registerCandidateContext,
@@ -8,10 +8,17 @@ import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Box, Button, TextField, Typography } from '@mui/material'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const CheckEmail = () => {
-  const { candidate } = useContext(registerCandidateContext)
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const { setCandidateData } = useContext(registerCandidateContext)
+
+  const handleClickContinue = () => {
+    setCandidateData({ email })
+    router.push(PublicRoutes.CANDIDATE_PERSONAL_INFORMATION)
+  }
 
   return (
     <Container>
@@ -30,14 +37,18 @@ const CheckEmail = () => {
           id='email'
           type='email'
           placeholder='E-mail'
+          onChange={({ target }) => setEmail(target.value)}
         />
       </Box>
       <Box mt={4}>
-        <Link href={PublicRoutes.CANDIDATE_PERSONAL_INFORMATION}>
-          <Button fullWidth variant='contained' size='medium'>
-            Continuar
-          </Button>
-        </Link>
+        <Button
+          fullWidth
+          variant='contained'
+          size='medium'
+          onClick={handleClickContinue}
+        >
+          Continuar
+        </Button>
       </Box>
     </Container>
   )

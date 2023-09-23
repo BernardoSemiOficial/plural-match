@@ -3,16 +3,27 @@ import { ReactElement, useState } from 'react'
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
+import { Services } from '@/enums/services'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { MOCK_CANDIDATES } from '@/mocks/candidates'
+import { api } from '@/services/api'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, Fab, Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 
 const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: [Services.LISTA_CANDIDATOS],
+    queryFn: async () => (await api.get(Services.LISTA_CANDIDATOS)).data,
+  })
+
+  console.log({ data })
+  console.log('error', error)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>
@@ -37,22 +48,26 @@ const Peoples = () => {
 
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
-      <Box mt={4}>
-        {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (
-          <ItemList
-            key={createUUID()}
-            {...{
-              item: {
-                id: candidate.id,
-                title: candidate.name,
-                subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
-                descrition: candidate.city,
-                subDescription: candidate.state,
-              },
-            }}
-          />
-        ))}
-      </Box>
+      {isLoading ? (
+        'carregando candidatos'
+      ) : (
+        <Box mt={4}>
+          {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (
+            <ItemList
+              key={createUUID()}
+              {...{
+                item: {
+                  id: candidate.id,
+                  title: candidate.name,
+                  subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
+                  descrition: candidate.city,
+                  subDescription: candidate.state,
+                },
+              }}
+            />
+          ))}
+        </Box>
+      )}
 
       <div
         style={{

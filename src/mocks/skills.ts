@@ -1,4 +1,4 @@
-export const softSkills = [
+export const softSkillsAvailable = [
   'Liderança',
   'Comunicação',
   'Flexibilidade',
@@ -10,7 +10,7 @@ export const softSkills = [
   'Empatia',
 ]
 
-export const hardSkills = [
+export const hardSkillsAvailable = [
   'Oracle',
   'JavaScript',
   'React JS',

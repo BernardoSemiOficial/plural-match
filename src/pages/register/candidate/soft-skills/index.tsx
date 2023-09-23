@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
@@ -9,13 +9,32 @@ import { PublicRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { softSkills } from '@/mocks/skills'
+import { softSkillsAvailable } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const SoftSkills = () => {
-  const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(registerCandidateContext)
+  const {
+    candidate,
+    activeStep,
+    stepsLength,
+    setCandidateData,
+    handleClickBackStep,
+    handleClickNextStep,
+  } = useContext(registerCandidateContext)
+
+  const router = useRouter()
+  const [softSkills, setSoftSkills] = useState([])
+
+  const handleClickContinue = () => {
+    setCandidateData({
+      softSkills,
+    })
+
+    router.push(PublicRoutes.CANDIDATE_HARD_SKILLS)
+  }
+
+  console.log(candidate)
 
   return (
     <Container>
@@ -38,7 +57,7 @@ const SoftSkills = () => {
             gap: '8px',
           }}
         >
-          {softSkills.map(softSkill => (
+          {softSkillsAvailable.map(softSkill => (
             <Chip
               key={createUUID()}
               clickable
@@ -49,11 +68,14 @@ const SoftSkills = () => {
           ))}
         </Box>
         <Box mt={4}>
-          <Link href={PublicRoutes.CANDIDATE_HARD_SKILLS}>
-            <Button fullWidth variant='contained' size='medium'>
-              Continuar
-            </Button>
-          </Link>
+          <Button
+            fullWidth
+            variant='contained'
+            size='medium'
+            onClick={handleClickContinue}
+          >
+            Continuar
+          </Button>
         </Box>
       </Box>
     </Container>

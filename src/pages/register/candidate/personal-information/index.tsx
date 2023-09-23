@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
@@ -9,11 +9,32 @@ import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Box, Button, TextField, Typography } from '@mui/material'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const PersonalInformation = () => {
-  const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(registerCandidateContext)
+  const {
+    candidate,
+    activeStep,
+    stepsLength,
+    setCandidateData,
+    handleClickBackStep,
+    handleClickNextStep,
+  } = useContext(registerCandidateContext)
+  const router = useRouter()
+
+  const [name, setName] = useState('')
+  const [socialName, setSocialName] = useState('')
+  const [birthday, setBirthday] = useState('')
+
+  const handleClickContinue = () => {
+    setCandidateData({
+      nome: name,
+      nomeSocial: socialName,
+      dataNascimento: birthday,
+    })
+
+    router.push(PublicRoutes.CANDIDATE_SELF_DECLARATION)
+  }
 
   return (
     <Container>
@@ -39,6 +60,7 @@ const PersonalInformation = () => {
             id='name'
             type='text'
             placeholder='Nome'
+            onChange={({ target }) => setName(target.value)}
           />
         </Box>
         <Box mt={1}>
@@ -50,6 +72,7 @@ const PersonalInformation = () => {
             id='social-name'
             type='text'
             placeholder='Nome social'
+            onChange={({ target }) => setSocialName(target.value)}
           />
         </Box>
         <Box mt={1}>
@@ -58,17 +81,21 @@ const PersonalInformation = () => {
             size='small'
             variant='outlined'
             margin='dense'
-            id='birthdate'
+            id='birthday'
             type='date'
             placeholder='Data de nascimento'
+            onChange={({ target }) => setBirthday(target.value)}
           />
         </Box>
         <Box mt={4}>
-          <Link href={PublicRoutes.CANDIDATE_SELF_DECLARATION}>
-            <Button fullWidth variant='contained' size='medium'>
-              Continuar
-            </Button>
-          </Link>
+          <Button
+            fullWidth
+            variant='contained'
+            size='medium'
+            onClick={handleClickContinue}
+          >
+            Continuar
+          </Button>
         </Box>
       </Box>
     </Container>
