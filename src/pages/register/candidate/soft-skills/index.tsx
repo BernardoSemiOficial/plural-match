@@ -13,6 +13,17 @@ import { softSkillsAvailable } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
+const softSkillsWithState = softSkillsAvailable.reduce(
+  (softSkillsWithState, softSkill) => {
+    softSkillsWithState.push({
+      isSelected: false,
+      label: softSkill,
+    })
+    return softSkillsWithState
+  },
+  [] as { isSelected: boolean; label: string }[]
+)
+
 const SoftSkills = () => {
   const {
     candidate,
@@ -24,17 +35,25 @@ const SoftSkills = () => {
   } = useContext(registerCandidateContext)
 
   const router = useRouter()
-  const [softSkills, setSoftSkills] = useState([])
+
+  const [softSkills, setSoftSkills] = useState(softSkillsWithState)
 
   const handleClickContinue = () => {
+    const setSoftSkillsSelected = softSkills.filter(
+      softSkill => softSkill.isSelected
+    )
+    const setSoftSkillsSelectedFormatted = setSoftSkillsSelected.map(
+      softSkill => softSkill.label
+    )
     setCandidateData({
-      softSkills,
+      softSkills: setSoftSkillsSelectedFormatted,
     })
 
     router.push(PublicRoutes.CANDIDATE_HARD_SKILLS)
   }
 
   console.log(candidate)
+  console.log(softSkills)
 
   return (
     <Container>
@@ -57,13 +76,22 @@ const SoftSkills = () => {
             gap: '8px',
           }}
         >
-          {softSkillsAvailable.map(softSkill => (
+          {softSkills.map(softSkill => (
             <Chip
               key={createUUID()}
               clickable
-              variant='outlined'
+              variant={softSkill.isSelected ? 'filled' : 'outlined'}
               color='primary'
-              label={softSkill}
+              label={softSkill.label}
+              onClick={() =>
+                setSoftSkills(skills => {
+                  return skills.map(skill => {
+                    if (skill.label === softSkill.label)
+                      skill.isSelected = !skill.isSelected
+                    return skill
+                  })
+                })
+              }
             />
           ))}
         </Box>
