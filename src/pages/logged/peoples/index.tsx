@@ -11,7 +11,7 @@ import { MOCK_CANDIDATES } from '@/mocks/candidates'
 import { api } from '@/services/api'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
-import { Box, Fab, Typography } from '@mui/material'
+import { Box, CircularProgress, Fab, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
 const Peoples = () => {
@@ -49,7 +49,15 @@ const Peoples = () => {
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
       {isLoading ? (
-        'carregando candidatos'
+        <Box
+          mt={4}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+        >
+          <CircularProgress size={40} />
+          <Typography variant='subtitle1'>Carregando candidatos</Typography>
+        </Box>
       ) : (
         <Box mt={4}>
           {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (

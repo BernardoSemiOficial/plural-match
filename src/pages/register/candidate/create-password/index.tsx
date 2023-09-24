@@ -7,9 +7,19 @@ import {
 } from '@/context/RegisterCandidateContext'
 import { QueryKeys, QueryValues } from '@/enums/querys'
 import { PublicRoutes } from '@/enums/routes'
+import { Services } from '@/enums/services'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { api } from '@/services/api'
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const CreatePassword = () => {
@@ -26,14 +36,22 @@ const CreatePassword = () => {
 
   const [password, setPassword] = useState(candidate.senha)
 
-  const handleClickContinue = () => {
-    setCandidateData({
-      senha: password,
-    })
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async () =>
+      await api.post(Services.CADASTRA_CANDIDATO, {
+        ...candidate,
+        senha: password,
+      }),
+    onSuccess() {
+      router.push(PublicRoutes.REGISTER_CREATED_ACCOUNT, {
+        query: { [QueryKeys.USER_TYPE]: QueryValues.USER_TYPE_CANDIDATE },
+      })
+    },
+  })
 
-    router.push(PublicRoutes.REGISTER_CREATED_ACCOUNT, {
-      query: { [QueryKeys.USER_TYPE]: QueryValues.USER_TYPE_CANDIDATE },
-    })
+  const handleClickContinue = () => {
+    setCandidateData({ senha: password })
+    mutate()
   }
 
   return (
@@ -44,6 +62,11 @@ const CreatePassword = () => {
         handleClickBack={handleClickBackStep}
         handleClickNext={handleClickNextStep}
       />
+      {error && (
+        <Box mt={3}>
+          <Alert severity='error'>O campo da senha deve ser preenchido</Alert>
+        </Box>
+      )}
       <Box mt={3}>
         <Typography variant='h6' fontWeight='400'>
           Para finalizar o seu cadastro, digite a sua senha
@@ -73,7 +96,11 @@ const CreatePassword = () => {
             size='medium'
             onClick={handleClickContinue}
           >
-            Continuar
+            {isLoading ? (
+              <CircularProgress color='inherit' size={20} />
+            ) : (
+              'Continuar'
+            )}
           </Button>
         </Box>
       </Box>
