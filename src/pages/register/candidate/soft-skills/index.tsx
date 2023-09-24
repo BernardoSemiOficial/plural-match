@@ -36,7 +36,14 @@ const SoftSkills = () => {
 
   const router = useRouter()
 
-  const [softSkills, setSoftSkills] = useState(softSkillsWithState)
+  const [softSkills, setSoftSkills] = useState(() => {
+    return softSkillsWithState.map(softSkill => {
+      if (candidate.softSkills?.includes(softSkill.label))
+        softSkill.isSelected = true
+
+      return softSkill
+    })
+  })
 
   const handleClickContinue = () => {
     const setSoftSkillsSelected = softSkills.filter(
@@ -51,9 +58,6 @@ const SoftSkills = () => {
 
     router.push(PublicRoutes.CANDIDATE_HARD_SKILLS)
   }
-
-  console.log(candidate)
-  console.log(softSkills)
 
   return (
     <Container>

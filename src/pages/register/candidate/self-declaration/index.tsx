@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 
 const SelfDeclaration = () => {
   const {
+    candidate,
     activeStep,
     stepsLength,
     setCandidateData,
@@ -22,11 +23,13 @@ const SelfDeclaration = () => {
   } = useContext(registerCandidateContext)
   const router = useRouter()
 
-  const [sexualGender, setSexualGender] = useState('')
-  const [sexualOrientation, setSexualOrientation] = useState('')
-  const [ethnicity, setEthnicity] = useState('')
-  const [socialClass, setSocialClass] = useState('')
-  const [deficiency, setDeficiency] = useState('')
+  const [sexualGender, setSexualGender] = useState(candidate.sexo)
+  const [sexualOrientation, setSexualOrientation] = useState(
+    candidate.orientacaoSexual
+  )
+  const [ethnicity, setEthnicity] = useState(candidate.etnia)
+  const [socialClass, setSocialClass] = useState(candidate.classeSocial)
+  const [deficiency, setDeficiency] = useState(candidate.deficiencia)
 
   const handleClickContinue = () => {
     setCandidateData({
@@ -63,6 +66,7 @@ const SelfDeclaration = () => {
             id='sexual-gender'
             label='Gênero sexual'
             defaultValue='Gênero sexual'
+            value={sexualGender}
             onChange={({ target }) => setSexualGender(target.value)}
           >
             <MenuItem value='homem'>Homem</MenuItem>
@@ -82,6 +86,7 @@ const SelfDeclaration = () => {
             id='sexual-orientation'
             label='Orientação sexual'
             defaultValue='Orientação sexual'
+            value={sexualOrientation}
             onChange={({ target }) => setSexualOrientation(target.value)}
           >
             <MenuItem value='heterossexual'>Heterossexual</MenuItem>
@@ -102,6 +107,7 @@ const SelfDeclaration = () => {
             id='ethnicity'
             label='Etnia'
             defaultValue='Etnia'
+            value={ethnicity}
             onChange={({ target }) => setEthnicity(target.value)}
           >
             <MenuItem value='árabes'>Árabes</MenuItem>
@@ -125,6 +131,7 @@ const SelfDeclaration = () => {
             id='social-class'
             label='Classe social'
             defaultValue='Classe social'
+            value={socialClass}
             onChange={({ target }) => setSocialClass(target.value)}
           >
             <MenuItem value='classe alta'>Classe Alta</MenuItem>
@@ -147,6 +154,7 @@ const SelfDeclaration = () => {
             id='deficiency'
             label='Deficiência'
             defaultValue='Deficiência'
+            value={deficiency}
             onChange={({ target }) => setDeficiency(target.value)}
           >
             <MenuItem value='nenhuma'>Nenhuma</MenuItem>

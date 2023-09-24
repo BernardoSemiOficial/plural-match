@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
@@ -11,11 +11,53 @@ import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkillsAvailable } from '@/mocks/skills'
 import { Box, Button, Chip, Typography } from '@mui/material'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+
+const hardSkillsWithState = hardSkillsAvailable.reduce(
+  (hardSkillsWithState, hardSkill) => {
+    hardSkillsWithState.push({
+      isSelected: false,
+      label: hardSkill,
+    })
+    return hardSkillsWithState
+  },
+  [] as { isSelected: boolean; label: string }[]
+)
 
 const HardSkills = () => {
-  const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(registerCandidateContext)
+  const {
+    candidate,
+    activeStep,
+    stepsLength,
+    setCandidateData,
+    handleClickBackStep,
+    handleClickNextStep,
+  } = useContext(registerCandidateContext)
+
+  const router = useRouter()
+
+  const [hardSkills, setHardSkills] = useState(() => {
+    return hardSkillsWithState.map(hardSkill => {
+      if (candidate.hardSkills?.includes(hardSkill.label))
+        hardSkill.isSelected = true
+
+      return hardSkill
+    })
+  })
+
+  const handleClickContinue = () => {
+    const setSoftSkillsSelected = hardSkills.filter(
+      hardSkill => hardSkill.isSelected
+    )
+    const setSoftSkillsSelectedFormatted = setSoftSkillsSelected.map(
+      hardSkill => hardSkill.label
+    )
+    setCandidateData({
+      hardSkills: setSoftSkillsSelectedFormatted,
+    })
+
+    router.push(PublicRoutes.CANDIDATE_CREATE_PASSWORD)
+  }
 
   return (
     <Container>
@@ -38,22 +80,34 @@ const HardSkills = () => {
             gap: '8px',
           }}
         >
-          {hardSkillsAvailable.map(softSkill => (
+          {hardSkills.map(hardSkill => (
             <Chip
               key={createUUID()}
               clickable
-              variant='outlined'
+              variant={hardSkill.isSelected ? 'filled' : 'outlined'}
               color='primary'
-              label={softSkill}
+              label={hardSkill.label}
+              onClick={() =>
+                setHardSkills(skills => {
+                  return skills.map(skill => {
+                    if (skill.label === hardSkill.label)
+                      skill.isSelected = !skill.isSelected
+                    return skill
+                  })
+                })
+              }
             />
           ))}
         </Box>
         <Box mt={4}>
-          <Link href={PublicRoutes.CANDIDATE_CREATE_PASSWORD}>
-            <Button fullWidth variant='contained' size='medium'>
-              Continuar
-            </Button>
-          </Link>
+          <Button
+            fullWidth
+            variant='contained'
+            size='medium'
+            onClick={handleClickContinue}
+          >
+            Continuar
+          </Button>
         </Box>
       </Box>
     </Container>

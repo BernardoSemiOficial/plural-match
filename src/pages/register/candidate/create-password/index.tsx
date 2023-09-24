@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { MobileStepper } from '@/components/MobileStepper'
 import {
@@ -10,11 +10,31 @@ import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Box, Button, TextField, Typography } from '@mui/material'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const CreatePassword = () => {
-  const { activeStep, stepsLength, handleClickBackStep, handleClickNextStep } =
-    useContext(registerCandidateContext)
+  const router = useRouter()
+
+  const {
+    candidate,
+    activeStep,
+    stepsLength,
+    setCandidateData,
+    handleClickBackStep,
+    handleClickNextStep,
+  } = useContext(registerCandidateContext)
+
+  const [password, setPassword] = useState(candidate.senha)
+
+  const handleClickContinue = () => {
+    setCandidateData({
+      senha: password,
+    })
+
+    router.push(PublicRoutes.REGISTER_CREATED_ACCOUNT, {
+      query: { [QueryKeys.USER_TYPE]: QueryValues.USER_TYPE_CANDIDATE },
+    })
+  }
 
   return (
     <Container>
@@ -42,19 +62,19 @@ const CreatePassword = () => {
             name='password'
             type='password'
             placeholder='Senha'
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
           />
         </Box>
         <Box mt={4}>
-          <Link
-            href={{
-              pathname: PublicRoutes.REGISTER_CREATED_ACCOUNT,
-              query: { [QueryKeys.USER_TYPE]: QueryValues.USER_TYPE_CANDIDATE },
-            }}
+          <Button
+            fullWidth
+            variant='contained'
+            size='medium'
+            onClick={handleClickContinue}
           >
-            <Button fullWidth variant='contained' size='medium'>
-              Continuar
-            </Button>
-          </Link>
+            Continuar
+          </Button>
         </Box>
       </Box>
     </Container>

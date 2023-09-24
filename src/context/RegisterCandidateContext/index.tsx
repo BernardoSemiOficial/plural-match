@@ -8,7 +8,9 @@ import {
   useState,
 } from 'react'
 
+import { LocalStorageKeys } from '@/enums/local-storage'
 import { PublicRoutes } from '@/enums/routes'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
 
 type SelectionProcess = {
@@ -92,8 +94,16 @@ export const RegisterCandidateProvider = ({
     (route: PublicRoutes) => route === router.pathname
   )
 
-  const [candidate, setCandidate] = useState({})
+  const [localStorageValue, setLocalStorageValue] = useLocalStorage<Candidate>(
+    LocalStorageKeys.REGISTER_CANDIDATE,
+    {} as Candidate
+  )
+  const [candidate, setCandidate] = useState<Candidate>(localStorageValue)
   const [activeStep, setActiveStep] = useState(registerCandidateRouteIndex)
+
+  console.log('candidato', candidate)
+
+  localStorageValue
 
   useEffect(() => {
     const registerCandidateRouteIndex = registerCandidateRoutes.findIndex(
@@ -120,12 +130,20 @@ export const RegisterCandidateProvider = ({
     })
   }, [router])
 
-  const setCandidateData = useCallback(candidate => {
-    setCandidate(currentCandidateData => ({
-      ...currentCandidateData,
-      ...candidate,
-    }))
-  }, [])
+  const setCandidateData = useCallback(
+    (candidate: Candidate) => {
+      setCandidate(currentCandidateData => {
+        const newState = {
+          ...currentCandidateData,
+          ...candidate,
+        }
+
+        setLocalStorageValue(newState)
+        return newState
+      })
+    },
+    [setLocalStorageValue]
+  )
 
   const candidateContext = useMemo(
     () => ({

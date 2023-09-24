@@ -22,9 +22,9 @@ const PersonalInformation = () => {
   } = useContext(registerCandidateContext)
   const router = useRouter()
 
-  const [name, setName] = useState('')
-  const [socialName, setSocialName] = useState('')
-  const [birthday, setBirthday] = useState('')
+  const [name, setName] = useState(candidate.nome)
+  const [socialName, setSocialName] = useState(candidate.nomeSocial)
+  const [birthday, setBirthday] = useState(candidate.dataNascimento)
 
   const handleClickContinue = () => {
     setCandidateData({
@@ -60,6 +60,7 @@ const PersonalInformation = () => {
             id='name'
             type='text'
             placeholder='Nome'
+            value={name}
             onChange={({ target }) => setName(target.value)}
           />
         </Box>
@@ -72,6 +73,7 @@ const PersonalInformation = () => {
             id='social-name'
             type='text'
             placeholder='Nome social'
+            value={socialName}
             onChange={({ target }) => setSocialName(target.value)}
           />
         </Box>
@@ -84,6 +86,7 @@ const PersonalInformation = () => {
             id='birthday'
             type='date'
             placeholder='Data de nascimento'
+            value={birthday}
             onChange={({ target }) => setBirthday(target.value)}
           />
         </Box>

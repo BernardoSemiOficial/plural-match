@@ -12,8 +12,8 @@ import { useRouter } from 'next/router'
 
 const CheckEmail = () => {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const { setCandidateData } = useContext(registerCandidateContext)
+  const { candidate, setCandidateData } = useContext(registerCandidateContext)
+  const [email, setEmail] = useState(candidate.email)
 
   const handleClickContinue = () => {
     setCandidateData({ email })
@@ -37,6 +37,7 @@ const CheckEmail = () => {
           id='email'
           type='email'
           placeholder='E-mail'
+          value={email}
           onChange={({ target }) => setEmail(target.value)}
         />
       </Box>

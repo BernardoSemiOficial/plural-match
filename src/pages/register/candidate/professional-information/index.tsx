@@ -22,23 +22,21 @@ const ProfessionalInformation = () => {
   } = useContext(registerCandidateContext)
   const router = useRouter()
 
-  const [profession, setProfession] = useState('')
-  const [workingModel, setWorkingModel] = useState('')
-  const [hiringModel, setHiringModel] = useState('')
-  const [salaryClaim, setSalaryClaim] = useState('')
+  const [profession, setProfession] = useState(candidate.profissao)
+  const [workingModel, setWorkingModel] = useState(candidate.modeloTrabalho)
+  const [hiringModel, setHiringModel] = useState(candidate.modeloContratacao)
+  const [salaryClaim, setSalaryClaim] = useState(candidate.pretensaoSalarial)
 
   const handleClickContinue = () => {
     setCandidateData({
       profissao: profession,
       modeloTrabalho: workingModel,
       modeloContratacao: hiringModel,
-      pretensaoSalarial: Number(salaryClaim),
+      pretensaoSalarial: salaryClaim,
     })
 
     router.push(PublicRoutes.CANDIDATE_SOFT_SKILLS)
   }
-
-  console.log(candidate)
 
   return (
     <Container>
@@ -64,6 +62,7 @@ const ProfessionalInformation = () => {
             margin='dense'
             id='profession'
             label='Profissão'
+            value={profession}
             onChange={({ target }) => setProfession(target.value)}
           >
             <MenuItem value='desempregado'>Desempregado</MenuItem>
@@ -144,6 +143,7 @@ const ProfessionalInformation = () => {
             margin='dense'
             id='working-model'
             label='Modelo de trabalho'
+            value={workingModel}
             onChange={({ target }) => setWorkingModel(target.value)}
           >
             <MenuItem value='presencial'>Presencial</MenuItem>
@@ -160,6 +160,7 @@ const ProfessionalInformation = () => {
             margin='dense'
             id='hiring-model'
             label='Modelo de contratação'
+            value={hiringModel}
             onChange={({ target }) => setHiringModel(target.value)}
           >
             <MenuItem value='CLT'>CLT</MenuItem>
@@ -176,7 +177,8 @@ const ProfessionalInformation = () => {
             name='salary-claim'
             type='number'
             placeholder='Pretensão salarial'
-            onChange={({ target }) => setSalaryClaim(target.value)}
+            value={salaryClaim}
+            onChange={({ target }) => setSalaryClaim(Number(target.value))}
           />
         </Box>
         <Box mt={4}>
