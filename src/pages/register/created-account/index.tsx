@@ -1,25 +1,15 @@
 import { ReactElement } from 'react'
 
 import RegistrationSuccess from '@/assets/svg/success-registration.svg'
-import { QueryKeys, QueryValues } from '@/enums/querys'
-import { PrivateRoutes, PublicRoutes } from '@/enums/routes'
+import { PublicRoutes } from '@/enums/routes'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Box, Button, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 import { Default } from '../../../layouts/Default'
 
 const CreatedAccount = () => {
-  const router = useRouter()
-  const routerQuery = router?.query
-
-  const goToPage =
-    routerQuery?.[QueryKeys.USER_TYPE] === QueryValues.USER_TYPE_COMPANY
-      ? PrivateRoutes.COMPANY
-      : PrivateRoutes.JOBS
-
   return (
     <Container>
       <Box textAlign='center'>

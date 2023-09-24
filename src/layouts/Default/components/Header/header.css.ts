@@ -11,6 +11,9 @@ export const container = style({
 
 export const content = style({
   width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   margin: '0 auto',
   maxWidth: '1200px',
 })

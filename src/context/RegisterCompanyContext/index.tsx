@@ -9,19 +9,7 @@ import {
 
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-
-export type Company = {
-  id?: number
-  nome?: string
-  email?: string
-  senha?: string
-  descricao?: string
-  cnpj?: string
-  setor?: string
-  localizacao?: string
-  fundacao?: number
-  site?: string
-}
+import { Company } from '@/model/company'
 
 type RegisterCompanyProviderProps = {
   children: ReactElement | ReactNode

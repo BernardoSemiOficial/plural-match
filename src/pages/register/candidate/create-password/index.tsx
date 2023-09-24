@@ -9,6 +9,7 @@ import {
 import { QueryKeys, QueryValues } from '@/enums/querys'
 import { PublicRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
+import { createNumberID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { api } from '@/services/api'
@@ -48,6 +49,7 @@ const CreatePassword = () => {
     setCandidateData,
     handleClickBackStep,
     handleClickNextStep,
+    clearCandidateStorage,
   } = useContext(registerCandidateContext)
 
   const [password, setPassword] = useState(candidate.senha)
@@ -65,11 +67,13 @@ const CreatePassword = () => {
       await api.post(Services.CADASTRA_CANDIDATO, {
         ...candidate,
         senha: password,
+        id: createNumberID(),
       }),
     onSuccess() {
       router.push(PublicRoutes.REGISTER_CREATED_ACCOUNT, {
         query: { [QueryKeys.USER_TYPE]: QueryValues.USER_TYPE_CANDIDATE },
       })
+      clearCandidateStorage()
     },
   })
 
