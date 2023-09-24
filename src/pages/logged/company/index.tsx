@@ -2,41 +2,105 @@ import { ReactElement, useState } from 'react'
 
 import recruiterAdd from '@/assets/svg/add-recruiter.svg'
 import { Modal } from '@/components/Modal'
+import { Services } from '@/enums/services'
+import { createNumberID } from '@/helpers/createUUID'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
-import { Default } from '@/layouts/Default'
+import { Default, queryClient } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { api } from '@/services/api'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Add, Close } from '@mui/icons-material'
 import {
+  Alert,
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Fab,
   Stack,
   TextField,
   Typography,
 } from '@mui/material'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
-const recruiters = [
-  {
-    id: 1,
-    name: 'Thiago Silva',
-    email: 'thiago.silva@gmail.com',
-  },
-  {
-    id: 2,
-    name: 'Roberto Marcos',
-    email: 'roberto.marcos@gmail.com',
-  },
-]
+type Inputs = {
+  nome: string
+  email: string
+  senha: string
+}
+
+interface MutateModel extends Inputs {
+  id: number
+  empresaId: number
+}
+
+const schema = yup
+  .object({
+    nome: yup
+      .string()
+      .required('O nome é obrigatório')
+      .max(200, 'O máximo de caracteres é 200'),
+    email: yup
+      .string()
+      .email('Digite um email válido')
+      .required('O email é obrigatório')
+      .max(200, 'O máximo de caracteres é 200'),
+    senha: yup
+      .string()
+      .required('A senha é obrigatória')
+      .min(6, 'O mínimo de caracteres é 6')
+      .max(20, 'O máximo de caracteres é 20'),
+  })
+  .required()
 
 const Company = () => {
   const [open, setOpen] = useState(false)
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
 
-  const isEmptyRecruiters = recruiters?.length === 0
+  const { data, isLoading, error } = useQuery({
+    queryKey: [Services.LISTA_RECRUTADORES],
+    queryFn: async () => (await api.get(Services.LISTA_RECRUTADORES)).data,
+  })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  })
+
+  const {
+    mutate,
+    isLoading: mutateIsLoading,
+    error: mutateError,
+  } = useMutation({
+    mutationFn: async (data: MutateModel) =>
+      api.post(Services.CADASTRA_RECRUTADOR, data),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [Services.LISTA_RECRUTADORES] })
+      handleClickClose()
+      reset()
+    },
+  })
+
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    const model: MutateModel = {
+      ...data,
+      id: createNumberID(),
+      empresaId: 1,
+    }
+    console.log('model', model)
+    mutate(model)
+  }
+
+  const isEmptyRecruiters = data?.length === 0
 
   return (
     <Container>
@@ -49,41 +113,85 @@ const Company = () => {
         Recrutadores
       </Typography>
       <Modal maxWidth='xs' fullWidth open={open} onClose={handleClickClose}>
-        <Box p={4} borderRadius={4}>
-          <Typography variant='h6' fontWeight='400'>
-            Adicionar um recrutador
-          </Typography>
-          <Typography variant='subtitle1'>
-            Para criar a sua conta <b>insira o email e a senha</b> do recrutador
-          </Typography>
-          <Box mt={3}>
-            <TextField
-              fullWidth
-              size='small'
-              variant='outlined'
-              margin='dense'
-              id='email'
-              type='email'
-              placeholder='E-mail'
-            />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box p={4} borderRadius={4}>
+            {mutateError && (
+              <Box my={3}>
+                <Alert severity='error'>
+                  Não foi possível adicionar o recrutador
+                </Alert>
+              </Box>
+            )}
+            <Typography variant='h6' fontWeight='400'>
+              Adicionar um recrutador
+            </Typography>
+            <Typography variant='subtitle1'>
+              Para criar a sua conta <b>insira o email e a senha</b> do
+              recrutador
+            </Typography>
+            <Box mt={3}>
+              <TextField
+                {...register('nome')}
+                helperText={errors.nome?.message}
+                error={!!errors.nome?.message}
+                inputProps={{
+                  maxLength: 200,
+                }}
+                fullWidth
+                size='small'
+                variant='outlined'
+                margin='dense'
+                id='nome'
+                type='text'
+                placeholder='Nome do recurtador'
+              />
+            </Box>
+            <Box mt={1}>
+              <TextField
+                {...register('email')}
+                helperText={errors.email?.message}
+                error={!!errors.email?.message}
+                inputProps={{
+                  maxLength: 200,
+                }}
+                fullWidth
+                size='small'
+                variant='outlined'
+                margin='dense'
+                id='email'
+                type='email'
+                placeholder='E-mail'
+              />
+            </Box>
+            <Box mt={1}>
+              <TextField
+                {...register('senha')}
+                helperText={errors.senha?.message}
+                error={!!errors.senha?.message}
+                inputProps={{
+                  maxLength: 20,
+                  minLength: 6,
+                }}
+                fullWidth
+                size='small'
+                variant='outlined'
+                margin='dense'
+                id='senha'
+                type='password'
+                placeholder='Senha'
+              />
+            </Box>
+            <Box mt={3}>
+              <Button fullWidth variant='contained' size='medium' type='submit'>
+                {mutateIsLoading ? (
+                  <CircularProgress color='inherit' size={20} />
+                ) : (
+                  'Adicionar'
+                )}
+              </Button>
+            </Box>
           </Box>
-          <Box mt={1}>
-            <TextField
-              fullWidth
-              size='small'
-              variant='outlined'
-              margin='dense'
-              id='password'
-              type='password'
-              placeholder='senha'
-            />
-          </Box>
-          <Box mt={3}>
-            <Button fullWidth variant='contained' size='medium'>
-              Adicionar
-            </Button>
-          </Box>
-        </Box>
+        </form>
       </Modal>
       <Fab
         size='medium'
@@ -104,14 +212,14 @@ const Company = () => {
         </Box>
       )}
 
-      {recruiters?.map(recruiter => (
+      {data?.map((recruiter: any) => (
         <Box mt={2} key={recruiter.id}>
           <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
             <Avatar sx={{ bgcolor: '#BA2649' }}>
-              {firstLetterOfFirstAndLastName(recruiter.name)}
+              {firstLetterOfFirstAndLastName(recruiter.nome)}
             </Avatar>
             <Stack ml={2} flex={1}>
-              <Typography variant='subtitle1'>{recruiter.name}</Typography>
+              <Typography variant='subtitle1'>{recruiter.nome}</Typography>
               <Typography variant='body1'>{recruiter.email}</Typography>
             </Stack>
             <Close />

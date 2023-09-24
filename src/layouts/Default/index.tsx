@@ -6,7 +6,7 @@ import { Header } from './components/Header'
 import * as S from './default.css'
 import { DefaultProps } from './types'
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 export const Default = ({ children }: DefaultProps) => {
   return (
