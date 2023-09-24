@@ -33,7 +33,7 @@ const Login = () => {
         })
       ).data,
     onSuccess(data) {
-      console.log(data)
+      console.log(data.id)
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
         router.push(PrivateRoutes.JOBS)
 
