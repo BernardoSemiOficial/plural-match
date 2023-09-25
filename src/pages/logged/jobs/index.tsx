@@ -66,7 +66,6 @@ const Jobs = () => {
             return (
               <ItemList
                 key={job.id_vaga}
-                onClick={handleJob}
                 {...{
                   item: {
                     goToPage: {
