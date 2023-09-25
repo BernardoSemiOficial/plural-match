@@ -112,32 +112,24 @@ const People = () => {
         <Box mt={3}>
           <SectionDescription
             title='Sobre'
-            description='Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.'
+            description={candidateSelected?.sobre}
           />
           <Box mt={4}>
             <SectionDescription
               title='Experiência profissional'
-              description='Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.'
+              description={candidateSelected?.experienciaProfissional}
             />
           </Box>
           <Box mt={4}>
             <SectionDescription
               title='Experiência acadêmica'
-              description='Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.'
+              description={candidateSelected?.experienciaAcademica}
             />
           </Box>
           <Box mt={4}>
             <SectionDescription
               title='Sonhos e objetivos'
-              description='Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s.'
+              description={candidateSelected?.sonhosObjetivos}
             />
           </Box>
         </Box>
