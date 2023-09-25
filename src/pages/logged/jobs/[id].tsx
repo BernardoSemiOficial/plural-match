@@ -27,22 +27,31 @@ const People = () => {
   }
 
   const jobInfo: SectionKeywordsProps['keywords'] = useMemo(() => {
-    const labels = {
-      modelo_trabalho: { icon: <Work fontSize='small' />, label: 'Presencial' },
-      modelo_contratacao: { icon: <Home fontSize='small' />, label: 'CLT' },
-      faixa_salarial: { icon: <Paid fontSize='small' />, label: 'A combinar' },
-      situacao_vulnerabilidade: {
-        icon: <Info fontSize='small' />,
-        label: 'Classe Social D',
+    const labels = [
+      {
+        icon: <Work fontSize='small' />,
+        label: job?.modelo_trabalho,
       },
-    }
-    // const labels = [
-    //   { icon: <Work fontSize='small' />, label: 'Presencial' },
-    //   { icon: <Home fontSize='small' />, label: 'CLT' },
-    //   { icon: <Paid fontSize='small' />, label: 'A combinar' },
-    //   { icon: <Info fontSize='small' />, label: 'Classe Social D' },
-    // ]
-  }, [])
+      {
+        icon: <Home fontSize='small' />,
+        label: job?.modelo_contratacao,
+      },
+      {
+        icon: <Paid fontSize='small' />,
+        label: job?.faixa_salarial,
+      },
+      {
+        icon: <Info fontSize='small' />,
+        label: job?.situacao_vulnerabilidade,
+      },
+    ]
+    return labels
+  }, [
+    job?.faixa_salarial,
+    job?.modelo_contratacao,
+    job?.modelo_trabalho,
+    job?.situacao_vulnerabilidade,
+  ])
 
   return (
     <Container>
@@ -62,7 +71,7 @@ const People = () => {
             title: job?.titulo_vaga,
             description: job?.descricao,
           }}
-          jobInfo={[]}
+          jobInfo={jobInfo}
         />
       )}
       {value === 1 && <JobSelectionProcess />}
