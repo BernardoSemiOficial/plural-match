@@ -21,7 +21,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const Login = () => {
-  const { setCandidateData } = useContext(candidateContext)
+  const { setLoginData } = useContext(candidateContext)
   const router = useRouter()
 
   const [email, setEmail] = useState('')
@@ -46,7 +46,7 @@ const Login = () => {
         )
       ).data,
     onSuccess(data) {
-      setCandidateData({ ...data.user, tipo: data.tipo })
+      setLoginData({ ...data.user, tipo: data.tipo })
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
         router.push(PrivateRoutes.PEOPLES)
 

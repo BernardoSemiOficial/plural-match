@@ -27,6 +27,7 @@ type CandidateContext = {
     candidates?: Candidate[]
   }
   setCandidateData: (candidate: Candidate) => void
+  setLoginData: (candidate: Candidate) => void
 }
 
 export const candidateContext = createContext({} as CandidateContext)
@@ -66,6 +67,16 @@ export const CandidateProvider = ({ children }: candidateProviderProps) => {
     [setLocalStorageValue]
   )
 
+  const setLoginData = useCallback(
+    (candidate: Candidate) => {
+      setCandidate(_ => {
+        setLocalStorageValue(candidate)
+        return candidate
+      })
+    },
+    [setLocalStorageValue]
+  )
+
   const candidateContextMemo = useMemo(
     () => ({
       candidate,
@@ -75,6 +86,7 @@ export const CandidateProvider = ({ children }: candidateProviderProps) => {
         candidates,
       },
       setCandidateData,
+      setLoginData,
     }),
     [
       candidate,
@@ -82,6 +94,7 @@ export const CandidateProvider = ({ children }: candidateProviderProps) => {
       errorCandidantes,
       isLoadingCandidates,
       setCandidateData,
+      setLoginData,
     ]
   )
 
