@@ -1,13 +1,18 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import React, { ReactElement, useCallback, useMemo, useState } from 'react'
+import React, {
+  ReactElement,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 import {
   FieldErrors,
   SubmitHandler,
   UseFormRegister,
   useForm,
 } from 'react-hook-form'
-import * as yup from 'yup'
 
+import { loggedContext } from '@/context/LoggedContext'
 import { stagesSelectionProcess } from '@/enums/selection-process'
 import { Services } from '@/enums/services'
 import { createNumberID } from '@/helpers/createUUID'
@@ -18,8 +23,10 @@ import { MOCK_JOB_MODEL } from '@/mocks/jobModel'
 import { MOCK_SALARY_RANGE } from '@/mocks/salaryRange'
 import { MOCK_SOCIAL_VULNERABILITIES } from '@/mocks/socialVulnerabilities'
 import { api } from '@/services/api'
+import { yupResolver } from '@hookform/resolvers/yup'
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import type { SelectChangeEvent } from '@mui/material'
 import {
   Box,
   Button,
@@ -30,13 +37,13 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  SelectChangeEvent,
   Stack,
   TextField,
   Typography,
 } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import * as yup from 'yup'
 
 type Inputs = {
   titulo_vaga: string
@@ -76,7 +83,7 @@ const schema = yup
       .max(50, 'O máximo de caracteres é 50'),
     descricao: yup
       .string()
-      .max(320, 'O máximo de caracteres é 320')
+      .max(1300, 'O máximo de caracteres é 1300')
       .required('A descrição é obrigatória'),
     modelo_trabalho: yup
       .string()
@@ -230,6 +237,8 @@ const Step = ({
 
 const RegisterJob = () => {
   const router = useRouter()
+  const { user } = useContext(loggedContext)
+
   const [steps, setSteps] = useState<number[]>([1])
   console.log('steps', steps)
   const [socialVulnerabilities, setSocialVulnerabilities] = React.useState<
@@ -290,7 +299,7 @@ const RegisterJob = () => {
 
     const model: any = {
       id_vaga: createNumberID(),
-      id_recrutador: createNumberID(),
+      id_recrutador: user?.id,
 
       titulo_vaga: data.titulo_vaga,
       descricao: data.descricao,
@@ -372,7 +381,7 @@ const RegisterJob = () => {
             helperText={errors.descricao?.message}
             error={!!errors.descricao?.message}
             inputProps={{
-              maxLength: 320,
+              maxLength: 1300,
             }}
             multiline
             fullWidth

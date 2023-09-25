@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material'
 
-interface SectionDescriptionProps {
+export interface SectionDescriptionProps {
   title: string
-  description: string
+  description?: string
 }
 
 export const SectionDescription = ({
@@ -14,7 +14,7 @@ export const SectionDescription = ({
       <Typography variant='subtitle1' fontWeight='bold'>
         {title}
       </Typography>
-      <Typography variant='body1'>{description}</Typography>
+      <Typography variant='body1'>{description || 'Sem conteúdo'}</Typography>
     </Box>
   )
 }

@@ -8,6 +8,7 @@ import { PrivateRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { Candidate } from '@/model/candidate'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
 
@@ -50,47 +51,57 @@ const Peoples = () => {
           <Typography variant='subtitle1'>Carregando candidatos</Typography>
         </Box>
       ) : (
-        <Box mt={4}>
-          {candidates.data?.map(candidate => {
-            const infos = [
-              candidate.sexo,
-              candidate.orientacaoSexual,
-              candidate.etnia,
-              candidate.classeSocial,
-              candidate.deficiencia,
-            ]
-
-            const concatInfo = infos
-              .filter(info => info !== 'nenhuma')
-              .reduce((concatInfo, info, idx, array) => {
-                if (info) concatInfo += info
-                if (idx < array.length - 2) concatInfo += ', '
-                if (idx === array.length - 2) concatInfo += ' e '
-                return concatInfo
-              }, '')
-
-            return (
-              <ItemList
-                key={createUUID()}
-                {...{
-                  item: {
-                    goToPage: {
-                      pathname: `${PrivateRoutes.PEOPLES}/[id]`,
-                      query: { id: candidate.id },
-                    },
-                    id: String(candidate.id),
-                    title: candidate?.nome ?? 'Nome',
-                    subtitle: concatInfo ?? 'características pessoais',
-                    descrition: 'Campinas',
-                    subDescription: 'São Paulo',
-                  },
-                }}
-              />
-            )
-          })}
-        </Box>
+        <CandidateList candidates={candidates.data} />
       )}
     </Container>
+  )
+}
+
+export function CandidateList({
+  candidates,
+}: {
+  candidates: Candidate[] | undefined
+}) {
+  return (
+    <Box mt={4}>
+      {candidates?.map(candidate => {
+        const infos = [
+          candidate.sexo,
+          candidate.orientacaoSexual,
+          candidate.etnia,
+          candidate.classeSocial,
+          candidate.deficiencia,
+        ]
+        const concatInfo = infos
+          .filter(info => info !== 'nenhuma')
+          .reduce((concatInfo, info, idx, array) => {
+            if (info) concatInfo += info
+            if (idx < array.length - 2) concatInfo += ', '
+            if (idx === array.length - 2) concatInfo += ' e '
+            return concatInfo
+          }, '')
+        return (
+          <ItemList
+            key={createUUID()}
+            {...{
+              item: {
+                goToPage: {
+                  pathname: `${PrivateRoutes.PEOPLES}/[id]`,
+                  query: {
+                    id: candidate.id,
+                  },
+                },
+                id: String(candidate.id),
+                title: candidate?.nome ?? 'Nome',
+                subtitle: concatInfo ?? 'características pessoais',
+                descrition: 'Campinas',
+                subDescription: 'São Paulo',
+              },
+            }}
+          />
+        )
+      })}
+    </Box>
   )
 }
 

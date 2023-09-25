@@ -3,8 +3,8 @@ import { Avatar, Box, Stack, Typography } from '@mui/material'
 
 interface AvatarDescriptionProps {
   people: {
-    name: string
-    age: string
+    name?: string
+    age?: string
   }
 }
 
@@ -12,7 +12,7 @@ export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
   return (
     <Stack direction='row' spacing={2} alignItems={'center'}>
       <Avatar sx={{ bgcolor: '#BA2649' }}>
-        {firstLetterOfFirstAndLastName(people.name)}
+        {people?.name ? firstLetterOfFirstAndLastName(people.name) : '-'}
       </Avatar>
       <Box>
         <Typography variant='h5' fontWeight='bold'>

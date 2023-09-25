@@ -1,39 +1,29 @@
 import React from 'react'
 
-import { createUUID } from '@/helpers/createUUID'
-import { MOCK_CANDIDATES } from '@/mocks/candidates'
-import { Box, Divider, Typography } from '@mui/material'
+import { Candidate } from '@/model/candidate'
+import { CandidateList } from '@/pages/logged/peoples'
+import { Box, Divider } from '@mui/material'
 
-import { HeaderProfile } from '../HeaderProfile'
-import { ItemList } from '../ItemList'
+import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
-export const JobSelectionProcess: React.FC = () => {
+interface JobSelectionProcessProps {
+  header: HeaderProfileProps
+  candidates?: Candidate[]
+}
+
+export const JobSelectionProcess: React.FC<JobSelectionProcessProps> = ({
+  header,
+  candidates,
+}) => {
   return (
     <Box>
-      <Typography variant='h4' fontWeight='bold' mt={2}>
-        Desenvolvedor Front End
-      </Typography>
+      <HeaderProfile {...header} />
 
-      <HeaderProfile title='Nubank SP' description='São Paulo, Campinas' />
-
-      <Box my={2}>
+      <Box mt={2} mb={6}>
         <Divider />
       </Box>
 
-      {MOCK_CANDIDATES?.map(candidate => (
-        <ItemList
-          key={createUUID()}
-          {...{
-            item: {
-              id: candidate.id,
-              title: candidate.name,
-              subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
-              descrition: candidate.city,
-              subDescription: candidate.state,
-            },
-          }}
-        />
-      ))}
+      <CandidateList candidates={candidates} />
     </Box>
   )
 }
