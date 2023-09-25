@@ -9,8 +9,9 @@ import {
 import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { BRASIL_STATES } from '@/mocks/brasilStates'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as yup from 'yup'
 
@@ -68,6 +69,8 @@ const PersonalInformation = () => {
       nome: data.name,
       nomeSocial: data.socialName,
       dataNascimento: data.birthday,
+      cidade: data.city,
+      estado: data.state,
     })
 
     router.push(PublicRoutes.CANDIDATE_SELF_DECLARATION)
@@ -155,9 +158,7 @@ const PersonalInformation = () => {
           </Box>
           <Box mt={1}>
             <TextField
-              {...register('state')}
-              helperText={errors.state?.message}
-              error={!!errors.state?.message}
+              select
               fullWidth
               size='small'
               variant='outlined'
@@ -165,9 +166,18 @@ const PersonalInformation = () => {
               id='state'
               type='text'
               placeholder='Estado'
+              inputProps={register('state')}
+              error={!!errors.state?.message}
+              helperText={errors.state?.message}
               value={state}
               onChange={({ target }) => setState(target.value)}
-            />
+            >
+              {BRASIL_STATES.map(state => (
+                <MenuItem key={state} value={state}>
+                  {state}
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
           <Box mt={4}>
             <Button type='submit' fullWidth variant='contained' size='medium'>

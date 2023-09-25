@@ -9,6 +9,7 @@ import {
 import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { MOCK_SALARY_RANGE } from '@/mocks/salaryRange'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -19,6 +20,10 @@ type FormProfessionalInformation = {
   workingModel: string
   hiringModel: string
   salaryClaim: number
+  about: string
+  professionalExperience: string
+  academicExperience: string
+  dreamsGoals: string
 }
 
 const schema = yup
@@ -27,6 +32,14 @@ const schema = yup
     workingModel: yup.string().required('O modelo de trabalho é obrigatório'),
     hiringModel: yup.string().required('O modelo de contratação é obrigatório'),
     salaryClaim: yup.number().required('A pretensão salarial é obrigatória'),
+    about: yup.string().required('O sobre você é obrigatório'),
+    professionalExperience: yup
+      .string()
+      .required('A experiência profissional é obrigatória'),
+    academicExperience: yup
+      .string()
+      .required('A experiência acadêmica é obrigatória'),
+    dreamsGoals: yup.string().required('O sonhos e objetivos é obrigatório'),
   })
   .required()
 
@@ -45,6 +58,14 @@ const ProfessionalInformation = () => {
   const [workingModel, setWorkingModel] = useState(candidate.modeloTrabalho)
   const [hiringModel, setHiringModel] = useState(candidate.modeloContratacao)
   const [salaryClaim, setSalaryClaim] = useState(candidate.pretensaoSalarial)
+  const [about, setAbout] = useState(candidate.sobre)
+  const [professionalExperience, setProfessionalExperience] = useState(
+    candidate.experienciaProfissional
+  )
+  const [academicExperience, setAcademicExperience] = useState(
+    candidate.experienciaAcademica
+  )
+  const [dreamsGoals, setDreamsGoals] = useState(candidate.sonhosObjetivos)
 
   const {
     register,
@@ -60,6 +81,10 @@ const ProfessionalInformation = () => {
       modeloTrabalho: data.workingModel,
       modeloContratacao: data.hiringModel,
       pretensaoSalarial: data.salaryClaim,
+      sobre: data.about,
+      experienciaProfissional: data.professionalExperience,
+      experienciaAcademica: data.academicExperience,
+      sonhosObjetivos: data.dreamsGoals,
     })
 
     router.push(PublicRoutes.CANDIDATE_SOFT_SKILLS)
@@ -208,9 +233,7 @@ const ProfessionalInformation = () => {
           </Box>
           <Box mt={1}>
             <TextField
-              {...register('salaryClaim')}
-              helperText={errors.salaryClaim?.message}
-              error={!!errors.salaryClaim?.message}
+              select
               fullWidth
               size='small'
               variant='outlined'
@@ -218,9 +241,102 @@ const ProfessionalInformation = () => {
               id='salary-claim'
               name='salary-claim'
               type='number'
-              placeholder='Pretensão salarial'
+              label='Pretensão salarial'
+              inputProps={register('salaryClaim')}
+              error={!!errors.salaryClaim?.message}
+              helperText={errors.salaryClaim?.message}
               value={salaryClaim}
               onChange={({ target }) => setSalaryClaim(Number(target.value))}
+            >
+              {MOCK_SALARY_RANGE.map(salaryRange => (
+                <MenuItem key={salaryRange} value={salaryRange}>
+                  {salaryRange}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('about')}
+              helperText={errors.about?.message}
+              error={!!errors.about?.message}
+              inputProps={{
+                maxLength: 1000,
+              }}
+              multiline
+              rows={3}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='about'
+              type='text'
+              placeholder='Sobre você'
+              value={about}
+              onChange={({ target }) => setAbout(target.value)}
+            />
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('professionalExperience')}
+              helperText={errors.professionalExperience?.message}
+              error={!!errors.professionalExperience?.message}
+              inputProps={{
+                maxLength: 1000,
+              }}
+              multiline
+              rows={3}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='professionalExperience'
+              type='text'
+              placeholder='Experiência Profissional'
+              value={professionalExperience}
+              onChange={({ target }) => setProfessionalExperience(target.value)}
+            />
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('academicExperience')}
+              helperText={errors.academicExperience?.message}
+              error={!!errors.academicExperience?.message}
+              inputProps={{
+                maxLength: 1000,
+              }}
+              multiline
+              rows={3}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='academicExperience'
+              type='text'
+              placeholder='Experiência Acadêmica'
+              value={academicExperience}
+              onChange={({ target }) => setAcademicExperience(target.value)}
+            />
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('dreamsGoals')}
+              helperText={errors.dreamsGoals?.message}
+              error={!!errors.dreamsGoals?.message}
+              multiline
+              rows={3}
+              inputProps={{
+                maxLength: 1000,
+              }}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='dreamsGoals'
+              type='text'
+              placeholder='Sonhos e Objetivos'
+              value={dreamsGoals}
+              onChange={({ target }) => setDreamsGoals(target.value)}
             />
           </Box>
           <Box mt={4}>

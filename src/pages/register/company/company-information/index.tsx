@@ -111,6 +111,8 @@ const CompanyInformation = () => {
             inputProps={{
               maxLength: 320,
             }}
+            multiline
+            rows={3}
             fullWidth
             size='small'
             variant='outlined'

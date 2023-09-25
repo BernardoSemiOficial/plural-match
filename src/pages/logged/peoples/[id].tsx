@@ -7,6 +7,7 @@ import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
 import { loggedContext } from '@/context/LoggedContext'
+import { calculateAge } from '@/helpers/calculateAge'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
@@ -31,12 +32,14 @@ const People = () => {
 
   console.log('candidateSelected', candidateSelected)
 
+  const age = calculateAge(candidateSelected?.dataNascimento ?? '01-01-2000')
+
   return (
     <Container>
       <Box>
         <HeaderProfile
           title={candidateSelected?.nome ?? 'Nome'}
-          description={'18 anos'}
+          description={age + ' anos'}
         />
         <Divider />
         <Box
