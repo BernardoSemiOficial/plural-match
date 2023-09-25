@@ -7,6 +7,7 @@ import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
 import { loggedContext } from '@/context/LoggedContext'
+import { UserType } from '@/enums/user-type'
 import { calculateAge } from '@/helpers/calculateAge'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
@@ -22,7 +23,7 @@ const People = () => {
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
 
-  const { candidates } = useContext(loggedContext)
+  const { candidates, user } = useContext(loggedContext)
 
   const slug = router.query.id
 
@@ -86,17 +87,19 @@ const People = () => {
             />
           </Box>
         </Box>
-        <Box my={3}>
-          <Button
-            fullWidth
-            variant='contained'
-            size='medium'
-            onClick={handleClickOpen}
-          >
-            CONVIDAR
-          </Button>
-        </Box>
-        <Divider />
+        {user?.tipo === UserType.RECRUITER && (
+          <Box mt={3}>
+            <Button
+              fullWidth
+              variant='contained'
+              size='medium'
+              onClick={handleClickOpen}
+            >
+              CONVIDAR
+            </Button>
+          </Box>
+        )}
+        <Divider style={{ marginTop: 24 }} />
         <Box mt={1}>
           <CandidatedVacancies
             vacancies={[
