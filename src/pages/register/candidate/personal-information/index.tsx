@@ -18,6 +18,8 @@ type FormPersonalInformation = {
   name: string
   socialName: string
   birthday: string
+  city: string
+  state: string
 }
 
 const schema = yup
@@ -31,6 +33,8 @@ const schema = yup
       .required('O nome social é obrigatório')
       .max(200, 'O máximo de caracteres é 200'),
     birthday: yup.string().required('A data de nascimento é obrigatória'),
+    city: yup.string().required('A cidade é obrigatória'),
+    state: yup.string().required('O estado é obrigatório'),
   })
   .required()
 
@@ -48,6 +52,8 @@ const PersonalInformation = () => {
   const [name, setName] = useState(candidate.nome)
   const [socialName, setSocialName] = useState(candidate.nomeSocial)
   const [birthday, setBirthday] = useState(candidate.dataNascimento)
+  const [city, setCity] = useState(candidate.cidade)
+  const [state, setState] = useState(candidate.estado)
 
   const {
     register,
@@ -129,6 +135,38 @@ const PersonalInformation = () => {
               placeholder='Data de nascimento'
               value={birthday}
               onChange={({ target }) => setBirthday(target.value)}
+            />
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('city')}
+              helperText={errors.city?.message}
+              error={!!errors.city?.message}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='city'
+              type='text'
+              placeholder='Cidade'
+              value={city}
+              onChange={({ target }) => setCity(target.value)}
+            />
+          </Box>
+          <Box mt={1}>
+            <TextField
+              {...register('state')}
+              helperText={errors.state?.message}
+              error={!!errors.state?.message}
+              fullWidth
+              size='small'
+              variant='outlined'
+              margin='dense'
+              id='state'
+              type='text'
+              placeholder='Estado'
+              value={state}
+              onChange={({ target }) => setState(target.value)}
             />
           </Box>
           <Box mt={4}>

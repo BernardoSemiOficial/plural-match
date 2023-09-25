@@ -33,6 +33,8 @@ export type Candidate = {
   profissao?: string
   modeloTrabalho?: string
   modeloContratacao?: string
+  cidade?: string
+  estado?: string
   pretensaoSalarial?: number
   softSkills?: string[]
   hardSkills?: string[]

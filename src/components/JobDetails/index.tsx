@@ -5,7 +5,7 @@ import { ModalSelectJob } from '@/components/ModalSelectJob'
 import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
-import { hardSkills, softSkills } from '@/mocks/skills'
+import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
 import { Box, Button, Divider } from '@mui/material'
 
@@ -39,9 +39,9 @@ export const JobDetails: React.FC = () => {
       </Box>
       <Divider />
       <Box mt={3}>
-        <SectionChips title='Soft skills' labels={softSkills} />
+        <SectionChips title='Soft skills' labels={softSkillsAvailable} />
         <Box mt={2}>
-          <SectionChips title='Hard skills' labels={hardSkills} />
+          <SectionChips title='Hard skills' labels={hardSkillsAvailable} />
         </Box>
       </Box>
       <Box my={3}>

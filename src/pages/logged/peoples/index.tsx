@@ -10,9 +10,8 @@ import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
 import { api } from '@/services/api'
-import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
-import { Box, CircularProgress, Fab, Typography } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
 const Peoples = () => {
@@ -62,37 +61,41 @@ const Peoples = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {data?.map(candidate => (
-            <ItemList
-              key={createUUID()}
-              {...{
-                item: {
-                  id: String(candidate.id),
-                  title: candidate?.nome ?? 'Nome',
-                  subtitle: `Vulnerabilidade: ${candidate?.deficiencia}`,
-                  descrition: 'São Paulo',
-                  subDescription: 'Campinas',
-                },
-              }}
-            />
-          ))}
+          {data?.map(candidate => {
+            const infos = [
+              candidate.sexo,
+              candidate.orientacaoSexual,
+              candidate.etnia,
+              candidate.classeSocial,
+              candidate.deficiencia,
+            ]
+
+            const concatInfo = infos
+              .filter(info => info !== 'nenhuma')
+              .reduce((concatInfo, info, idx, array) => {
+                if (info) concatInfo += info
+                if (idx < array.length - 2) concatInfo += ', '
+                if (idx === array.length - 2) concatInfo += ' e '
+                return concatInfo
+              }, '')
+
+            return (
+              <ItemList
+                key={createUUID()}
+                {...{
+                  item: {
+                    id: String(candidate.id),
+                    title: candidate?.nome ?? 'Nome',
+                    subtitle: concatInfo ?? 'características pessoais',
+                    descrition: 'Campinas',
+                    subDescription: 'São Paulo',
+                  },
+                }}
+              />
+            )
+          })}
         </Box>
       )}
-
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '40px',
-          width: '100%',
-          maxWidth: '700px',
-          justifyContent: 'flex-end',
-          display: 'flex',
-        }}
-      >
-        <Fab color='primary' aria-label='add'>
-          <AddOutlined />
-        </Fab>
-      </div>
     </Container>
   )
 }

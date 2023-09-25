@@ -1,9 +1,14 @@
+import { useContext } from 'react'
+
+import { candidateContext } from '@/context/CandidateContext'
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { PublicRoutes } from '@/enums/routes'
+import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Logout, People, Work } from '@mui/icons-material'
 import {
   Avatar,
+  Box,
   Divider,
   ListItemIcon,
   MenuItem,
@@ -25,8 +30,9 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
     {}
   )
 
+  const { candidate } = useContext(candidateContext)
+
   const handleClickLogout = () => {
-    handleClickClose()
     setLocalStorageValue({})
     router.push(PublicRoutes.LOGIN)
   }
@@ -34,58 +40,41 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
   return (
     <MenuMUI
       id='menu'
+      aria-labelledby='demo-positioned-button'
       anchorEl={anchor}
       open={open}
       onClose={handleClickClose}
-      onClick={handleClickClose}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      PaperProps={{
-        elevation: 0,
-        sx: {
-          overflow: 'visible',
-          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-          mt: 1.5,
-          '& .MuiAvatar-root': {
-            width: 32,
-            height: 32,
-            ml: -0.5,
-            mr: 1,
-          },
-          '&:before': {
-            content: '""',
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            left: 34,
-            width: 10,
-            height: 10,
-            bgcolor: 'background.paper',
-            transform: 'translateY(-50%) rotate(45deg)',
-            zIndex: 0,
-          },
-        },
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
       }}
     >
       <MenuItem onClick={handleClickClose}>
-        <Avatar /> Profile
+        <Avatar sx={{ bgcolor: '#BA2649' }}>
+          {firstLetterOfFirstAndLastName(candidate?.nome ?? 'XX XX')}
+        </Avatar>
+        <Box ml={1}>Perfil</Box>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClickClose}>
         <ListItemIcon>
-          <People fontSize='small' />
+          <People color={'primary'} fontSize='small' />
         </ListItemIcon>
         Candidatos
       </MenuItem>
       <MenuItem onClick={handleClickClose}>
         <ListItemIcon>
-          <Work fontSize='small' />
+          <Work color={'primary'} fontSize='small' />
         </ListItemIcon>
         Vagas
       </MenuItem>
       <MenuItem onClick={handleClickLogout}>
         <ListItemIcon>
-          <Logout fontSize='small' />
+          <Logout color={'primary'} fontSize='small' />
         </ListItemIcon>
         Sair
       </MenuItem>
