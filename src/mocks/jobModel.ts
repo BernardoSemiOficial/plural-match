@@ -1,1 +1,1 @@
-export const MOCK_JOB_MODEL = ['HOME OFFICE', 'PRESENCIAL', 'híbrido']
+export const MOCK_JOB_MODEL = ['HOME OFFICE', 'PRESENCIAL', 'HÍBRIDO']
