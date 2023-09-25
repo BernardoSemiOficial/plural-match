@@ -1,4 +1,4 @@
-import { createUUID } from '@/helpers/createUUID'
+import { Job } from '@/model/job'
 import {
   List,
   ListItemButton,
@@ -7,11 +7,13 @@ import {
 } from '@mui/material'
 
 interface CandidatedVacanciesProps {
-  vacancies: string[]
+  vacancies?: Job['vaga'][]
+  onClick({ idJob }: { idJob?: number }): void
 }
 
 export const CandidatedVacancies = ({
   vacancies,
+  onClick,
 }: CandidatedVacanciesProps) => {
   return (
     <List
@@ -22,9 +24,12 @@ export const CandidatedVacancies = ({
         </ListSubheader>
       }
     >
-      {vacancies.map(vacancie => (
-        <ListItemButton key={createUUID()}>
-          <ListItemText primary={vacancie} />
+      {vacancies?.map(vacancie => (
+        <ListItemButton
+          onClick={() => onClick?.({ idJob: vacancie?.id_vaga })}
+          key={vacancie?.id_vaga}
+        >
+          <ListItemText primary={vacancie?.titulo_vaga} />
         </ListItemButton>
       ))}
     </List>

@@ -7,6 +7,7 @@ import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
 import { loggedContext } from '@/context/LoggedContext'
+import { PrivateRoutes } from '@/enums/routes'
 import { UserType } from '@/enums/user-type'
 import { calculateAge } from '@/helpers/calculateAge'
 import { Default } from '@/layouts/Default'
@@ -25,15 +26,28 @@ const People = () => {
 
   const { candidates, user } = useContext(loggedContext)
 
-  const slug = router.query.id
+  const candidateId = router.query.id
 
   const candidateSelected = candidates.data?.find(
-    candidate => String(candidate.id) === slug
+    candidate => String(candidate.id) === candidateId
   )
 
   console.log('candidateSelected', candidateSelected)
 
   const age = calculateAge(candidateSelected?.dataNascimento ?? '01-01-2000')
+
+  const isLoggedCandidate = Number(candidateId) === user?.id
+
+  const openSelectedJob = ({ idJob }: { idJob?: number }) => {
+    console.log('idJob', idJob)
+    router.push({
+      pathname: `${PrivateRoutes.PROCESS_DETAIL}`,
+      query: {
+        candidateId: user?.id,
+        jobId: idJob,
+      },
+    })
+  }
 
   return (
     <Container>
@@ -99,16 +113,22 @@ const People = () => {
             </Button>
           </Box>
         )}
+        {isLoggedCandidate && (
+          <>
+            <Divider style={{ marginTop: 24 }} />
+            <Box mt={1}>
+              <CandidatedVacancies
+                onClick={openSelectedJob}
+                vacancies={
+                  candidateSelected?.vagasSelecionadas?.map(
+                    item => item.vaga
+                  ) as any
+                }
+              />
+            </Box>
+          </>
+        )}
         <Divider style={{ marginTop: 24 }} />
-        <Box mt={1}>
-          <CandidatedVacancies
-            vacancies={[
-              'Desenvolvedor Sênior #14',
-              'Desenvolvedor Fullstack #15',
-            ]}
-          />
-        </Box>
-        <Divider />
         <Box mt={3}>
           <SectionDescription
             title='Sobre'
