@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { Box, Divider } from '@mui/material'
-
 import { Candidate } from '@/model/candidate'
 import { CandidateList } from '@/pages/logged/peoples'
+import { Box, Divider } from '@mui/material'
+
 import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
 interface JobSelectionProcessProps {

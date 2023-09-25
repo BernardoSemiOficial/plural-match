@@ -8,6 +8,6 @@ export const MOCK_SALARY_RANGE = [
   'R$9.000,00 ~ R$11.999,00',
   'R$12.000,00 ~ R$14.999,00',
   'R$15.000,00 ~ R$17.999,00',
-  'MAIOR QUE R$17.999,00',
-  'SEM FAIXA SALARIAL',
+  'Maior que R$17.999,00',
+  'Sem faixa salarial',
 ]

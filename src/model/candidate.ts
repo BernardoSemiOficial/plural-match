@@ -35,6 +35,10 @@ export type Candidate = {
   modeloContratacao?: string
   cidade?: string
   estado?: string
+  sobre?: string
+  experienciaProfissional?: string
+  experienciaAcademica?: string
+  sonhosObjetivos?: string
   pretensaoSalarial?: number
   softSkills?: string[]
   hardSkills?: string[]
