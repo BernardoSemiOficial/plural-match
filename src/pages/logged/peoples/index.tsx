@@ -11,8 +11,10 @@ import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 
 const Peoples = () => {
+  const router = useRouter()
   const [filters, setFilters] = useState<string[]>([])
 
   const { candidates } = useContext(loggedContext)
@@ -51,7 +53,17 @@ const Peoples = () => {
           <Typography variant='subtitle1'>Carregando candidatos</Typography>
         </Box>
       ) : (
-        <CandidateList candidates={candidates.data} />
+        <CandidateList
+          candidates={candidates.data}
+          onClick={({ id }: { id: number }) => {
+            router.push({
+              pathname: `${PrivateRoutes.PEOPLES}/[id]`,
+              query: {
+                id,
+              },
+            })
+          }}
+        />
       )}
     </Container>
   )
@@ -59,8 +71,10 @@ const Peoples = () => {
 
 export function CandidateList({
   candidates,
+  onClick,
 }: {
   candidates: Candidate[] | undefined
+  onClick({ id }: { id: number }): void
 }) {
   return (
     <Box mt={4}>
@@ -83,14 +97,9 @@ export function CandidateList({
         return (
           <ItemList
             key={createUUID()}
+            onClick={onClick}
             {...{
               item: {
-                goToPage: {
-                  pathname: `${PrivateRoutes.PEOPLES}/[id]`,
-                  query: {
-                    id: candidate.id,
-                  },
-                },
                 id: String(candidate.id),
                 title: candidate?.nome ?? 'Nome',
                 subtitle: concatInfo ?? 'características pessoais',

@@ -9,11 +9,13 @@ import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 interface JobSelectionProcessProps {
   header: HeaderProfileProps
   candidates?: Candidate[]
+  onClick({ id }: { id: number }): void
 }
 
 export const JobSelectionProcess: React.FC<JobSelectionProcessProps> = ({
   header,
   candidates,
+  onClick,
 }) => {
   return (
     <Box>
@@ -23,7 +25,7 @@ export const JobSelectionProcess: React.FC<JobSelectionProcessProps> = ({
         <Divider />
       </Box>
 
-      <CandidateList candidates={candidates} />
+      <CandidateList {...{ candidates, onClick }} />
     </Box>
   )
 }

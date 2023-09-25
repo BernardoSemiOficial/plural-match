@@ -4,6 +4,8 @@ import { JobDetails } from '@/components/JobDetails'
 import { JobSelectionProcess } from '@/components/JobSelectionProcess'
 import { SectionKeywordsProps } from '@/components/SectionKeywords'
 import { loggedContext } from '@/context/LoggedContext'
+import { PrivateRoutes } from '@/enums/routes'
+import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
@@ -69,15 +71,17 @@ const People = () => {
 
   return (
     <Container>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        centered
-        style={{ marginBottom: 32 }}
-      >
-        <Tab label='Vaga' />
-        <Tab label='Processo seletivo' />
-      </Tabs>
+      {user?.tipo === UserType.RECRUITER && (
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          style={{ marginBottom: 32 }}
+        >
+          <Tab label='Vaga' />
+          <Tab label='Processo seletivo' />
+        </Tabs>
+      )}
 
       {value === 0 && (
         <JobDetails
@@ -92,13 +96,22 @@ const People = () => {
           }}
         />
       )}
-      {value === 1 && (
+      {user?.tipo === UserType.RECRUITER && value === 1 && (
         <JobSelectionProcess
           header={{
             title: job?.vaga?.titulo_vaga,
             description: 'Empresa',
           }}
           candidates={filteredCandidatesPerJob || []}
+          onClick={({ id }: { id: number }) => {
+            router.push({
+              pathname: `${PrivateRoutes.PROCESS_DETAIL}`,
+              query: {
+                candidateId: id,
+                jobId: jobId,
+              },
+            })
+          }}
         />
       )}
     </Container>

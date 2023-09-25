@@ -33,7 +33,8 @@ const Jobs = () => {
 
   const handleJob = ({ id }: { id: number }) => {
     router.push({
-      pathname: `${PrivateRoutes.JOBS}/${id}`,
+      pathname: `${PrivateRoutes.JOBS}/[id]`,
+      query: { id },
     })
   }
 
@@ -74,12 +75,9 @@ const Jobs = () => {
             return (
               <ItemList
                 key={job?.vaga?.id_vaga}
+                onClick={handleJob}
                 {...{
                   item: {
-                    goToPage: {
-                      pathname: `${PrivateRoutes.JOBS}/[id]`,
-                      query: { id: job?.vaga?.id_vaga },
-                    },
                     id: job?.vaga?.id_vaga,
                     title: job?.vaga?.titulo_vaga,
                     subtitle: subtitle,

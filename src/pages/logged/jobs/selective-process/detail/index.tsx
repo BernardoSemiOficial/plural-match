@@ -8,8 +8,13 @@ import { SelectiveProcessStep } from '@/components/SelectiveProcessStep'
 import { SELECTIVE_PROCESS_STEPS } from '@/mocks/selectiveProcessSteps'
 import { Box, Button, Divider, Typography } from '@mui/material'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const Detail = () => {
+  const router = useRouter()
+  console.log('router.query', router.query)
+  // const jobId = router.query?.id
+
   const status = 'inProgress'
   const labelStatus = {
     inProgress: 'Em andamento',
