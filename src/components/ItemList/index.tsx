@@ -10,10 +10,14 @@ export const ItemList: React.FC<{
     title: string
     subtitle: string
     descrition: string
-    subDescription: string
+    subDescription?: string
     img?: string
   }
 }> = ({ item }) => {
+  let labelDescription = item?.descrition
+  if (item?.descrition && item?.subDescription) {
+    labelDescription += ` ${item?.subDescription}`
+  }
   return (
     <Box mt={2} key={item.id}>
       <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
@@ -39,9 +43,11 @@ export const ItemList: React.FC<{
           <Typography variant='body1' fontSize={14}>
             {item.subtitle}
           </Typography>
-          <Typography variant='body1' fontSize={12}>
-            {item.descrition} {item.subDescription}
-          </Typography>
+          {!!labelDescription && (
+            <Typography variant='body1' fontSize={12}>
+              {labelDescription}
+            </Typography>
+          )}
         </Stack>
       </Box>
       <Box my={2}>
