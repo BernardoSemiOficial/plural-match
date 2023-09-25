@@ -1,3 +1,4 @@
+import { calculateAge } from '@/helpers/calculateAge'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 
@@ -19,7 +20,9 @@ export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
           {people.name}
         </Typography>
         <Box mb={1}>
-          <Typography variant='h5'>{people.age}</Typography>
+          <Typography variant='h5'>
+            {calculateAge(people?.age ?? '01-01-2000')} anos
+          </Typography>
         </Box>
       </Box>
     </Stack>

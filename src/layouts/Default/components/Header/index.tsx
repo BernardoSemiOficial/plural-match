@@ -26,7 +26,7 @@ export const Header = () => {
         <Button onClick={handleClick}>
           <MenuIcon
             sx={{ color: '#ffffff', cursor: 'pointer' }}
-            fontSize='large'
+            fontSize='medium'
           />
         </Button>
         <Link href={PublicRoutes.HOME} passHref>
