@@ -1,10 +1,9 @@
 import { ReactElement, useContext, useState } from 'react'
 
-import { candidateContext } from '@/context/CandidateContext'
-import { LocalStorageKeys } from '@/enums/local-storage'
+import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
@@ -21,16 +20,11 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const Login = () => {
-  const { setLoginData } = useContext(candidateContext)
+  const { setLoginData } = useContext(loggedContext)
   const router = useRouter()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const [_, setLocalStorageValue] = useLocalStorage(
-    LocalStorageKeys.CANDIDATE,
-    {}
-  )
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async () =>
@@ -46,7 +40,7 @@ const Login = () => {
         )
       ).data,
     onSuccess(data) {
-      setLoginData({ ...data.user, tipo: data.tipo })
+      setLoginData({ ...data.user, tipo: data.tipo as UserType })
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
         router.push(PrivateRoutes.PEOPLES)
 

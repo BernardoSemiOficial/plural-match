@@ -3,7 +3,7 @@ import { ReactElement, useContext, useState } from 'react'
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
-import { candidateContext } from '@/context/CandidateContext'
+import { loggedContext } from '@/context/LoggedContext'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
@@ -19,7 +19,7 @@ const Peoples = () => {
   //     (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
   // })
 
-  const { candidates } = useContext(candidateContext)
+  const { candidates } = useContext(loggedContext)
   console.log('candidates', candidates)
 
   const handleChangeSelectFilter = (

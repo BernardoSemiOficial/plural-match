@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { candidateContext } from '@/context/CandidateContext'
+import { loggedContext } from '@/context/LoggedContext'
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { PublicRoutes } from '@/enums/routes'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
@@ -30,7 +30,7 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
     {}
   )
 
-  const { candidate } = useContext(candidateContext)
+  const { user } = useContext(loggedContext)
 
   const handleClickLogout = () => {
     setLocalStorageValue({})
@@ -55,7 +55,7 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
     >
       <MenuItem onClick={handleClickClose}>
         <Avatar sx={{ bgcolor: '#BA2649' }}>
-          {firstLetterOfFirstAndLastName(candidate?.nome ?? 'XX XX')}
+          {firstLetterOfFirstAndLastName(user?.nome ?? 'XX XX')}
         </Avatar>
         <Box ml={1}>Perfil</Box>
       </MenuItem>
