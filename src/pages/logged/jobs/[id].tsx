@@ -72,6 +72,10 @@ const People = () => {
             description: job?.descricao,
           }}
           jobInfo={jobInfo}
+          description={{
+            title: 'Descrição da vaga',
+            description: job?.descricao,
+          }}
         />
       )}
       {value === 1 && <JobSelectionProcess />}
