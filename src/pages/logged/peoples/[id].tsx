@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { CandidatedVacancies } from '@/components/CandidatedVacancies'
 import { HeaderProfile } from '@/components/HeaderProfile'
@@ -6,24 +6,37 @@ import { ModalSelectJob } from '@/components/ModalSelectJob'
 import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
+import { loggedContext } from '@/context/LoggedContext'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
 import { Box, Button, Divider } from '@mui/material'
+import { useRouter } from 'next/router'
 
 const People = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
 
+  const { candidates } = useContext(loggedContext)
+
+  const slug = router.query.id
+
+  const candidateSelected = candidates.data?.find(
+    candidate => String(candidate.id) === slug
+  )
+
+  console.log('candidateSelected', candidateSelected)
+
   return (
     <Container>
       <Box>
         <HeaderProfile
-          title='Bernardo Pereira Oliveira'
-          description='18 anos'
+          title={candidateSelected?.nome ?? 'Nome'}
+          description={'18 anos'}
         />
         <Divider />
         <Box
@@ -36,18 +49,38 @@ const People = () => {
         >
           <SectionKeywords
             keywords={[
-              { icon: <Work fontSize='small' />, label: 'Presencial' },
-              { icon: <Home fontSize='small' />, label: 'CLT' },
-              { icon: <Paid fontSize='small' />, label: 'A combinar' },
-              { icon: <Info fontSize='small' />, label: 'Classe Social D' },
+              {
+                icon: <Work fontSize='small' />,
+                label: candidateSelected?.modeloTrabalho ?? 'Presencial',
+              },
+              {
+                icon: <Home fontSize='small' />,
+                label: candidateSelected?.modeloContratacao ?? 'CLT',
+              },
+              {
+                icon: <Paid fontSize='small' />,
+                label: String(
+                  candidateSelected?.pretensaoSalarial ?? 'A combinar'
+                ),
+              },
+              {
+                icon: <Info fontSize='small' />,
+                label: candidateSelected?.classeSocial ?? 'Classe Social D',
+              },
             ]}
           />
         </Box>
         <Divider />
         <Box mt={3}>
-          <SectionChips title='Soft skills' labels={softSkillsAvailable} />
+          <SectionChips
+            title='Soft skills'
+            labels={candidateSelected?.softSkills ?? softSkillsAvailable}
+          />
           <Box mt={2}>
-            <SectionChips title='Hard skills' labels={hardSkillsAvailable} />
+            <SectionChips
+              title='Hard skills'
+              labels={candidateSelected?.hardSkills ?? hardSkillsAvailable}
+            />
           </Box>
         </Box>
         <Box my={3}>

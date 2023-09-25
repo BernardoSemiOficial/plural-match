@@ -69,6 +69,10 @@ const Jobs = () => {
                 onClick={handleJob}
                 {...{
                   item: {
+                    goToPage: {
+                      pathname: `${PrivateRoutes.JOBS}/[id]`,
+                      query: { id: job.id_vaga },
+                    },
                     id: job.id_vaga,
                     title: job.titulo_vaga,
                     subtitle: job.descricao,

@@ -4,6 +4,7 @@ import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
 import { loggedContext } from '@/context/LoggedContext'
+import { PrivateRoutes } from '@/enums/routes'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
@@ -14,7 +15,6 @@ const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])
 
   const { candidates } = useContext(loggedContext)
-  console.log('candidates', candidates)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>
@@ -51,7 +51,7 @@ const Peoples = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {candidates.candidates?.map(candidate => {
+          {candidates.data?.map(candidate => {
             const infos = [
               candidate.sexo,
               candidate.orientacaoSexual,
@@ -74,6 +74,10 @@ const Peoples = () => {
                 key={createUUID()}
                 {...{
                   item: {
+                    goToPage: {
+                      pathname: `${PrivateRoutes.PEOPLES}/[id]`,
+                      query: { id: candidate.id },
+                    },
                     id: String(candidate.id),
                     title: candidate?.nome ?? 'Nome',
                     subtitle: concatInfo ?? 'características pessoais',

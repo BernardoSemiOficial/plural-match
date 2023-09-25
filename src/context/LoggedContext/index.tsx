@@ -27,7 +27,7 @@ type LoggedContext = {
   candidates: {
     isLoading: boolean
     error: any
-    candidates?: Candidate[]
+    data?: Candidate[]
   }
   jobs?: {
     isLoading: boolean
@@ -93,7 +93,7 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
       candidates: {
         isLoading: isLoadingCandidates,
         error: errorCandidantes,
-        candidates,
+        data: candidates ?? [],
       },
       jobs: {
         isLoading: isLoadingJobs,
