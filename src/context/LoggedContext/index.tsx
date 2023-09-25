@@ -9,8 +9,10 @@ import {
 
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { Services } from '@/enums/services'
+import { UserType } from '@/enums/user-type'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Candidate } from '@/model/candidate'
+import { Job } from '@/model/job'
 import { User } from '@/model/user'
 import { api } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
@@ -27,7 +29,11 @@ type LoggedContext = {
     error: any
     candidates?: Candidate[]
   }
-  // setCandidateData: (candidate: Candidate) => void
+  jobs?: {
+    isLoading: boolean
+    error: any
+    data?: Job[]
+  }
   setLoginData: (user?: User) => void
 }
 
@@ -50,23 +56,26 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
       (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
   })
 
+  const {
+    data: jobs,
+    isLoading: isLoadingJobs,
+    error: errorJobs,
+  } = useQuery({
+    queryKey: [Services.LISTA_VAGA],
+    queryFn: async () => (await api.get(Services.LISTA_VAGA)).data,
+  })
+
+  const filteredJobs = useMemo(() => {
+    if (user?.tipo === UserType.CANDIDATE || user?.tipo === UserType.COMPANY) {
+      return jobs
+    }
+
+    return jobs?.filter((job: Job) => job?.id_recrutador === user?.id)
+  }, [jobs, user?.id, user?.tipo])
+
   console.log('user', user)
   console.log('candidates', candidates)
-
-  // const setCandidateData = useCallback(
-  //   (candidate: Candidate) => {
-  //     setUser(currentCandidateData => {
-  //       const newState = {
-  //         ...currentCandidateData,
-  //         ...candidate,
-  //       }
-
-  //       setLocalStorageValue(newState)
-  //       return newState
-  //     })
-  //   },
-  //   [setLocalStorageValue]
-  // )
+  console.log('filteredJobs', filteredJobs)
 
   const setLoginData = useCallback(
     (user?: User) => {
@@ -86,10 +95,24 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
         error: errorCandidantes,
         candidates,
       },
+      jobs: {
+        isLoading: isLoadingJobs,
+        error: errorJobs,
+        data: filteredJobs || [],
+      },
 
       setLoginData,
     }),
-    [user, candidates, errorCandidantes, isLoadingCandidates, setLoginData]
+    [
+      user,
+      isLoadingCandidates,
+      errorCandidantes,
+      candidates,
+      isLoadingJobs,
+      errorJobs,
+      filteredJobs,
+      setLoginData,
+    ]
   )
 
   return (

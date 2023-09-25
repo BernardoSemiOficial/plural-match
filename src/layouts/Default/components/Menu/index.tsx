@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import { loggedContext } from '@/context/LoggedContext'
-import { PublicRoutes } from '@/enums/routes'
+import { PrivateRoutes, PublicRoutes } from '@/enums/routes'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Logout, People, Work } from '@mui/icons-material'
 import {
@@ -28,6 +28,10 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
   const handleClickLogout = () => {
     setLoginData({})
     router.push(PublicRoutes.LOGIN)
+  }
+
+  const handleJobs = () => {
+    router.push(PrivateRoutes.JOBS)
   }
 
   return (
@@ -59,7 +63,7 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
         </ListItemIcon>
         Candidatos
       </MenuItem>
-      <MenuItem onClick={handleClickClose}>
+      <MenuItem onClick={handleJobs}>
         <ListItemIcon>
           <Work color={'primary'} fontSize='small' />
         </ListItemIcon>

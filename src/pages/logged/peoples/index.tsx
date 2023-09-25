@@ -13,12 +13,6 @@ import { Box, CircularProgress, Typography } from '@mui/material'
 const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])
 
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: [Services.LISTA_CANDIDATOS],
-  //   queryFn: async () =>
-  //     (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
-  // })
-
   const { candidates } = useContext(loggedContext)
   console.log('candidates', candidates)
 

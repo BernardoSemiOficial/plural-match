@@ -1,18 +1,16 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
+import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
-import { Services } from '@/enums/services'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { api } from '@/services/api'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Fab, Typography } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const Jobs = () => {
@@ -20,13 +18,9 @@ const Jobs = () => {
 
   const [filters, setFilters] = useState<string[]>([])
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: [Services.LISTA_CANDIDATOS],
-    queryFn: async () => (await api.get(Services.LISTA_VAGA)).data,
-  })
-
-  console.log('jobs', data)
-  console.log('error', error)
+  const { jobs } = useContext(loggedContext)
+  console.log('jobs', jobs?.data)
+  console.log('error', jobs?.error)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>
@@ -40,14 +34,14 @@ const Jobs = () => {
   return (
     <Container>
       <Typography variant='h4' fontWeight='bold'>
-        Buscar
+        Buscar vagas
       </Typography>
 
       <InputSearch placeholder='Vagas' id='jobs' type='jobs' />
 
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
-      {isLoading ? (
+      {jobs?.isLoading ? (
         <Box
           mt={4}
           display={'flex'}
@@ -59,20 +53,26 @@ const Jobs = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {data?.map(job => (
-            <ItemList
-              key={createUUID()}
-              {...{
-                item: {
-                  id: job.id_vaga,
-                  title: job.titulo_vaga,
-                  subtitle: job.descricao,
-                  descrition: 'Nubank',
-                  // subDescription: job.state,
-                },
-              }}
-            />
-          ))}
+          {jobs?.data?.map(job => {
+            if (job?.id_vaga === undefined || job?.id_vaga === null) {
+              return <></>
+            }
+
+            return (
+              <ItemList
+                key={createUUID()}
+                {...{
+                  item: {
+                    id: job.id_vaga,
+                    title: job.titulo_vaga,
+                    subtitle: job.descricao,
+                    descrition: 'Nubank',
+                    // subDescription: job.state,
+                  },
+                }}
+              />
+            )
+          })}
         </Box>
       )}
 

@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 export const ItemList: React.FC<{
   item: {
-    id: string
+    id: string | number
     title: string
     subtitle: string
     descrition: string
