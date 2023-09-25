@@ -3,11 +3,12 @@ import { ReactElement, useState } from 'react'
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
+import { CandidateProvider } from '@/context/CandidateContext'
 import { Services } from '@/enums/services'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { MOCK_CANDIDATES } from '@/mocks/candidates'
+import { Candidate } from '@/model/candidate'
 import { api } from '@/services/api'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
@@ -19,7 +20,8 @@ const Peoples = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: [Services.LISTA_CANDIDATOS],
-    queryFn: async () => (await api.get(Services.LISTA_CANDIDATOS)).data,
+    queryFn: async () =>
+      (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
   })
 
   console.log({ data })
@@ -60,16 +62,16 @@ const Peoples = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {[...MOCK_CANDIDATES, ...MOCK_CANDIDATES]?.map(candidate => (
+          {data?.map(candidate => (
             <ItemList
               key={createUUID()}
               {...{
                 item: {
-                  id: candidate.id,
-                  title: candidate.name,
-                  subtitle: `Vulnerabilidade: ${candidate.vulnerability}`,
-                  descrition: candidate.city,
-                  subDescription: candidate.state,
+                  id: String(candidate.id),
+                  title: candidate?.nome ?? 'Nome',
+                  subtitle: `Vulnerabilidade: ${candidate?.deficiencia}`,
+                  descrition: 'São Paulo',
+                  subDescription: 'Campinas',
                 },
               }}
             />
@@ -96,7 +98,11 @@ const Peoples = () => {
 }
 
 Peoples.getLayout = function getLayout(page: ReactElement) {
-  return <Default>{page}</Default>
+  return (
+    <CandidateProvider>
+      <Default>{page}</Default>
+    </CandidateProvider>
+  )
 }
 
 export default Peoples

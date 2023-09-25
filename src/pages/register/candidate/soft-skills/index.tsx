@@ -10,7 +10,7 @@ import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { softSkillsAvailable } from '@/mocks/skills'
-import { Box, Button, Chip, Typography } from '@mui/material'
+import { Alert, Box, Button, Chip, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
 const softSkillsWithState = softSkillsAvailable.reduce(
@@ -45,13 +45,14 @@ const SoftSkills = () => {
     })
   })
 
+  const setSoftSkillsSelected = softSkills.filter(
+    softSkill => softSkill.isSelected
+  )
+  const setSoftSkillsSelectedFormatted = setSoftSkillsSelected.map(
+    softSkill => softSkill.label
+  )
+
   const handleClickContinue = () => {
-    const setSoftSkillsSelected = softSkills.filter(
-      softSkill => softSkill.isSelected
-    )
-    const setSoftSkillsSelectedFormatted = setSoftSkillsSelected.map(
-      softSkill => softSkill.label
-    )
     setCandidateData({
       softSkills: setSoftSkillsSelectedFormatted,
     })
@@ -99,6 +100,16 @@ const SoftSkills = () => {
             />
           ))}
         </Box>
+        {setSoftSkillsSelected.length >= 5 && (
+          <Box mt={3}>
+            <Alert severity='error'>O limite é de 5 soft-skills</Alert>
+          </Box>
+        )}
+        {setSoftSkillsSelected.length === 0 && (
+          <Box mt={3}>
+            <Alert severity='info'>As soft-skills são obrigatórias</Alert>
+          </Box>
+        )}
         <Box mt={4}>
           <Button
             fullWidth

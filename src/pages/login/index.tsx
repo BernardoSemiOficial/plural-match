@@ -1,7 +1,9 @@
 import { ReactElement, useState } from 'react'
 
+import { LocalStorageKeys } from '@/enums/local-storage'
 import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { api } from '@/services/api'
@@ -22,6 +24,11 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const [_, setLocalStorageValue] = useLocalStorage(
+    LocalStorageKeys.CANDIDATE,
+    {}
+  )
+
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async () =>
       (
@@ -33,9 +40,9 @@ const Login = () => {
         })
       ).data,
     onSuccess(data) {
-      console.log(data)
+      setLocalStorageValue(data)
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
-        router.push(PrivateRoutes.JOBS)
+        router.push(PrivateRoutes.PEOPLES)
 
       if (data.tipo === 'empresa') router.push(PrivateRoutes.COMPANY)
     },

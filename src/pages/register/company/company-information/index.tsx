@@ -1,10 +1,5 @@
-import { isValidCNPJ } from '@brazilian-utils/brazilian-utils'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
 import { ReactElement, useContext } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import * as yup from 'yup'
 
 import {
   RegisterCompanyProvider,
@@ -15,6 +10,11 @@ import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { MOCK_COMPANY_ACTIVITIES } from '@/mocks/companyActivities'
 import { toPattern } from '@/utils/masks'
+import { isValidCNPJ } from '@brazilian-utils/brazilian-utils'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
+import * as yup from 'yup'
 
 type Inputs = {
   nome: string
@@ -70,6 +70,7 @@ const CompanyInformation = () => {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   })
+
   const onSubmit: SubmitHandler<Inputs> = data => {
     setCompanyData(data)
     router.push(PublicRoutes.COMPANY_CREDENTIALS)

@@ -11,51 +11,8 @@ import {
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { PublicRoutes } from '@/enums/routes'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { Candidate } from '@/model/candidate'
 import { useRouter } from 'next/router'
-
-type SelectionProcess = {
-  id?: number
-  name?: string
-  descricao_etapa_processo_seletivo?: string
-  link_util?: string
-}
-
-type Job = {
-  id_vaga?: number
-  id_recrutador?: number
-  titulo_vaga?: string
-  descricao?: string
-  modelo_trabalho?: string
-  modelo_contratacao?: string
-  faixa_salarial?: string
-  situacao_vulnerabilidade?: string
-  candidatos?: number[]
-  etapas_processo_seletivo?: SelectionProcess[]
-}
-
-type Candidate = {
-  id?: number
-  email?: string
-  senha?: string
-  nome?: string
-  nomeSocial?: string
-  dataNascimento?: string
-  sexo?: string
-  orientacaoSexual?: string
-  etnia?: string
-  classeSocial?: string
-  deficiencia?: string
-  profissao?: string
-  modeloTrabalho?: string
-  modeloContratacao?: string
-  pretensaoSalarial?: number
-  softSkills?: string[]
-  hardSkills?: string[]
-  vagasSelecionadas?: {
-    etapaId: number
-    vaga: Job
-  }[]
-}
 
 type RegisterCandidateProviderProps = {
   children: ReactElement | ReactNode
@@ -67,8 +24,10 @@ type RegisterCandidateContext = {
   stepsLength: number
   activeStep: number
   setCandidateData: (candidate: Candidate) => void
+  clearCandidateStorage: () => void
   handleClickNextStep: () => void
   handleClickBackStep: () => void
+  handleClickGoToStep: (stepNumber: number) => void
 }
 
 export const registerCandidateContext = createContext(
@@ -103,14 +62,18 @@ export const RegisterCandidateProvider = ({
 
   console.log('candidato', candidate)
 
-  localStorageValue
-
   useEffect(() => {
+    if (
+      !candidate.email &&
+      router.pathname !== PublicRoutes.CANDIDATE_CHECK_MAIL
+    )
+      router.push(PublicRoutes.CANDIDATE_CHECK_MAIL)
+
     const registerCandidateRouteIndex = registerCandidateRoutes.findIndex(
       (route: PublicRoutes) => route === router.pathname
     )
     setActiveStep(registerCandidateRouteIndex)
-  }, [router.pathname])
+  }, [candidate.email, router, router.pathname])
 
   const handleClickNextStep = useCallback(() => {
     setActiveStep(prevActiveStep => {
@@ -130,6 +93,17 @@ export const RegisterCandidateProvider = ({
     })
   }, [router])
 
+  const handleClickGoToStep = useCallback(
+    stepNumber => {
+      setActiveStep(() => {
+        const goToPage = registerCandidateRoutes[stepNumber]
+        router.push(goToPage)
+        return stepNumber
+      })
+    },
+    [router]
+  )
+
   const setCandidateData = useCallback(
     (candidate: Candidate) => {
       setCandidate(currentCandidateData => {
@@ -145,26 +119,34 @@ export const RegisterCandidateProvider = ({
     [setLocalStorageValue]
   )
 
-  const candidateContext = useMemo(
+  const clearCandidateStorage = useCallback(() => {
+    setLocalStorageValue({})
+  }, [setLocalStorageValue])
+
+  const candidateContextMemo = useMemo(
     () => ({
       stepsLength,
       activeStep,
       candidate,
       handleClickNextStep,
       handleClickBackStep,
+      handleClickGoToStep,
       setCandidateData,
+      clearCandidateStorage,
     }),
     [
       activeStep,
       candidate,
       handleClickBackStep,
       handleClickNextStep,
+      handleClickGoToStep,
       setCandidateData,
+      clearCandidateStorage,
     ]
   )
 
   return (
-    <registerCandidateContext.Provider value={candidateContext}>
+    <registerCandidateContext.Provider value={candidateContextMemo}>
       {children}
     </registerCandidateContext.Provider>
   )
