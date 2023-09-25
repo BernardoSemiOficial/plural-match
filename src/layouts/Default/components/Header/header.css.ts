@@ -7,6 +7,7 @@ export const container = style({
   backgroundColor: '#BA2649',
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
 })
 
 export const content = style({

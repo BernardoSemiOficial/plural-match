@@ -1,3 +1,4 @@
+import { CandidateProvider } from '@/context/CandidateContext'
 import { globalThemeMUI } from '@/styles/global.material'
 import { ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -12,10 +13,12 @@ export const Default = ({ children }: DefaultProps) => {
   return (
     <ThemeProvider theme={globalThemeMUI}>
       <QueryClientProvider client={queryClient}>
-        <div className={S.container}>
-          <Header />
-          {children}
-        </div>
+        <CandidateProvider>
+          <div className={S.container}>
+            <Header />
+            {children}
+          </div>
+        </CandidateProvider>
       </QueryClientProvider>
     </ThemeProvider>
   )

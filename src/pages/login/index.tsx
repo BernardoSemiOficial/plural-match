@@ -6,6 +6,7 @@ import { Services } from '@/enums/services'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { Candidate } from '@/model/candidate'
 import { api } from '@/services/api'
 import {
   Alert,
@@ -32,15 +33,18 @@ const Login = () => {
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async () =>
       (
-        await api.get<{ id: number; tipo: string }>(Services.LOGIN, {
-          params: {
-            email,
-            senha: password,
-          },
-        })
+        await api.get<{ id: number; tipo: string; user: Candidate }>(
+          Services.LOGIN,
+          {
+            params: {
+              email,
+              senha: password,
+            },
+          }
+        )
       ).data,
     onSuccess(data) {
-      setLocalStorageValue(data)
+      setLocalStorageValue({ ...data.user, tipo: data.tipo })
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
         router.push(PrivateRoutes.PEOPLES)
 
