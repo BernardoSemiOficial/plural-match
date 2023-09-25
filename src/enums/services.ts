@@ -14,5 +14,6 @@ export enum Services {
   LISTA_VAGA = 'lista-vagas', // ok
   CADASTRA_VAGA = 'cadastra-vaga', // ok
   ATUALIZA_VAGA = 'atualiza-vaga', // por último
+  ATUALIZA_STATUS_VAGA = 'altera-status-processo', // por último
   DELETA_VAGA = 'deleta-vaga',
 }

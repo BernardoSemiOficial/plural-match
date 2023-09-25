@@ -1,4 +1,5 @@
 import { Company } from './company'
+import { StatusStep } from './step'
 
 export type Job = {
   vaga: {
@@ -20,4 +21,5 @@ export type JobStep = {
   name?: string
   descricao_etapa_processo_seletivo?: string
   link_util?: string
+  status?: StatusStep
 }

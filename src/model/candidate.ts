@@ -1,8 +1,11 @@
+import { StatusStep } from './step'
+
 type SelectionProcess = {
   id?: number
   name?: string
   descricao_etapa_processo_seletivo?: string
   link_util?: string
+  status?: StatusStep
 }
 
 type Job = {

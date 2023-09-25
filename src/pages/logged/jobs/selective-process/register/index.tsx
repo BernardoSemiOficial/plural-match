@@ -22,6 +22,7 @@ import { MOCK_HIRING_MODEL } from '@/mocks/hiringModel'
 import { MOCK_JOB_MODEL } from '@/mocks/jobModel'
 import { MOCK_SALARY_RANGE } from '@/mocks/salaryRange'
 import { MOCK_SOCIAL_VULNERABILITIES } from '@/mocks/socialVulnerabilities'
+import { StatusStep } from '@/model/step'
 import { api } from '@/services/api'
 import { yupResolver } from '@hookform/resolvers/yup'
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined'
@@ -292,6 +293,7 @@ const RegisterJob = () => {
         name: data?.[keyFieldName],
         descricao_etapa_processo_seletivo: data?.[keyFieldDescription],
         link_util: data?.[keyFieldLinks] || '',
+        status: StatusStep.NAO_INICIADO,
       }
     })
 

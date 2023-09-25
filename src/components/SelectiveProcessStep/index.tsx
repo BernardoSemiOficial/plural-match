@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { SELECTIVE_PROCESS_STEPS } from '@/mocks/selectiveProcessSteps'
+import { MOCK_STATUS_STEP } from '@/mocks/statusStep'
+import { StatusStep } from '@/model/step'
 import { Box, Divider, MenuItem, TextField, Typography } from '@mui/material'
 
 export const SelectiveProcessStep: React.FC<{
@@ -13,7 +15,10 @@ export const SelectiveProcessStep: React.FC<{
     updated_at: string
   }
   idx: number
-}> = ({ step, idx }) => {
+  inputStatus: {
+    onChange({ status, id }: { status: StatusStep; id: number }): void
+  }
+}> = ({ step, idx, inputStatus }) => {
   return (
     <Box>
       <Box
@@ -23,7 +28,7 @@ export const SelectiveProcessStep: React.FC<{
         alignItems={'center'}
       >
         {!!step?.title && (
-          <Typography fontSize={16} fontFamily={'bold'} mb={1}>
+          <Typography fontSize={16} fontWeight={600} mb={1}>
             {step.title}
           </Typography>
         )}
@@ -40,7 +45,7 @@ export const SelectiveProcessStep: React.FC<{
       )}
       {step?.links && (
         <>
-          <Typography fontSize={14} fontFamily={'bold'}>
+          <Typography fontSize={14} fontWeight={600}>
             Links:
           </Typography>
           <Typography fontSize={14} fontFamily={'regular'}>
@@ -49,19 +54,29 @@ export const SelectiveProcessStep: React.FC<{
         </>
       )}
 
-      <Box mt={2}>
+      <Box mt={3}>
         <TextField
           select
           fullWidth
+          label='Selecione o status'
           size='small'
-          variant='outlined'
-          margin='dense'
-          id='social-class'
-          label='Status da etapa'
-          defaultValue='approved'
-          disabled
+          defaultValue={step.status}
+          disabled={
+            step.status === StatusStep.APROVADO ||
+            step.status === StatusStep.REPROVADO
+          }
+          onChange={({ target }) =>
+            inputStatus?.onChange?.({
+              id: step.id,
+              status: target.value,
+            })
+          }
         >
-          <MenuItem value='approved'>Aprovado</MenuItem>
+          {MOCK_STATUS_STEP.map(option => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
         </TextField>
       </Box>
 

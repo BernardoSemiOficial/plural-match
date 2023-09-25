@@ -147,6 +147,7 @@ const CompanyInformation = () => {
           <TextField
             select
             fullWidth
+            size='small'
             label='Setor de atuação'
             defaultValue=''
             inputProps={register('setor', {
