@@ -12,11 +12,13 @@ import {
 import { Box, Button, CircularProgress, Divider } from '@mui/material'
 
 import { loggedContext } from '@/context/LoggedContext'
+import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
 import { UserType } from '@/enums/user-type'
 import { queryClient } from '@/layouts/Default'
 import { api } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
 interface JobDetailsProps {
@@ -32,8 +34,9 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
   description,
   jobId,
 }) => {
+  const router = useRouter()
   const { user, candidates } = useContext(loggedContext)
-
+  console.log('candidates =========>', candidates)
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => setOpen(true)
@@ -54,6 +57,31 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
     },
   })
 
+  let labelButton = 'Se candidatar'
+
+  const canApply = useMemo(() => {
+    if (user?.tipo !== UserType.CANDIDATE) {
+      return
+    }
+
+    console.log('user?.id', user?.id)
+
+    const currentCandidate = candidates?.data?.find(
+      candidate => candidate.id === user?.id
+    )
+
+    console.log('currentCandidate', currentCandidate)
+
+    const findJobs = currentCandidate?.vagasSelecionadas?.find(
+      job => job.vaga.id_vaga === Number(jobId)
+    )
+    return !!findJobs
+  }, [candidates?.data, jobId, user?.id, user?.tipo])
+
+  if (canApply) {
+    labelButton = 'Acompanhar processo'
+  }
+
   const handleAtrelaCandidato = () => {
     const model = {
       idCandidato: user?.id,
@@ -64,30 +92,20 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
   }
 
   const handleButton = () => {
-    if (!filteredCandidatesPerJob) {
+    if (labelButton === 'Se candidatar') {
       handleAtrelaCandidato()
       return
     }
-  }
 
-  let labelButton = 'Se candidatar'
-
-  const filteredCandidatesPerJob = useMemo(() => {
-    if (user?.tipo !== UserType.CANDIDATE) {
-      return
+    if (labelButton === 'Acompanhar processo') {
+      router.push({
+        pathname: `${PrivateRoutes.PROCESS_DETAIL}`,
+        query: {
+          candidateId: user?.id,
+          jobId: jobId,
+        },
+      })
     }
-
-    const filtered = candidates?.data?.filter(candidate => {
-      const jobs = candidate?.vagasSelecionadas
-      console.log('jobs --->', jobs)
-      const findJobs = jobs?.find(job => job.vaga.id_vaga === Number(jobId))
-      return !!findJobs
-    })
-    return filtered
-  }, [candidates?.data, jobId, user?.tipo])
-
-  if (filteredCandidatesPerJob) {
-    labelButton = 'Acompanhar processo'
   }
 
   return (
@@ -123,7 +141,7 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
           <Button
             fullWidth
             variant='contained'
-            color={filteredCandidatesPerJob ? 'success' : 'primary'}
+            color={canApply ? 'success' : 'primary'}
             size='medium'
             onClick={handleButton}
           >

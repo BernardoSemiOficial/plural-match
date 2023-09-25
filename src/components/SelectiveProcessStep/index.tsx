@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
+import { loggedContext } from '@/context/LoggedContext'
+import { UserType } from '@/enums/user-type'
 import { SELECTIVE_PROCESS_STEPS } from '@/mocks/selectiveProcessSteps'
 import { MOCK_STATUS_STEP } from '@/mocks/statusStep'
 import { StatusStep } from '@/model/step'
@@ -19,6 +21,8 @@ export const SelectiveProcessStep: React.FC<{
     onChange({ status, id }: { status: StatusStep; id: number }): void
   }
 }> = ({ step, idx, inputStatus }) => {
+  const { user } = useContext(loggedContext)
+
   return (
     <Box>
       <Box
@@ -62,6 +66,7 @@ export const SelectiveProcessStep: React.FC<{
           size='small'
           defaultValue={step.status}
           disabled={
+            user?.tipo !== UserType.RECRUITER ||
             step.status === StatusStep.APROVADO ||
             step.status === StatusStep.REPROVADO
           }
