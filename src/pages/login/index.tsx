@@ -1,5 +1,6 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
+import { candidateContext } from '@/context/CandidateContext'
 import { LocalStorageKeys } from '@/enums/local-storage'
 import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
@@ -20,6 +21,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const Login = () => {
+  const { setCandidateData } = useContext(candidateContext)
   const router = useRouter()
 
   const [email, setEmail] = useState('')
@@ -44,7 +46,7 @@ const Login = () => {
         )
       ).data,
     onSuccess(data) {
-      setLocalStorageValue({ ...data.user, tipo: data.tipo })
+      setCandidateData({ ...data.user, tipo: data.tipo })
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
         router.push(PrivateRoutes.PEOPLES)
 

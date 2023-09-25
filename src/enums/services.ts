@@ -11,8 +11,8 @@ export enum Services {
   LISTA_RECRUTADORES = 'lista-recrutador', // ok
   CADASTRA_RECRUTADOR = 'cadastra-recritador', // ok
 
-  LISTA_VAGA = 'lista-vagas',
-  CADASTRA_VAGA = 'cadastra-vaga',
-  ATUALIZA_VAGA = 'atualiza-vaga',
+  LISTA_VAGA = 'lista-vagas', // ok
+  CADASTRA_VAGA = 'cadastra-vaga', // ok
+  ATUALIZA_VAGA = 'atualiza-vaga', // por último
   DELETA_VAGA = 'deleta-vaga',
 }

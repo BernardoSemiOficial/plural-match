@@ -20,6 +20,7 @@ const Peoples = () => {
   // })
 
   const { candidates } = useContext(candidateContext)
+  console.log('candidates', candidates)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>

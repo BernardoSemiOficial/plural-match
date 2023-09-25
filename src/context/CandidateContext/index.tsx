@@ -2,6 +2,7 @@ import {
   ReactElement,
   ReactNode,
   createContext,
+  useCallback,
   useMemo,
   useState,
 } from 'react'
@@ -25,12 +26,13 @@ type CandidateContext = {
     error: any
     candidates?: Candidate[]
   }
+  setCandidateData: (candidate: Candidate) => void
 }
 
 export const candidateContext = createContext({} as CandidateContext)
 
 export const CandidateProvider = ({ children }: candidateProviderProps) => {
-  const [localStorageValue] = useLocalStorage<Candidate>(
+  const [localStorageValue, setLocalStorageValue] = useLocalStorage<Candidate>(
     LocalStorageKeys.CANDIDATE,
     {} as Candidate
   )
@@ -49,6 +51,21 @@ export const CandidateProvider = ({ children }: candidateProviderProps) => {
   console.log('candidate', candidate)
   console.log('candidates', candidates)
 
+  const setCandidateData = useCallback(
+    (candidate: Candidate) => {
+      setCandidate(currentCandidateData => {
+        const newState = {
+          ...currentCandidateData,
+          ...candidate,
+        }
+
+        setLocalStorageValue(newState)
+        return newState
+      })
+    },
+    [setLocalStorageValue]
+  )
+
   const candidateContextMemo = useMemo(
     () => ({
       candidate,
@@ -57,8 +74,15 @@ export const CandidateProvider = ({ children }: candidateProviderProps) => {
         error: errorCandidantes,
         candidates,
       },
+      setCandidateData,
     }),
-    [candidate, candidates, errorCandidantes, isLoadingCandidates]
+    [
+      candidate,
+      candidates,
+      errorCandidantes,
+      isLoadingCandidates,
+      setCandidateData,
+    ]
   )
 
   return (
