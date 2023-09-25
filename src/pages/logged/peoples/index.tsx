@@ -1,30 +1,25 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
-import { CandidateProvider } from '@/context/CandidateContext'
-import { Services } from '@/enums/services'
+import { candidateContext } from '@/context/CandidateContext'
 import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
-import { Candidate } from '@/model/candidate'
-import { api } from '@/services/api'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 
 const Peoples = () => {
   const [filters, setFilters] = useState<string[]>([])
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: [Services.LISTA_CANDIDATOS],
-    queryFn: async () =>
-      (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
-  })
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: [Services.LISTA_CANDIDATOS],
+  //   queryFn: async () =>
+  //     (await api.get<Candidate[]>(Services.LISTA_CANDIDATOS)).data,
+  // })
 
-  console.log({ data })
-  console.log('error', error)
+  const { candidates } = useContext(candidateContext)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>
@@ -49,7 +44,7 @@ const Peoples = () => {
 
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
-      {isLoading ? (
+      {candidates.isLoading ? (
         <Box
           mt={4}
           display={'flex'}
@@ -61,7 +56,7 @@ const Peoples = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {data?.map(candidate => {
+          {candidates.candidates?.map(candidate => {
             const infos = [
               candidate.sexo,
               candidate.orientacaoSexual,
@@ -101,11 +96,7 @@ const Peoples = () => {
 }
 
 Peoples.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <CandidateProvider>
-      <Default>{page}</Default>
-    </CandidateProvider>
-  )
+  return <Default>{page}</Default>
 }
 
 export default Peoples
