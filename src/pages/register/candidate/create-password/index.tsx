@@ -78,6 +78,7 @@ const CreatePassword = () => {
   })
 
   const handleSubmitForm: SubmitHandler<FormPersonalInformation> = data => {
+    if (isLoading) return
     setCandidateData({ senha: data.password })
     mutate()
   }
