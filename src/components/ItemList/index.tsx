@@ -8,7 +8,7 @@ import styles from './styles.module.css'
 
 export const ItemList: React.FC<{
   item: {
-    goToPage: object
+    goToPage?: object
     id: number
     title?: string
     subtitle?: string
@@ -23,7 +23,7 @@ export const ItemList: React.FC<{
   }
   return (
     <div className={styles.container} key={item.id}>
-      <Link href={item.goToPage}>
+      <Link href={item?.goToPage || {}}>
         <Box mt={2} key={item.id}>
           <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
             {item?.img ? (

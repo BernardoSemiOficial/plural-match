@@ -5,6 +5,7 @@ import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
 import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
+import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { AddOutlined } from '@mui/icons-material'
@@ -17,7 +18,7 @@ const Jobs = () => {
 
   const [filters, setFilters] = useState<string[]>([])
 
-  const { jobs } = useContext(loggedContext)
+  const { jobs, user } = useContext(loggedContext)
   console.log('jobs', jobs?.data)
   console.log('error', jobs?.error)
 
@@ -59,22 +60,29 @@ const Jobs = () => {
       ) : (
         <Box mt={4}>
           {jobs?.data?.map(job => {
-            if (job?.id_vaga === undefined || job?.id_vaga === null) {
+            if (
+              job?.vaga?.id_vaga === undefined ||
+              job?.vaga?.id_vaga === null
+            ) {
               return <></>
             }
 
+            let subtitle = job?.vaga?.descricao
+            if (!!subtitle && subtitle?.length > 30) {
+              subtitle = subtitle.slice(0, 30) + ' ...'
+            }
             return (
               <ItemList
-                key={job.id_vaga}
+                key={job?.vaga?.id_vaga}
                 {...{
                   item: {
                     goToPage: {
                       pathname: `${PrivateRoutes.JOBS}/[id]`,
-                      query: { id: job.id_vaga },
+                      query: { id: job?.vaga?.id_vaga },
                     },
-                    id: job.id_vaga,
-                    title: job.titulo_vaga,
-                    subtitle: job.descricao,
+                    id: job?.vaga?.id_vaga,
+                    title: job?.vaga?.titulo_vaga,
+                    subtitle: subtitle,
                     descrition: 'Nubank',
                     // subDescription: job.state,
                   },
@@ -85,28 +93,30 @@ const Jobs = () => {
         </Box>
       )}
 
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '40px',
-          width: '100%',
-          maxWidth: '700px',
-          justifyContent: 'flex-end',
-          display: 'flex',
-        }}
-      >
-        <Fab
-          color='primary'
-          aria-label='add'
-          onClick={() => {
-            router.push({
-              pathname: PrivateRoutes.JOB_REGISTER,
-            })
+      {user?.tipo === UserType.RECRUITER && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '40px',
+            width: '100%',
+            maxWidth: '700px',
+            justifyContent: 'flex-end',
+            display: 'flex',
           }}
         >
-          <AddOutlined />
-        </Fab>
-      </div>
+          <Fab
+            color='primary'
+            aria-label='add'
+            onClick={() => {
+              router.push({
+                pathname: PrivateRoutes.JOB_REGISTER,
+              })
+            }}
+          >
+            <AddOutlined />
+          </Fab>
+        </div>
+      )}
     </Container>
   )
 }

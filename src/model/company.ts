@@ -9,4 +9,5 @@ export type Company = {
   localizacao?: string
   fundacao?: number
   site?: string
+  imageUri?: string
 }

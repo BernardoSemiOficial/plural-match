@@ -15,12 +15,26 @@ const People = () => {
   const [value, setValue] = useState(0)
 
   const jobId = router.query?.id
-  const { jobs } = useContext(loggedContext)
+  const { jobs, candidates, user } = useContext(loggedContext)
   const job = useMemo(
-    () => jobs?.data?.find(item => item.id_vaga === Number(jobId)),
+    () => jobs?.data?.find(item => item?.vaga?.id_vaga === Number(jobId)),
     [jobId, jobs?.data]
   )
   console.log('job', job)
+  console.log('jobId', jobId)
+  console.log('candidates', candidates)
+
+  const filteredCandidatesPerJob = useMemo(() => {
+    const filtered = candidates?.data?.filter(candidate => {
+      const jobs = candidate?.vagasSelecionadas
+      console.log('jobs --->', jobs)
+      const findJobs = jobs?.find(job => job.vaga.id_recrutador === user?.id)
+      return !!findJobs
+    })
+    return filtered
+  }, [candidates?.data, user?.id])
+
+  console.log('filteredCandidatesPerJob', filteredCandidatesPerJob)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -30,27 +44,27 @@ const People = () => {
     const labels = [
       {
         icon: <Work fontSize='small' />,
-        label: job?.modelo_trabalho,
+        label: job?.vaga?.modelo_trabalho,
       },
       {
         icon: <Home fontSize='small' />,
-        label: job?.modelo_contratacao,
+        label: job?.vaga?.modelo_contratacao,
       },
       {
         icon: <Paid fontSize='small' />,
-        label: job?.faixa_salarial,
+        label: job?.vaga?.faixa_salarial,
       },
       {
         icon: <Info fontSize='small' />,
-        label: job?.situacao_vulnerabilidade,
+        label: job?.vaga?.situacao_vulnerabilidade,
       },
     ]
     return labels
   }, [
-    job?.faixa_salarial,
-    job?.modelo_contratacao,
-    job?.modelo_trabalho,
-    job?.situacao_vulnerabilidade,
+    job?.vaga?.faixa_salarial,
+    job?.vaga?.modelo_contratacao,
+    job?.vaga?.modelo_trabalho,
+    job?.vaga?.situacao_vulnerabilidade,
   ])
 
   return (
@@ -68,17 +82,25 @@ const People = () => {
       {value === 0 && (
         <JobDetails
           header={{
-            title: job?.titulo_vaga,
-            description: job?.descricao,
+            title: job?.vaga?.titulo_vaga,
+            description: 'Empresa',
           }}
           jobInfo={jobInfo}
           description={{
             title: 'Descrição da vaga',
-            description: job?.descricao,
+            description: job?.vaga?.descricao,
           }}
         />
       )}
-      {value === 1 && <JobSelectionProcess />}
+      {value === 1 && (
+        <JobSelectionProcess
+          header={{
+            title: job?.vaga?.titulo_vaga,
+            description: 'Empresa',
+          }}
+          candidates={filteredCandidatesPerJob || []}
+        />
+      )}
     </Container>
   )
 }

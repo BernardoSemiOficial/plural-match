@@ -70,7 +70,7 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
       return jobs
     }
 
-    return jobs?.filter((job: Job) => job?.id_recrutador === user?.id)
+    return jobs?.filter((job: Job) => job?.vaga.id_recrutador === user?.id)
   }, [jobs, user?.id, user?.tipo])
 
   console.log('user', user)

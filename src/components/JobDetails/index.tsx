@@ -9,7 +9,7 @@ import {
   SectionKeywords,
   SectionKeywordsProps,
 } from '@/components/SectionKeywords'
-import { Box, Button, Divider } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 
 import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
@@ -47,13 +47,13 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
         </>
       )}
 
-      <Divider style={{ marginTop: 16 }} />
-      {/* <Box mt={3}>
+      {/* <Divider style={{ marginTop: 16 }} />
+      <Box mt={3}>
         <SectionChips title='Soft skills' labels={softSkillsAvailable} />
         <Box mt={2}>
           <SectionChips title='Hard skills' labels={hardSkillsAvailable} />
         </Box>
-      </Box> */}
+      </Box>
       <Box my={3}>
         <Button
           fullWidth
@@ -63,8 +63,9 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
         >
           CONVIDAR
         </Button>
-      </Box>
-      <Divider />
+      </Box> */}
+
+      <Divider style={{ marginTop: 16 }} />
       <Box mt={3}>
         {!!description && <SectionDescription {...description} />}
       </Box>

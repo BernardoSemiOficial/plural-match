@@ -1,5 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React, { ReactElement, useCallback, useMemo, useState } from 'react'
+import React, {
+  ReactElement,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 import {
   FieldErrors,
   SubmitHandler,
@@ -8,6 +14,7 @@ import {
 } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { loggedContext } from '@/context/LoggedContext'
 import { stagesSelectionProcess } from '@/enums/selection-process'
 import { Services } from '@/enums/services'
 import { createNumberID } from '@/helpers/createUUID'
@@ -76,7 +83,7 @@ const schema = yup
       .max(50, 'O máximo de caracteres é 50'),
     descricao: yup
       .string()
-      .max(320, 'O máximo de caracteres é 320')
+      .max(1300, 'O máximo de caracteres é 1300')
       .required('A descrição é obrigatória'),
     modelo_trabalho: yup
       .string()
@@ -230,6 +237,8 @@ const Step = ({
 
 const RegisterJob = () => {
   const router = useRouter()
+  const { user } = useContext(loggedContext)
+
   const [steps, setSteps] = useState<number[]>([1])
   console.log('steps', steps)
   const [socialVulnerabilities, setSocialVulnerabilities] = React.useState<
@@ -290,7 +299,7 @@ const RegisterJob = () => {
 
     const model: any = {
       id_vaga: createNumberID(),
-      id_recrutador: createNumberID(),
+      id_recrutador: user?.id,
 
       titulo_vaga: data.titulo_vaga,
       descricao: data.descricao,
@@ -372,7 +381,7 @@ const RegisterJob = () => {
             helperText={errors.descricao?.message}
             error={!!errors.descricao?.message}
             inputProps={{
-              maxLength: 320,
+              maxLength: 1300,
             }}
             multiline
             fullWidth
