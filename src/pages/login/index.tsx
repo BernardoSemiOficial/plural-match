@@ -42,7 +42,7 @@ const Login = () => {
     onSuccess(data) {
       setLoginData({ ...data.user, tipo: data.tipo as UserType })
       if (data.tipo === 'recrutador' || data.tipo === 'candidato')
-        router.push(PrivateRoutes.PEOPLES)
+        router.push(PrivateRoutes.JOBS)
 
       if (data.tipo === 'empresa') router.push(PrivateRoutes.COMPANY)
     },
