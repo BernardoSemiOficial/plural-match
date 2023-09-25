@@ -1,10 +1,8 @@
 import { useContext } from 'react'
 
 import { loggedContext } from '@/context/LoggedContext'
-import { LocalStorageKeys } from '@/enums/local-storage'
 import { PublicRoutes } from '@/enums/routes'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Logout, People, Work } from '@mui/icons-material'
 import {
   Avatar,
@@ -25,15 +23,10 @@ interface MenuProps {
 export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
   const router = useRouter()
 
-  const [_, setLocalStorageValue] = useLocalStorage(
-    LocalStorageKeys.CANDIDATE,
-    {}
-  )
-
-  const { user } = useContext(loggedContext)
+  const { user, setLoginData } = useContext(loggedContext)
 
   const handleClickLogout = () => {
-    setLocalStorageValue({})
+    setLoginData({})
     router.push(PublicRoutes.LOGIN)
   }
 

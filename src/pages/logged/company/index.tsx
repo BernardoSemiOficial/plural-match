@@ -1,12 +1,14 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useMemo, useState } from 'react'
 
 import recruiterAdd from '@/assets/svg/add-recruiter.svg'
 import { Modal } from '@/components/Modal'
+import { loggedContext } from '@/context/LoggedContext'
 import { Services } from '@/enums/services'
 import { createNumberID } from '@/helpers/createUUID'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Default, queryClient } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { Recruiter } from '@/model/recruiter'
 import { api } from '@/services/api'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Add, Close } from '@mui/icons-material'
@@ -62,10 +64,18 @@ const Company = () => {
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
 
-  const { data, isLoading, error } = useQuery({
+  const {
+    data: recruiters,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: [Services.LISTA_RECRUTADORES],
     queryFn: async () => (await api.get(Services.LISTA_RECRUTADORES)).data,
   })
+
+  console.log('recruiters', recruiters)
+
+  const { user } = useContext(loggedContext)
 
   const {
     register,
@@ -90,17 +100,28 @@ const Company = () => {
     },
   })
 
+  const filteredRecruiters = useMemo(() => {
+    return recruiters?.filter(
+      (recruiter: Recruiter) => recruiter?.empresaId === user?.id
+    )
+  }, [recruiters, user?.id])
+
   const onSubmit: SubmitHandler<Inputs> = data => {
+    if (!user?.id) {
+      console.log('EMPRESA ID VAZIO')
+      return
+    }
+
     const model: MutateModel = {
       ...data,
       id: createNumberID(),
-      empresaId: 1,
+      empresaId: user?.id,
     }
     console.log('model', model)
     mutate(model)
   }
 
-  const isEmptyRecruiters = data?.length === 0
+  const isEmptyRecruiters = filteredRecruiters?.length === 0
 
   return (
     <Container>
@@ -112,6 +133,7 @@ const Company = () => {
       <Typography variant='h6' mt={4}>
         Recrutadores
       </Typography>
+
       <Modal maxWidth='xs' fullWidth open={open} onClose={handleClickClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box p={4} borderRadius={4}>
@@ -193,6 +215,7 @@ const Company = () => {
           </Box>
         </form>
       </Modal>
+
       <Fab
         size='medium'
         color='primary'
@@ -212,23 +235,37 @@ const Company = () => {
         </Box>
       )}
 
-      {data?.map((recruiter: any) => (
-        <Box mt={2} key={recruiter.id}>
-          <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
-            <Avatar sx={{ bgcolor: '#BA2649' }}>
-              {firstLetterOfFirstAndLastName(recruiter.nome)}
-            </Avatar>
-            <Stack ml={2} flex={1}>
-              <Typography variant='subtitle1'>{recruiter.nome}</Typography>
-              <Typography variant='body1'>{recruiter.email}</Typography>
-            </Stack>
-            <Close />
-          </Box>
-          <Box my={2}>
-            <Divider />
-          </Box>
+      {isLoading ? (
+        <Box
+          mt={4}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+        >
+          <CircularProgress size={40} />
+          <Typography variant='subtitle1'>Carregando recrutadores</Typography>
         </Box>
-      ))}
+      ) : (
+        <>
+          {filteredRecruiters?.map((recruiter: any) => (
+            <Box mt={2} key={recruiter.id}>
+              <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
+                <Avatar sx={{ bgcolor: '#BA2649' }}>
+                  {firstLetterOfFirstAndLastName(recruiter.nome)}
+                </Avatar>
+                <Stack ml={2} flex={1}>
+                  <Typography variant='subtitle1'>{recruiter.nome}</Typography>
+                  <Typography variant='body1'>{recruiter.email}</Typography>
+                </Stack>
+                <Close />
+              </Box>
+              <Box my={2}>
+                <Divider />
+              </Box>
+            </Box>
+          ))}
+        </>
+      )}
     </Container>
   )
 }

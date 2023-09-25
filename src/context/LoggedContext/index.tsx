@@ -21,14 +21,14 @@ type candidateProviderProps = {
 }
 
 type LoggedContext = {
-  user: User
+  user?: User
   candidates: {
     isLoading: boolean
     error: any
     candidates?: Candidate[]
   }
   // setCandidateData: (candidate: Candidate) => void
-  setLoginData: (user: User) => void
+  setLoginData: (user?: User) => void
 }
 
 export const loggedContext = createContext({} as LoggedContext)
@@ -36,7 +36,7 @@ export const loggedContext = createContext({} as LoggedContext)
 export const LoggedProvider = ({ children }: candidateProviderProps) => {
   const [localStorageValue, setLocalStorageValue] = useLocalStorage<User>(
     LocalStorageKeys.CANDIDATE,
-    {} as User
+    {} as User | Record<string, any>
   )
   const [user, setUser] = useState<User>(localStorageValue)
 
@@ -69,10 +69,10 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
   // )
 
   const setLoginData = useCallback(
-    (user: User) => {
+    (user?: User) => {
       setUser(_ => {
-        setLocalStorageValue(user)
-        return user
+        setLocalStorageValue(user || {})
+        return user || {}
       })
     },
     [setLocalStorageValue]

@@ -9,7 +9,7 @@ export enum Services {
   CADASTRA_EMPRESA = 'cadastra-empresa', //ok
 
   LISTA_RECRUTADORES = 'lista-recrutador', // ok
-  CADASTRA_RECRUTADOR = 'cadastra-recritador', // ok
+  CADASTRA_RECRUTADOR = 'cadastra-recrutador', // ok
 
   LISTA_VAGA = 'lista-vagas', // ok
   CADASTRA_VAGA = 'cadastra-vaga', // ok
