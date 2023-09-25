@@ -3,9 +3,9 @@ export function calculateAge(dataNascimento: string) {
     (dataNascimento.includes('/') && dataNascimento.split('/')) ||
     (dataNascimento.includes('-') && dataNascimento.split('-')) ||
     []
-  const dia = parseInt(partes[0])
+  const dia = parseInt(partes[2])
   const mes = parseInt(partes[1])
-  const ano = parseInt(partes[2])
+  const ano = parseInt(partes[0])
 
   const dataAtual = new Date()
 

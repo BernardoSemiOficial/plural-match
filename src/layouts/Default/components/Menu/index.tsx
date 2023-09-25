@@ -30,8 +30,12 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
     router.push(PublicRoutes.LOGIN)
   }
 
-  const handleJobs = () => {
+  const handleClickJobs = () => {
     router.push(PrivateRoutes.JOBS)
+  }
+
+  const handleClickPeoples = () => {
+    router.push(PrivateRoutes.PEOPLES)
   }
 
   return (
@@ -57,13 +61,13 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
         <Box ml={1}>Perfil</Box>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleClickClose}>
+      <MenuItem onClick={handleClickPeoples}>
         <ListItemIcon>
           <People color={'primary'} fontSize='small' />
         </ListItemIcon>
         Candidatos
       </MenuItem>
-      <MenuItem onClick={handleJobs}>
+      <MenuItem onClick={handleClickJobs}>
         <ListItemIcon>
           <Work color={'primary'} fontSize='small' />
         </ListItemIcon>
