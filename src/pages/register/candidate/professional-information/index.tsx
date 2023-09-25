@@ -21,7 +21,7 @@ type FormProfessionalInformation = {
   profession: string
   workingModel: string
   hiringModel: string
-  salaryClaim: number
+  salaryClaim: string
   about: string
   professionalExperience: string
   academicExperience: string
@@ -33,7 +33,7 @@ const schema = yup
     profession: yup.string().required('A profissão é obrigatória'),
     workingModel: yup.string().required('O modelo de trabalho é obrigatório'),
     hiringModel: yup.string().required('O modelo de contratação é obrigatório'),
-    salaryClaim: yup.number().required('A pretensão salarial é obrigatória'),
+    salaryClaim: yup.string().required('A pretensão salarial é obrigatória'),
     about: yup.string().required('O sobre você é obrigatório'),
     professionalExperience: yup
       .string()
@@ -253,7 +253,7 @@ const ProfessionalInformation = () => {
               error={!!errors.salaryClaim?.message}
               helperText={errors.salaryClaim?.message}
               value={salaryClaim}
-              onChange={({ target }) => setSalaryClaim(Number(target.value))}
+              onChange={({ target }) => setSalaryClaim(target.value)}
             >
               {MOCK_SALARY_RANGE.map(salaryRange => (
                 <MenuItem key={salaryRange} value={salaryRange}>

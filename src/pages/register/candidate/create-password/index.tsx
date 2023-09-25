@@ -66,6 +66,7 @@ const CreatePassword = () => {
     mutationFn: async () =>
       await api.post(Services.CADASTRA_CANDIDATO, {
         ...candidate,
+        pretensaoSalarial: 9000,
         senha: password,
         id: createNumberID(),
       }),

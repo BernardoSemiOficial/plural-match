@@ -42,7 +42,7 @@ export type Candidate = {
   experienciaProfissional?: string
   experienciaAcademica?: string
   sonhosObjetivos?: string
-  pretensaoSalarial?: number
+  pretensaoSalarial?: string
   softSkills?: string[]
   hardSkills?: string[]
   vagasSelecionadas?: {

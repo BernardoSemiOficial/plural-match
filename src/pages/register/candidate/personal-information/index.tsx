@@ -104,6 +104,7 @@ const PersonalInformation = () => {
               id='name'
               type='text'
               placeholder='Nome'
+              label='Nome'
               value={name}
               onChange={({ target }) => setName(target.value)}
             />
@@ -120,6 +121,7 @@ const PersonalInformation = () => {
               id='social-name'
               type='text'
               placeholder='Nome social'
+              label='Nome social'
               value={socialName}
               onChange={({ target }) => setSocialName(target.value)}
             />
@@ -136,6 +138,7 @@ const PersonalInformation = () => {
               id='birthday'
               type='date'
               placeholder='Data de nascimento'
+              label='Data de nascimento'
               value={birthday}
               onChange={({ target }) => setBirthday(target.value)}
             />
@@ -152,6 +155,7 @@ const PersonalInformation = () => {
               id='city'
               type='text'
               placeholder='Cidade'
+              label='Cidade'
               value={city}
               onChange={({ target }) => setCity(target.value)}
             />
@@ -166,6 +170,7 @@ const PersonalInformation = () => {
               id='state'
               type='text'
               placeholder='Estado'
+              label='Estado'
               inputProps={register('state')}
               error={!!errors.state?.message}
               helperText={errors.state?.message}

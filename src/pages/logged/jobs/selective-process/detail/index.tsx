@@ -54,11 +54,6 @@ const Detail = () => {
   console.log('process', process)
   // const jobId = router.query?.id
 
-  const status = 'inProgress'
-  const labelStatus = {
-    inProgress: 'Em andamento',
-  }
-
   const handleChangeStatus = ({
     status,
     id,

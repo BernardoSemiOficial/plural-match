@@ -94,6 +94,7 @@ const People = () => {
             title: 'Descrição da vaga',
             description: job?.vaga?.descricao,
           }}
+          jobId={jobId}
         />
       )}
       {user?.tipo === UserType.RECRUITER && value === 1 && (
