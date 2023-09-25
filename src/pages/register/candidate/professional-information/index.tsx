@@ -9,6 +9,8 @@ import {
 import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { MOCK_HIRING_MODEL } from '@/mocks/hiringModel'
+import { MOCK_JOB_MODEL } from '@/mocks/jobModel'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -182,9 +184,11 @@ const ProfessionalInformation = () => {
               value={workingModel}
               onChange={({ target }) => setWorkingModel(target.value)}
             >
-              <MenuItem value='presencial'>Presencial</MenuItem>
-              <MenuItem value='home office'>Home Office</MenuItem>
-              <MenuItem value='híbrido'>Hibrido</MenuItem>
+              {MOCK_JOB_MODEL.map(option => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={1}>
@@ -202,8 +206,11 @@ const ProfessionalInformation = () => {
               value={hiringModel}
               onChange={({ target }) => setHiringModel(target.value)}
             >
-              <MenuItem value='CLT'>CLT</MenuItem>
-              <MenuItem value='PJ'>PJ</MenuItem>
+              {MOCK_HIRING_MODEL.map(option => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={1}>

@@ -4,40 +4,53 @@ import { CandidatedVacancies } from '@/components/CandidatedVacancies'
 import { ModalSelectJob } from '@/components/ModalSelectJob'
 import { SectionChips } from '@/components/SectionChips'
 import { SectionDescription } from '@/components/SectionDescription'
-import { SectionKeywords } from '@/components/SectionKeywords'
+import {
+  SectionKeywords,
+  SectionKeywordsProps,
+} from '@/components/SectionKeywords'
 import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
-import { Home, Info, Paid, Work } from '@mui/icons-material'
 import { Box, Button, Divider } from '@mui/material'
 
-import { HeaderProfile } from '../HeaderProfile'
+import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
-export const JobDetails: React.FC = () => {
+interface JobDetailsProps {
+  header: HeaderProfileProps
+  jobInfo: SectionKeywordsProps['keywords']
+}
+
+export const JobDetails: React.FC<JobDetailsProps> = ({ header, jobInfo }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
   return (
     <Box>
-      <HeaderProfile title='Bernardo Pereira Oliveira' description='18 anos' />
-      <Divider />
-      <Box
-        my={2}
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '8px',
-        }}
-      >
-        <SectionKeywords
-          keywords={[
-            { icon: <Work fontSize='small' />, label: 'Presencial' },
-            { icon: <Home fontSize='small' />, label: 'CLT' },
-            { icon: <Paid fontSize='small' />, label: 'A combinar' },
-            { icon: <Info fontSize='small' />, label: 'Classe Social D' },
-          ]}
-        />
-      </Box>
-      <Divider />
+      <HeaderProfile {...header} />
+      {jobInfo?.length && (
+        <>
+          <Divider style={{ marginTop: 16 }} />
+          <Box
+            my={2}
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+            }}
+          >
+            <SectionKeywords
+              keywords={jobInfo}
+              // keywords={[
+              //   { icon: <Work fontSize='small' />, label: 'Presencial' },
+              //   { icon: <Home fontSize='small' />, label: 'CLT' },
+              //   { icon: <Paid fontSize='small' />, label: 'A combinar' },
+              //   { icon: <Info fontSize='small' />, label: 'Classe Social D' },
+              // ]}
+            />
+          </Box>
+        </>
+      )}
+
+      <Divider style={{ marginTop: 16 }} />
       <Box mt={3}>
         <SectionChips title='Soft skills' labels={softSkillsAvailable} />
         <Box mt={2}>

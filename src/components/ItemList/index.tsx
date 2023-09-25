@@ -3,23 +3,31 @@ import React from 'react'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Avatar, Box, Divider, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
+import styles from './styles.module.css'
 
 export const ItemList: React.FC<{
+  onClick({ id }: { id: number }): void
   item: {
-    id: string | number
-    title: string
-    subtitle: string
-    descrition: string
+    id: number
+    title?: string
+    subtitle?: string
+    descrition?: string
     subDescription?: string
     img?: string
   }
-}> = ({ item }) => {
+}> = ({ item, onClick }) => {
   let labelDescription = item?.descrition
   if (item?.descrition && item?.subDescription) {
     labelDescription += ` ${item?.subDescription}`
   }
   return (
-    <Box mt={2} key={item.id}>
+    <div
+      className={styles.container}
+      key={item.id}
+      onClick={() => {
+        onClick?.({ id: item.id })
+      }}
+    >
       <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
         {item?.img ? (
           <Image
@@ -33,15 +41,15 @@ export const ItemList: React.FC<{
           />
         ) : (
           <Avatar sx={{ bgcolor: '#BA2649' }}>
-            {firstLetterOfFirstAndLastName(item.title)}
+            {item?.title ? firstLetterOfFirstAndLastName(item.title) : '-'}
           </Avatar>
         )}
         <Stack ml={2} flex={1}>
           <Typography variant='subtitle1' fontSize={16}>
-            {item.title}
+            {item?.title || '-'}
           </Typography>
           <Typography variant='body1' fontSize={14}>
-            {item.subtitle}
+            {item?.subtitle || '-'}
           </Typography>
           {!!labelDescription && (
             <Typography variant='body1' fontSize={12}>
@@ -53,6 +61,6 @@ export const ItemList: React.FC<{
       <Box my={2}>
         <Divider />
       </Box>
-    </Box>
+    </div>
   )
 }

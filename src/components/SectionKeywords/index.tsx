@@ -3,8 +3,8 @@ import { ReactElement } from 'react'
 import { createUUID } from '@/helpers/createUUID'
 import { Chip } from '@mui/material'
 
-interface SectionKeywordsProps {
-  keywords: {
+export interface SectionKeywordsProps {
+  keywords?: {
     icon: ReactElement
     label: string
   }[]
@@ -13,7 +13,7 @@ interface SectionKeywordsProps {
 export const SectionKeywords = ({ keywords }: SectionKeywordsProps) => {
   return (
     <>
-      {keywords.map(keyword => (
+      {keywords?.map(keyword => (
         <Chip
           key={createUUID()}
           icon={keyword.icon}

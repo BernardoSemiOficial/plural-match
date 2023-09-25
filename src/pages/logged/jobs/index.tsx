@@ -5,7 +5,6 @@ import { InputSearch } from '@/components/InputSearch'
 import { ItemList } from '@/components/ItemList'
 import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
-import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { AddOutlined } from '@mui/icons-material'
@@ -29,6 +28,12 @@ const Jobs = () => {
       target: { value },
     } = event ?? {}
     setFilters(typeof value === 'string' ? value.split(',') : value)
+  }
+
+  const handleJob = ({ id }: { id: number }) => {
+    router.push({
+      pathname: `${PrivateRoutes.JOBS}/${id}`,
+    })
   }
 
   return (
@@ -60,7 +65,8 @@ const Jobs = () => {
 
             return (
               <ItemList
-                key={createUUID()}
+                key={job.id_vaga}
+                onClick={handleJob}
                 {...{
                   item: {
                     id: job.id_vaga,

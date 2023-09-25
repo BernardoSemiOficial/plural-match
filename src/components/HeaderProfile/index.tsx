@@ -4,11 +4,17 @@ import { AvatarDescription } from '@/components/AvatarDescription'
 import CreateIcon from '@mui/icons-material/Create'
 import { Box } from '@mui/material'
 
-export const HeaderProfile: React.FC<{
-  title: string
-  description: string
+export interface HeaderProfileProps {
+  title?: string
+  description?: string
   edit?(): void
-}> = ({ title, description, edit }) => {
+}
+
+export const HeaderProfile: React.FC<HeaderProfileProps> = ({
+  title,
+  description,
+  edit,
+}) => {
   return (
     <Box>
       {!!edit && (
