@@ -11,7 +11,7 @@ interface AvatarDescriptionProps {
 
 export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
   let label
-  if (people?.age.includes('-')) {
+  if (people?.age?.includes('-')) {
     label = `${calculateAge(people?.age ?? '01-01-2000')} anos`
   } else {
     label = people?.age || '-'
