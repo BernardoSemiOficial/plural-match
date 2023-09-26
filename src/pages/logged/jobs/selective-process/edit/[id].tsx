@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react'
+import { ReactElement, useCallback, useContext, useMemo, useState } from 'react'
 import {
   FieldErrors,
   SubmitHandler,
@@ -147,7 +141,6 @@ const Step = ({
   register: UseFormRegister<any>
   errors: FieldErrors<any>
 }) => {
-  console.log('step <=======', step)
   const keyFieldName = setKeyStepField({ id: step, field: 'name' })
   const keyFieldDescription = setKeyStepField({
     id: step,
@@ -237,13 +230,27 @@ const Step = ({
 
 const RegisterJob = () => {
   const router = useRouter()
-  const { user } = useContext(loggedContext)
+  const jobId = router.query.id ?? 0
+  const { user, jobs } = useContext(loggedContext)
+
+  const job = useMemo(
+    () => jobs?.data?.find(item => item?.vaga?.id_vaga === Number(jobId)),
+    [jobId, jobs?.data]
+  )
+
+  const [jobTitle, setJobTitle] = useState(job?.vaga.titulo_vaga)
+  const [jobDescription, setJobDescription] = useState(job?.vaga.descricao)
+  const [workingModel, setWorkingModel] = useState(job?.vaga.modelo_trabalho)
+  const [hiringModel, setHiringModel] = useState(job?.vaga.modelo_contratacao)
+  const [salaryClaim, setSalaryClaim] = useState(job?.vaga.faixa_salarial)
+
+  const initStateVulnerability =
+    job?.vaga?.situacao_vulnerabilidade?.split(', ')
 
   const [steps, setSteps] = useState<number[]>([1])
-  console.log('steps', steps)
-  const [socialVulnerabilities, setSocialVulnerabilities] = React.useState<
-    string[]
-  >([])
+  const [socialVulnerabilities, setSocialVulnerabilities] = useState<string[]>(
+    initStateVulnerability ?? []
+  )
 
   const stepsSchemas = useMemo(() => {
     const schemas = steps?.map(id => createSchemaStep({ id })) || []
@@ -254,8 +261,6 @@ const RegisterJob = () => {
     const merged = merge(schema, ...stepsSchemas)
     return merged
   }, [stepsSchemas])
-
-  console.log('schemas', schemas)
 
   const {
     register,
@@ -268,7 +273,7 @@ const RegisterJob = () => {
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async (data: MutateModel) =>
-      api.post(Services.CADASTRA_VAGA, data),
+      api.post(Services.ATUALIZA_VAGA, data),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [Services.LISTA_VAGA] })
       router.back()
@@ -277,7 +282,6 @@ const RegisterJob = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data: any) => {
     console.log('data', data)
-    console.log('socialVulnerabilities', socialVulnerabilities)
 
     const stepsModel = steps?.map(step => {
       const keyFieldName = setKeyStepField({ id: step, field: 'name' })
@@ -296,12 +300,9 @@ const RegisterJob = () => {
       }
     })
 
-    console.log('stepsModel', stepsModel)
-
     const model: any = {
       id_vaga: createNumberID(),
       id_recrutador: user?.id,
-
       titulo_vaga: data.titulo_vaga,
       descricao: data.descricao,
       modelo_trabalho: data.modelo_trabalho,
@@ -310,11 +311,9 @@ const RegisterJob = () => {
       situacao_vulnerabilidade: socialVulnerabilities?.length
         ? socialVulnerabilities.join(', ')
         : '',
-
       etapas_processo_seletivo: stepsModel,
-      // ...data,
     }
-    console.log('model', model)
+
     mutate(model)
   }
 
@@ -350,14 +349,13 @@ const RegisterJob = () => {
   return (
     <Container>
       <Typography variant='h6' fontWeight='400'>
-        Crie sua vaga
+        Edição da vaga: {job?.vaga.titulo_vaga}
       </Typography>
       <Typography variant='subtitle1'>
-        Bem-vindo à nossa avançada tela de criação de vaga de trabalho,
-        projetada para tornar o processo de recrutamento mais simples e
-        eficiente. Com esta ferramenta intuitiva, você poderá preencher
-        informações básicas e definir as etapas do processo seletivo em poucos
-        passos.
+        Bem-vindo à nossa avançada tela de edição de vaga de trabalho, projetada
+        para tornar o processo de recrutamento mais simples e eficiente. Com
+        esta ferramenta intuitiva, você poderá preencher informações básicas e
+        definir as etapas do processo seletivo em poucos passos.
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box mt={3}>
@@ -376,6 +374,8 @@ const RegisterJob = () => {
             type='text'
             placeholder='Título da vaga'
             label='Título da vaga'
+            value={jobTitle}
+            onChange={({ target }) => setJobTitle(target.value)}
           />
         </Box>
         <Box mt={3}>
@@ -396,6 +396,8 @@ const RegisterJob = () => {
             type='text'
             placeholder='Descrição'
             label='Descrição'
+            value={jobDescription}
+            onChange={({ target }) => setJobDescription(target.value)}
           />
         </Box>
         <Box mt={3}>
@@ -409,6 +411,8 @@ const RegisterJob = () => {
             })}
             error={!!errors.modelo_trabalho?.message}
             helperText={errors.modelo_trabalho?.message}
+            value={workingModel}
+            onChange={({ target }) => setWorkingModel(target.value)}
           >
             {MOCK_JOB_MODEL.map(option => (
               <MenuItem key={option} value={option}>
@@ -428,6 +432,8 @@ const RegisterJob = () => {
             })}
             error={!!errors.modelo_contratacao?.message}
             helperText={errors.modelo_contratacao?.message}
+            value={hiringModel}
+            onChange={({ target }) => setHiringModel(target.value)}
           >
             {MOCK_HIRING_MODEL.map(option => (
               <MenuItem key={option} value={option}>
@@ -447,6 +453,8 @@ const RegisterJob = () => {
             })}
             error={!!errors.faixa_salarial?.message}
             helperText={errors.faixa_salarial?.message}
+            value={salaryClaim}
+            onChange={({ target }) => setSalaryClaim(target.value)}
           >
             {MOCK_SALARY_RANGE.map(option => (
               <MenuItem key={option} value={option}>
@@ -466,11 +474,11 @@ const RegisterJob = () => {
             multiple
             fullWidth
             size='small'
-            value={socialVulnerabilities}
-            onChange={handleChange}
             input={<OutlinedInput label='Situação de vulnerabilidade' />}
             renderValue={selected => selected.join(', ')}
             MenuProps={MenuProps}
+            value={socialVulnerabilities}
+            onChange={handleChange}
           >
             {MOCK_SOCIAL_VULNERABILITIES.map(name => (
               <MenuItem key={name.value} value={name.value}>

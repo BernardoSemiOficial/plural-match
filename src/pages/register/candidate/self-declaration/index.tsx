@@ -95,8 +95,7 @@ const SelfDeclaration = () => {
               variant='outlined'
               margin='dense'
               id='sexual-gender'
-              label='Gênero sexual'
-              defaultValue='Gênero sexual'
+              label='Gênero'
               inputProps={register('sexualGender')}
               error={!!errors.sexualGender?.message}
               helperText={errors.sexualGender?.message}
@@ -120,7 +119,6 @@ const SelfDeclaration = () => {
               margin='dense'
               id='sexual-orientation'
               label='Orientação sexual'
-              defaultValue='Orientação sexual'
               inputProps={register('sexualOrientation')}
               error={!!errors.sexualOrientation?.message}
               helperText={errors.sexualOrientation?.message}
@@ -145,7 +143,6 @@ const SelfDeclaration = () => {
               margin='dense'
               id='ethnicity'
               label='Etnia'
-              defaultValue='Etnia'
               inputProps={register('ethnicity')}
               error={!!errors.ethnicity?.message}
               helperText={errors.ethnicity?.message}
@@ -173,7 +170,6 @@ const SelfDeclaration = () => {
               margin='dense'
               id='social-class'
               label='Classe social'
-              defaultValue='Classe social'
               inputProps={register('socialClass')}
               error={!!errors.socialClass?.message}
               helperText={errors.socialClass?.message}
@@ -182,14 +178,7 @@ const SelfDeclaration = () => {
             >
               <MenuItem value='classe alta'>Classe Alta</MenuItem>
               <MenuItem value='classe média'>Classe Média</MenuItem>
-              <MenuItem value='classe trabalhadora'>
-                Classe Trabalhadora
-              </MenuItem>
               <MenuItem value='classe baixa'>Classe Baixa</MenuItem>
-              <MenuItem value='classe pobre'>Classe Pobre</MenuItem>
-              <MenuItem value='classe em vulnerabilidade social'>
-                Classe em Vulnerabilidade Social
-              </MenuItem>
               <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
             </TextField>
           </Box>
@@ -202,7 +191,6 @@ const SelfDeclaration = () => {
               margin='dense'
               id='deficiency'
               label='Deficiência'
-              defaultValue='Deficiência'
               inputProps={register('deficiency')}
               error={!!errors.deficiency?.message}
               helperText={errors.deficiency?.message}

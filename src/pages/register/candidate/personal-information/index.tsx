@@ -17,7 +17,7 @@ import * as yup from 'yup'
 
 type FormPersonalInformation = {
   name: string
-  socialName: string
+  socialName?: string
   birthday: string
   city: string
   state: string
@@ -29,10 +29,7 @@ const schema = yup
       .string()
       .required('O nome é obrigatório')
       .max(200, 'O máximo de caracteres é 200'),
-    socialName: yup
-      .string()
-      .required('O nome social é obrigatório')
-      .max(200, 'O máximo de caracteres é 200'),
+    socialName: yup.string().max(200, 'O máximo de caracteres é 200'),
     birthday: yup.string().required('A data de nascimento é obrigatória'),
     city: yup.string().required('A cidade é obrigatória'),
     state: yup.string().required('O estado é obrigatório'),
@@ -67,7 +64,7 @@ const PersonalInformation = () => {
   const handleSubmitForm: SubmitHandler<FormPersonalInformation> = data => {
     setCandidateData({
       nome: data.name,
-      nomeSocial: data.socialName,
+      nomeSocial: data.socialName ?? '',
       dataNascimento: data.birthday,
       cidade: data.city,
       estado: data.state,

@@ -20,6 +20,7 @@ export enum PrivateRoutes {
   COMPANY = '/logged/company',
   JOBS = '/logged/jobs',
   JOB_REGISTER = '/logged/jobs/selective-process/register',
+  JOB_EDIT = '/logged/jobs/selective-process/edit',
   PROCESS_DETAIL = '/logged/jobs/selective-process/detail',
   PEOPLES = '/logged/peoples',
 }

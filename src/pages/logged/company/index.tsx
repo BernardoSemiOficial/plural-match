@@ -1,4 +1,5 @@
 import { ReactElement, useContext, useMemo, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import recruiterAdd from '@/assets/svg/add-recruiter.svg'
 import { Modal } from '@/components/Modal'
@@ -26,7 +27,6 @@ import {
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 type Inputs = {
@@ -125,7 +125,7 @@ const Company = () => {
 
   return (
     <Container>
-      <Typography variant='h6'>Bem vindo, [Empresa]!</Typography>
+      <Typography variant='h6'>Bem vindo, {user?.nome}!</Typography>
       <Typography variant='subtitle1' mt={2}>
         Esses são os recrutadores que você tem cadastrado. Aqui você pode criar,
         editar e excluir acessos de maneira bem fácil.
