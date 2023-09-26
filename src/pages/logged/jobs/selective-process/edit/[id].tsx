@@ -7,6 +7,7 @@ import {
 } from 'react-hook-form'
 
 import { loggedContext } from '@/context/LoggedContext'
+import { PrivateRoutes } from '@/enums/routes'
 import { stagesSelectionProcess } from '@/enums/selection-process'
 import { Services } from '@/enums/services'
 import { createNumberID } from '@/helpers/createUUID'
@@ -280,6 +281,16 @@ const RegisterJob = () => {
     },
   })
 
+  const { mutate: mutateJobDelete, isLoading: isLoadingJobDelete } =
+    useMutation({
+      mutationFn: async () =>
+        api.delete(Services.DELETA_VAGA, { params: { id: jobId } }),
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: [Services.LISTA_VAGA] })
+        router.push(PrivateRoutes.JOBS)
+      },
+    })
+
   const onSubmit: SubmitHandler<Inputs> = (data: any) => {
     console.log('data', data)
 
@@ -315,6 +326,10 @@ const RegisterJob = () => {
     }
 
     mutate(model)
+  }
+
+  const handleClickJobDelete = () => {
+    mutateJobDelete()
   }
 
   const addStep = useCallback(() => {
@@ -530,12 +545,25 @@ const RegisterJob = () => {
         <Box mt={3}>
           <Button
             fullWidth
+            color='primary'
+            variant='contained'
+            size='medium'
+            type='submit'
+            disabled={isLoadingJobDelete}
+            onClick={handleClickJobDelete}
+          >
+            EXCLUIR PUBLICAÇÃO
+          </Button>
+        </Box>
+        <Box mt={1}>
+          <Button
+            fullWidth
             color='success'
             variant='contained'
             size='medium'
             type='submit'
           >
-            SALVAR
+            SALVAR ALTERAÇÕES
           </Button>
         </Box>
       </form>
