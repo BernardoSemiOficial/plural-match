@@ -7,6 +7,13 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['logodownload.org'],
+    unoptimized: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 }
 

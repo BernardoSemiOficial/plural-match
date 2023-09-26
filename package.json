@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "lint:pre-commit": "eslint --ext .js,.jsx,.ts,.tsx --fix",
