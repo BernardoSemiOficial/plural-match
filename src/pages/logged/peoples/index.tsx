@@ -76,40 +76,46 @@ export function CandidateList({
   candidates: Candidate[] | undefined
   onClick({ id }: { id: number }): void
 }) {
+  const { user } = useContext(loggedContext)
+
   return (
     <Box mt={4}>
-      {candidates?.map(candidate => {
-        const infos = [
-          candidate.sexo,
-          candidate.orientacaoSexual,
-          candidate.etnia,
-          candidate.classeSocial,
-          candidate.deficiencia,
-        ]
-        const concatInfo = infos
-          .filter(info => info !== 'nenhuma')
-          .reduce((concatInfo, info, idx, array) => {
-            if (info) concatInfo += info
-            if (idx < array.length - 2) concatInfo += ', '
-            if (idx === array.length - 2) concatInfo += ' e '
-            return concatInfo
-          }, '')
-        return (
-          <ItemList
-            key={createUUID()}
-            onClick={onClick}
-            {...{
-              item: {
-                id: String(candidate.id),
-                title: candidate?.nome ?? 'Nome',
-                subtitle: concatInfo ?? 'características pessoais',
-                descrition: 'Campinas',
-                subDescription: 'São Paulo',
-              },
-            }}
-          />
-        )
-      })}
+      {candidates
+        ?.filter(candidate => {
+          if (user?.id !== candidate.id) return candidate
+        })
+        ?.map(candidate => {
+          const infos = [
+            candidate.sexo,
+            candidate.orientacaoSexual,
+            candidate.etnia,
+            candidate.classeSocial,
+            candidate.deficiencia,
+          ]
+          const concatInfo = infos
+            .filter(info => info !== 'nenhuma')
+            .reduce((concatInfo, info, idx, array) => {
+              if (info) concatInfo += info
+              if (idx < array.length - 2) concatInfo += ', '
+              if (idx === array.length - 2) concatInfo += ' e '
+              return concatInfo
+            }, '')
+          return (
+            <ItemList
+              key={createUUID()}
+              onClick={onClick}
+              {...{
+                item: {
+                  id: String(candidate.id),
+                  title: candidate?.nome ?? 'Nome',
+                  subtitle: concatInfo ?? 'características pessoais',
+                  descrition: candidate.cidade ?? 'Campinas',
+                  subDescription: candidate.estado ?? 'São Paulo',
+                },
+              }}
+            />
+          )
+        })}
     </Box>
   )
 }

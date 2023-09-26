@@ -172,7 +172,6 @@ const Step = ({
           fullWidth
           size='small'
           label='Selecione o processo'
-          defaultValue=''
           inputProps={register(keyFieldName, {
             required: 'Selecione um processo',
           })}
@@ -354,9 +353,11 @@ const RegisterJob = () => {
         Crie sua vaga
       </Typography>
       <Typography variant='subtitle1'>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-        ever since the 1500s.
+        Bem-vindo à nossa avançada tela de criação de vaga de trabalho,
+        projetada para tornar o processo de recrutamento mais simples e
+        eficiente. Com esta ferramenta intuitiva, você poderá preencher
+        informações básicas e definir as etapas do processo seletivo em poucos
+        passos.
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box mt={3}>
@@ -403,7 +404,6 @@ const RegisterJob = () => {
             fullWidth
             size='small'
             label='Modelo de trabalho'
-            defaultValue=''
             inputProps={register('modelo_trabalho', {
               required: 'Selecione um modelo de trabalho',
             })}
@@ -423,7 +423,6 @@ const RegisterJob = () => {
             fullWidth
             size='small'
             label='Modelo de contratação'
-            defaultValue=''
             inputProps={register('modelo_contratacao', {
               required: 'Selecione um modelo de contratação',
             })}
@@ -443,7 +442,6 @@ const RegisterJob = () => {
             fullWidth
             size='small'
             label='Faixa salarial'
-            defaultValue=''
             inputProps={register('faixa_salarial', {
               required: 'Selecione uma faixa salarial',
             })}

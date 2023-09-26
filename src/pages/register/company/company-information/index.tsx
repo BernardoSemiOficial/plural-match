@@ -24,6 +24,7 @@ type Inputs = {
   localizacao: string
   fundacao: number
   site: string
+  imageUri: string
 }
 
 const schema = yup
@@ -54,6 +55,10 @@ const schema = yup
     site: yup
       .string()
       .required('O site da empresa é obrigatório')
+      .max(320, 'O máximo de caracteres é 320'),
+    imageUri: yup
+      .string()
+      .required('A imagem da empresa é obrigatório')
       .max(320, 'O máximo de caracteres é 320'),
   })
   .required()
@@ -149,7 +154,6 @@ const CompanyInformation = () => {
             fullWidth
             size='small'
             label='Setor de atuação'
-            defaultValue=''
             inputProps={register('setor', {
               required: 'Selecione um setor',
             })}
@@ -212,6 +216,23 @@ const CompanyInformation = () => {
             id='site'
             type='text'
             placeholder='Site institucional'
+          />
+        </Box>
+        <Box mt={1}>
+          <TextField
+            {...register('imageUri')}
+            helperText={errors.imageUri?.message}
+            error={!!errors.imageUri?.message}
+            inputProps={{
+              maxLength: 320,
+            }}
+            fullWidth
+            size='small'
+            variant='outlined'
+            margin='dense'
+            id='imageUri'
+            type='text'
+            placeholder='Imagem da empresa'
           />
         </Box>
         <Box mt={4}>

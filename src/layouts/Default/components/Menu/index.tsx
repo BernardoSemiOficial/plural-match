@@ -2,6 +2,7 @@ import { useContext } from 'react'
 
 import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes, PublicRoutes } from '@/enums/routes'
+import { UserType } from '@/enums/user-type'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Logout, People, Work } from '@mui/icons-material'
 import {
@@ -30,6 +31,17 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
     router.push(PublicRoutes.LOGIN)
   }
 
+  const handleClickProfile = () => {
+    router.push(PrivateRoutes.JOBS)
+
+    router.push({
+      pathname: `${PrivateRoutes.PEOPLES}/[id]`,
+      query: {
+        id: user?.id,
+      },
+    })
+  }
+
   const handleClickJobs = () => {
     router.push(PrivateRoutes.JOBS)
   }
@@ -54,25 +66,29 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
         horizontal: 'left',
       }}
     >
-      <MenuItem onClick={handleClickClose}>
-        <Avatar sx={{ bgcolor: '#BA2649' }}>
-          {firstLetterOfFirstAndLastName(user?.nome ?? 'XX XX')}
-        </Avatar>
-        <Box ml={1}>Perfil</Box>
-      </MenuItem>
-      <Divider />
-      <MenuItem onClick={handleClickPeoples}>
-        <ListItemIcon>
-          <People color={'primary'} fontSize='small' />
-        </ListItemIcon>
-        Candidatos
-      </MenuItem>
-      <MenuItem onClick={handleClickJobs}>
-        <ListItemIcon>
-          <Work color={'primary'} fontSize='small' />
-        </ListItemIcon>
-        Vagas
-      </MenuItem>
+      {user?.tipo !== UserType.COMPANY && (
+        <>
+          <MenuItem onClick={handleClickProfile}>
+            <Avatar sx={{ bgcolor: '#BA2649' }}>
+              {firstLetterOfFirstAndLastName(user?.nome ?? 'XX XX')}
+            </Avatar>
+            <Box ml={1}>Perfil</Box>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleClickPeoples}>
+            <ListItemIcon>
+              <People color={'primary'} fontSize='small' />
+            </ListItemIcon>
+            Candidatos
+          </MenuItem>
+          <MenuItem onClick={handleClickJobs}>
+            <ListItemIcon>
+              <Work color={'primary'} fontSize='small' />
+            </ListItemIcon>
+            Vagas
+          </MenuItem>
+        </>
+      )}
       <MenuItem onClick={handleClickLogout}>
         <ListItemIcon>
           <Logout color={'primary'} fontSize='small' />
