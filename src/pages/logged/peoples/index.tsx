@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useState } from 'react'
+import { ReactElement, useCallback, useContext, useMemo, useState } from 'react'
 
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
@@ -9,6 +9,7 @@ import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
+import { deepMatchValue } from '@/utils/search'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -28,6 +29,32 @@ const Peoples = () => {
     setFilters(typeof value === 'string' ? value.split(',') : value)
   }
 
+  const [search, setSearch] = useState('')
+
+  const filterJobs = useCallback((jobs: Candidate[], text?: string) => {
+    if (!text || !jobs) {
+      return jobs
+    }
+
+    return jobs.filter(
+      (item: Candidate) =>
+        deepMatchValue(item?.nome || '', text) ||
+        deepMatchValue(item?.sexo || '', text) ||
+        deepMatchValue(item?.orientacaoSexual || '', text) ||
+        deepMatchValue(item?.etnia || '', text) ||
+        deepMatchValue(item?.classeSocial || '', text) ||
+        deepMatchValue(item?.deficiencia || '', text)
+    )
+  }, [])
+
+  const filteredCandidates = useMemo(() => {
+    if (!search) {
+      return candidates?.data
+    }
+
+    return filterJobs(candidates?.data || [], search)
+  }, [candidates?.data, filterJobs, search])
+
   return (
     <Container>
       <Typography variant='h4' fontWeight='bold'>
@@ -35,6 +62,8 @@ const Peoples = () => {
       </Typography>
 
       <InputSearch
+        onChange={({ target }) => setSearch(target.value)}
+        value={search}
         placeholder='Pesquise por um candidato'
         id='candidates'
         type='candidates'
@@ -54,7 +83,7 @@ const Peoples = () => {
         </Box>
       ) : (
         <CandidateList
-          candidates={candidates.data}
+          candidates={filteredCandidates}
           onClick={({ id }: { id: number }) => {
             router.push({
               pathname: `${PrivateRoutes.PEOPLES}/[id]`,
