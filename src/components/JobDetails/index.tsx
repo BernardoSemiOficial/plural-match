@@ -106,19 +106,20 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
   const [loadingRelatorio, setLoadingRelatorio] = useState(false)
 
   const handleRelatorio = async () => {
-    try {
-      setLoadingRelatorio(true)
-      const response = await api.get(Services.GERAR_RELATORIO, {
-        params: {
-          idVaga: jobId,
-        },
-      })
-      console.log('response', response)
-    } catch (error) {
-      alert('Relatório indisponível')
-    } finally {
-      setLoadingRelatorio(false)
-    }
+    // try {
+    //   setLoadingRelatorio(true)
+    //   const response = await api.get(Services.GERAR_RELATORIO, {
+    //     params: {
+    //       idVaga: jobId,
+    //     },
+    //   })
+    //   console.log('response', response)
+    // } catch (error) {
+    //   alert('Relatório indisponível')
+    // } finally {
+    //   setLoadingRelatorio(false)
+    // }
+    window.open(`https://localhost:7260/relatorio-candidatos?idVaga=${jobId}`)
   }
 
   return (
