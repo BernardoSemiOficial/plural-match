@@ -1,6 +1,5 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo } from 'react'
 
-import { ModalSelectJob } from '@/components/ModalSelectJob'
 import {
   SectionDescription,
   SectionDescriptionProps,
@@ -37,10 +36,6 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
   const router = useRouter()
   const { user, candidates } = useContext(loggedContext)
   console.log('candidates =========>', candidates)
-  const [open, setOpen] = useState(false)
-
-  const handleClickOpen = () => setOpen(true)
-  const handleClickClose = () => setOpen(false)
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async (queryString: {
@@ -158,8 +153,6 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
       <Box mt={3}>
         {!!description && <SectionDescription {...description} />}
       </Box>
-
-      <ModalSelectJob {...{ open, handleClickClose }} />
     </Box>
   )
 }

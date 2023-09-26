@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useState } from 'react'
+import { ReactElement, useContext, useMemo, useState } from 'react'
 
 import { CandidatedVacancies } from '@/components/CandidatedVacancies'
 import { HeaderProfile } from '@/components/HeaderProfile'
@@ -8,23 +8,41 @@ import { SectionDescription } from '@/components/SectionDescription'
 import { SectionKeywords } from '@/components/SectionKeywords'
 import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
+import { Services } from '@/enums/services'
 import { UserType } from '@/enums/user-type'
 import { calculateAge } from '@/helpers/calculateAge'
-import { Default } from '@/layouts/Default'
+import { Default, queryClient } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
+import { api } from '@/services/api'
 import { Home, Info, Paid, Work } from '@mui/icons-material'
 import { Box, Button, Divider } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 const People = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (queryString: {
+      idCandidato?: number
+      idVaga?: string
+      idEtapa?: number | null
+    }) =>
+      api.post(`${Services.ATRELA_CANDIDATO_VAGA}`, null, {
+        params: queryString,
+      }),
+    onSuccess() {
+      console.log('trocou o status com sucesso')
+      queryClient.invalidateQueries({ queryKey: [Services.LISTA_CANDIDATOS] })
+    },
+  })
+
   const handleClickOpen = () => setOpen(true)
   const handleClickClose = () => setOpen(false)
 
-  const { candidates, user } = useContext(loggedContext)
+  const { candidates, user, jobs } = useContext(loggedContext)
 
   const candidateId = router.query.id
 
@@ -47,6 +65,23 @@ const People = () => {
         jobId: idJob,
       },
     })
+  }
+
+  const filteredJobs = useMemo(
+    () => jobs?.data?.filter(job => job.vaga?.id_recrutador === user?.id),
+    [jobs?.data, user?.id]
+  )
+  console.log('filteredJobs', filteredJobs)
+  console.log('jobs', jobs)
+
+  const handleAtrelaCandidato = ({ idJob }) => {
+    const model = {
+      idCandidato: candidateId,
+      idVaga: idJob,
+      idEtapa: null,
+    }
+    console.log('model', model)
+    mutate(model)
   }
 
   return (
@@ -154,7 +189,15 @@ const People = () => {
           </Box>
         </Box>
 
-        <ModalSelectJob {...{ open, handleClickClose }} />
+        <ModalSelectJob
+          {...{
+            open,
+            handleClickClose,
+            onClick: handleAtrelaCandidato,
+            isLoading,
+          }}
+          jobs={filteredJobs}
+        />
       </Box>
     </Container>
   )

@@ -81,7 +81,7 @@ const Jobs = () => {
                     id: job?.vaga?.id_vaga,
                     title: job?.vaga?.titulo_vaga,
                     subtitle: subtitle,
-                    descrition: 'Nubank',
+                    descrition: job?.empresa?.nome,
                     // subDescription: job.state,
                   },
                 }}

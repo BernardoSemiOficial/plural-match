@@ -10,6 +10,13 @@ interface AvatarDescriptionProps {
 }
 
 export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
+  let label
+  if (people?.age.includes('-')) {
+    label = `${calculateAge(people?.age ?? '01-01-2000')} anos`
+  } else {
+    label = people?.age || '-'
+  }
+
   return (
     <Stack direction='row' spacing={2} alignItems={'center'}>
       <Avatar sx={{ bgcolor: '#BA2649' }}>
@@ -20,9 +27,7 @@ export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
           {people.name}
         </Typography>
         <Box mb={1}>
-          <Typography variant='h5'>
-            {calculateAge(people?.age ?? '01-01-2000')} anos
-          </Typography>
+          <Typography variant='h5'>{label}</Typography>
         </Box>
       </Box>
     </Stack>

@@ -87,7 +87,7 @@ const People = () => {
         <JobDetails
           header={{
             title: job?.vaga?.titulo_vaga,
-            description: 'Empresa',
+            description: job?.empresa?.nome,
           }}
           jobInfo={jobInfo}
           description={{
@@ -101,7 +101,7 @@ const People = () => {
         <JobSelectionProcess
           header={{
             title: job?.vaga?.titulo_vaga,
-            description: 'Empresa',
+            description: job?.empresa?.nome,
           }}
           candidates={filteredCandidatesPerJob || []}
           onClick={({ id }: { id: number }) => {
