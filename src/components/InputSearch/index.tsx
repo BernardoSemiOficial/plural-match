@@ -7,6 +7,7 @@ export const InputSearch: React.FC<TextFieldProps> = ({
   placeholder,
   id,
   type,
+  ...rest
 }) => {
   return (
     <Box mt={1}>
@@ -16,6 +17,7 @@ export const InputSearch: React.FC<TextFieldProps> = ({
         variant='outlined'
         margin='dense'
         {...{ placeholder, type, id }}
+        {...rest}
       />
     </Box>
   )

@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useState } from 'react'
+import { ReactElement, useCallback, useContext, useMemo, useState } from 'react'
 
 import { DropDownFilter } from '@/components/DropdownFilter'
 import { InputSearch } from '@/components/InputSearch'
@@ -8,6 +8,8 @@ import { PrivateRoutes } from '@/enums/routes'
 import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { Job } from '@/model/job'
+import { deepMatchValue } from '@/utils/search'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Fab, Typography } from '@mui/material'
@@ -15,7 +17,6 @@ import { useRouter } from 'next/router'
 
 const Jobs = () => {
   const router = useRouter()
-
   const [filters, setFilters] = useState<string[]>([])
 
   const { jobs, user } = useContext(loggedContext)
@@ -38,13 +39,41 @@ const Jobs = () => {
     })
   }
 
+  const [search, setSearch] = useState('')
+
+  const filterJobs = useCallback((jobs: Job[], text?: string) => {
+    if (!text || !jobs) {
+      return jobs
+    }
+
+    return jobs.filter(
+      (item: Job) =>
+        deepMatchValue(item?.vaga?.titulo_vaga || '', text) ||
+        deepMatchValue(item?.empresa?.nome || '', text)
+    )
+  }, [])
+
+  const filteredJobs = useMemo(() => {
+    if (!search) {
+      return jobs?.data
+    }
+
+    return filterJobs(jobs?.data || [], search)
+  }, [filterJobs, jobs?.data, search])
+
   return (
     <Container>
       <Typography variant='h4' fontWeight='bold'>
         Buscar vagas
       </Typography>
 
-      <InputSearch placeholder='Vagas' id='jobs' type='jobs' />
+      <InputSearch
+        onChange={({ target }) => setSearch(target.value)}
+        value={search}
+        placeholder='Vagas'
+        id='jobs'
+        type='jobs'
+      />
 
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
 
@@ -60,7 +89,7 @@ const Jobs = () => {
         </Box>
       ) : (
         <Box mt={4}>
-          {jobs?.data?.map(job => {
+          {filteredJobs?.map(job => {
             if (
               job?.vaga?.id_vaga === undefined ||
               job?.vaga?.id_vaga === null
