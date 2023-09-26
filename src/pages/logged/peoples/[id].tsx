@@ -10,7 +10,6 @@ import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
 import { UserType } from '@/enums/user-type'
-import { calculateAge } from '@/helpers/calculateAge'
 import { Default, queryClient } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { hardSkillsAvailable, softSkillsAvailable } from '@/mocks/skills'
@@ -24,13 +23,13 @@ const People = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
-  const { mutate, isLoading, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async (queryString: {
-      idCandidato?: number
-      idVaga?: string
-      idEtapa?: number | null
+      idCandidato: number
+      idVaga: number
+      idEtapa: number | null
     }) =>
-      api.post(`${Services.ATRELA_CANDIDATO_VAGA}`, null, {
+      api.post(Services.ATRELA_CANDIDATO_VAGA, {
         params: queryString,
       }),
     onSuccess() {
@@ -50,19 +49,14 @@ const People = () => {
     candidate => String(candidate.id) === candidateId
   )
 
-  console.log('candidateSelected', candidateSelected)
-
-  const age = calculateAge(candidateSelected?.dataNascimento ?? '01-01-2000')
-
   const isLoggedCandidate = Number(candidateId) === user?.id
 
-  const openSelectedJob = ({ idJob }: { idJob?: number }) => {
-    console.log('idJob', idJob)
+  const openSelectedJob = ({ idVaga }: { idVaga: number }) => {
     router.push({
       pathname: `${PrivateRoutes.PROCESS_DETAIL}`,
       query: {
         candidateId: user?.id,
-        jobId: idJob,
+        jobId: idVaga,
       },
     })
   }
@@ -74,10 +68,10 @@ const People = () => {
   console.log('filteredJobs', filteredJobs)
   console.log('jobs', jobs)
 
-  const handleAtrelaCandidato = ({ idJob }) => {
+  const handleAtrelaCandidato = ({ idVaga }: { idVaga: number }) => {
     const model = {
+      idVaga,
       idCandidato: candidateId,
-      idVaga: idJob,
       idEtapa: null,
     }
     console.log('model', model)
@@ -89,7 +83,7 @@ const People = () => {
       <Box>
         <HeaderProfile
           title={candidateSelected?.nome ?? 'Nome'}
-          description={age + ' anos'}
+          age={candidateSelected?.dataNascimento}
         />
         <Divider />
         <Box

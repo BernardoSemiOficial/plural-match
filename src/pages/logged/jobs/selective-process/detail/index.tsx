@@ -1,12 +1,11 @@
 import { ReactElement, useContext, useMemo } from 'react'
 
-import { Default, queryClient } from '@/layouts/Default'
-import { Container } from '@/layouts/Default/components/Container/Container'
-
 import { HeaderProfile } from '@/components/HeaderProfile'
 import { SelectiveProcessStep } from '@/components/SelectiveProcessStep'
 import { loggedContext } from '@/context/LoggedContext'
 import { Services } from '@/enums/services'
+import { Default, queryClient } from '@/layouts/Default'
+import { Container } from '@/layouts/Default/components/Container/Container'
 import { StatusStep } from '@/model/step'
 import { api } from '@/services/api'
 import { Box, Divider, Typography } from '@mui/material'
@@ -75,10 +74,7 @@ const Detail = () => {
 
   return (
     <Container>
-      <HeaderProfile
-        title={candidate?.nome}
-        description={candidate?.dataNascimento}
-      />
+      <HeaderProfile title={candidate?.nome} age={candidate?.dataNascimento} />
 
       <Box my={2}>
         <Divider />
@@ -87,9 +83,6 @@ const Detail = () => {
       <Typography fontSize={16} fontWeight={600}>
         Progresso no processo seletivo
       </Typography>
-      {/* <Typography fontSize={14} fontFamily='bold'>
-        status: {labelStatus[status]}
-      </Typography> */}
 
       <Box my={2}>
         <Divider />
@@ -103,11 +96,11 @@ const Detail = () => {
           }}
           {...{ idx }}
           step={{
-            description: step?.descricao_etapa_processo_seletivo,
-            title: step?.name,
-            links: step?.link_util,
-            id: step?.id,
-            status: step?.status,
+            description: step?.descricao_etapa_processo_seletivo ?? '',
+            title: step?.name ?? '',
+            links: step?.link_util ?? '',
+            id: String(step?.id ?? ''),
+            status: step?.status ?? '',
           }}
         />
       ))}

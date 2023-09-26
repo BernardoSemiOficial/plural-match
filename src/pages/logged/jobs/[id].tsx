@@ -16,27 +16,21 @@ const People = () => {
   const router = useRouter()
   const [value, setValue] = useState(0)
 
-  const jobId = router.query?.id
+  const jobId = Number(router.query?.id) ?? 0
   const { jobs, candidates, user } = useContext(loggedContext)
   const job = useMemo(
     () => jobs?.data?.find(item => item?.vaga?.id_vaga === Number(jobId)),
     [jobId, jobs?.data]
   )
-  console.log('job', job)
-  console.log('jobId', jobId)
-  console.log('candidates', candidates)
 
   const filteredCandidatesPerJob = useMemo(() => {
     const filtered = candidates?.data?.filter(candidate => {
       const jobs = candidate?.vagasSelecionadas
-      console.log('jobs --->', jobs)
       const findJobs = jobs?.find(job => job.vaga.id_recrutador === user?.id)
       return !!findJobs
     })
     return filtered
   }, [candidates?.data, user?.id])
-
-  console.log('filteredCandidatesPerJob', filteredCandidatesPerJob)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -87,7 +81,8 @@ const People = () => {
         <JobDetails
           header={{
             title: job?.vaga?.titulo_vaga,
-            description: job?.empresa?.nome,
+            company: job?.empresa?.nome,
+            jobIdEdit: job?.vaga.id_vaga,
           }}
           jobInfo={jobInfo}
           description={{
@@ -97,11 +92,13 @@ const People = () => {
           jobId={jobId}
         />
       )}
+
       {user?.tipo === UserType.RECRUITER && value === 1 && (
         <JobSelectionProcess
           header={{
             title: job?.vaga?.titulo_vaga,
-            description: job?.empresa?.nome,
+            company: job?.empresa?.nome,
+            jobIdEdit: job?.vaga.id_vaga,
           }}
           candidates={filteredCandidatesPerJob || []}
           onClick={({ id }: { id: number }) => {

@@ -8,23 +8,23 @@ import {
   SectionKeywords,
   SectionKeywordsProps,
 } from '@/components/SectionKeywords'
-import { Box, Button, CircularProgress, Divider } from '@mui/material'
-
 import { loggedContext } from '@/context/LoggedContext'
 import { PrivateRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
 import { UserType } from '@/enums/user-type'
 import { queryClient } from '@/layouts/Default'
 import { api } from '@/services/api'
+import { Box, Button, CircularProgress, Divider } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+
 import { HeaderProfile, HeaderProfileProps } from '../HeaderProfile'
 
 interface JobDetailsProps {
   header: HeaderProfileProps
   jobInfo: SectionKeywordsProps['keywords']
   description?: SectionDescriptionProps
-  jobId: string
+  jobId: number
 }
 
 export const JobDetails: React.FC<JobDetailsProps> = ({
