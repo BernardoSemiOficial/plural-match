@@ -26,7 +26,7 @@ const People = () => {
   const filteredCandidatesPerJob = useMemo(() => {
     const filtered = candidates?.data?.filter(candidate => {
       const jobs = candidate?.vagasSelecionadas
-      const findJobs = jobs?.find(job => job.vaga.id_recrutador === user?.id)
+      const findJobs = jobs?.find(job => job?.vaga?.id_recrutador === user?.id)
       return !!findJobs
     })
     return filtered
