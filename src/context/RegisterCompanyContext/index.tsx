@@ -29,7 +29,7 @@ export const RegisterCompanyProvider = ({
   children,
 }: RegisterCompanyProviderProps) => {
   const [localStorageValue, setLocalStorageValue] = useLocalStorage<Company>(
-    LocalStorageKeys.REGISTER_CANDIDATE,
+    LocalStorageKeys.REGISTER_COMPANY,
     {} as Company
   )
   const [company, setCompany] = useState<Company>(localStorageValue)
