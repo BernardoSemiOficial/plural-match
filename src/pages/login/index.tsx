@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useState } from 'react'
 
 import { loggedContext } from '@/context/LoggedContext'
-import { PrivateRoutes } from '@/enums/routes'
+import { PrivateRoutes, PublicRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
 import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
@@ -13,6 +13,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Link,
   TextField,
   Typography,
 } from '@mui/material'
@@ -105,6 +106,13 @@ const Login = () => {
             'Acessar conta'
           )}
         </Button>
+      </Box>
+      <Box mt={2}>
+        <Link href={PublicRoutes.ONBOARDING}>
+          <Button fullWidth variant='text' size='medium'>
+            Não possue conta? crie uma agora mesmo
+          </Button>
+        </Link>
       </Box>
     </Container>
   )

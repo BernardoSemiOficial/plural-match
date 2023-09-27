@@ -73,10 +73,6 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
     return jobs?.filter((job: Job) => job?.vaga.id_recrutador === user?.id)
   }, [jobs, user?.id, user?.tipo])
 
-  console.log('user', user)
-  console.log('candidates', candidates)
-  console.log('filteredJobs', filteredJobs)
-
   const setLoginData = useCallback(
     (user?: User) => {
       setUser(_ => {

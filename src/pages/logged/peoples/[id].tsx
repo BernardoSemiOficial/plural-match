@@ -33,7 +33,6 @@ const People = () => {
         params: queryString,
       }),
     onSuccess() {
-      console.log('trocou o status com sucesso')
       queryClient.invalidateQueries({ queryKey: [Services.LISTA_CANDIDATOS] })
     },
   })
@@ -65,8 +64,6 @@ const People = () => {
     () => jobs?.data?.filter(job => job.vaga?.id_recrutador === user?.id),
     [jobs?.data, user?.id]
   )
-  console.log('filteredJobs', filteredJobs)
-  console.log('jobs', jobs)
 
   const handleAtrelaCandidato = ({ idVaga }: { idVaga: number }) => {
     const model = {
@@ -74,7 +71,6 @@ const People = () => {
       idCandidato: candidateId,
       idEtapa: null,
     }
-    console.log('model', model)
     mutate(model)
   }
 

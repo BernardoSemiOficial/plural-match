@@ -102,7 +102,6 @@ function setKeyStepField({
 }
 
 function createSchemaStep({ id }: { id: number }) {
-  console.log('createSchemaStep', id)
   const schemaStep = yup
     .object({
       [setKeyStepField({ id, field: 'name' })]: yup
@@ -149,9 +148,6 @@ const Step = ({
   })
   const keyFieldLinks = setKeyStepField({ id: step, field: 'link_util' })
 
-  console.log('keyFieldName', keyFieldName)
-  console.log('keyFieldDescription', keyFieldDescription)
-  console.log('keyFieldLinks', keyFieldLinks)
   return (
     <>
       <Stack
@@ -292,8 +288,6 @@ const RegisterJob = () => {
     })
 
   const onSubmit: SubmitHandler<Inputs> = (data: any) => {
-    console.log('data', data)
-
     const stepsModel = steps?.map(step => {
       const keyFieldName = setKeyStepField({ id: step, field: 'name' })
       const keyFieldDescription = setKeyStepField({

@@ -73,8 +73,6 @@ const Company = () => {
     queryFn: async () => (await api.get(Services.LISTA_RECRUTADORES)).data,
   })
 
-  console.log('recruiters', recruiters)
-
   const { user } = useContext(loggedContext)
 
   const {
@@ -108,7 +106,6 @@ const Company = () => {
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     if (!user?.id) {
-      console.log('EMPRESA ID VAZIO')
       return
     }
 
@@ -117,7 +114,6 @@ const Company = () => {
       id: createNumberID(),
       empresaId: user?.id,
     }
-    console.log('model', model)
     mutate(model)
   }
 

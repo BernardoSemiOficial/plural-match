@@ -29,7 +29,6 @@ const Detail = () => {
         params: queryString,
       }),
     onSuccess() {
-      console.log('trocou o status com sucesso')
       queryClient.invalidateQueries({ queryKey: [Services.LISTA_CANDIDATOS] })
     },
   })
@@ -46,12 +45,6 @@ const Detail = () => {
       ),
     [candidate?.vagasSelecionadas, jobId]
   )
-
-  console.log('candidates?.data', candidates?.data)
-  console.log('candidate', candidate)
-  console.log('candidateId', candidateId)
-  console.log('process', process)
-  // const jobId = router.query?.id
 
   const handleChangeStatus = ({
     status,

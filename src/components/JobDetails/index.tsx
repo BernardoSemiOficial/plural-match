@@ -35,7 +35,6 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
 }) => {
   const router = useRouter()
   const { user, candidates } = useContext(loggedContext)
-  console.log('candidates =========>', candidates)
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async (queryString: {
@@ -47,7 +46,6 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
         params: queryString,
       }),
     onSuccess() {
-      console.log('trocou o status com sucesso')
       queryClient.invalidateQueries({ queryKey: [Services.LISTA_CANDIDATOS] })
     },
   })
@@ -59,13 +57,9 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
       return
     }
 
-    console.log('user?.id', user?.id)
-
     const currentCandidate = candidates?.data?.find(
       candidate => candidate.id === user?.id
     )
-
-    console.log('currentCandidate', currentCandidate)
 
     const findJobs = currentCandidate?.vagasSelecionadas?.find(
       job => job.vaga.id_vaga === Number(jobId)

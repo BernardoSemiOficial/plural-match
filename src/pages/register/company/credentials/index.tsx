@@ -1,19 +1,7 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { useRouter } from 'next/router'
 import { ReactElement, useContext } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import * as yup from 'yup'
 
 import {
-  Company,
   RegisterCompanyProvider,
   registerCompanyContext,
 } from '@/context/RegisterCompanyContext'
@@ -23,8 +11,20 @@ import { Services } from '@/enums/services'
 import { createNumberID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { Company } from '@/model/company'
 import { api } from '@/services/api'
+import { yupResolver } from '@hookform/resolvers/yup'
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+import * as yup from 'yup'
 
 type Inputs = {
   email: string
@@ -75,7 +75,6 @@ const CompanyCredentials = () => {
       ...data,
       id: createNumberID(),
     }
-    console.log('model', model)
     mutate(model)
   }
 

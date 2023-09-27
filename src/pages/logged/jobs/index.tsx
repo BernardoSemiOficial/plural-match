@@ -20,8 +20,6 @@ const Jobs = () => {
   const [filters, setFilters] = useState<string[]>([])
 
   const { jobs, user } = useContext(loggedContext)
-  console.log('jobs', jobs?.data)
-  console.log('error', jobs?.error)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>

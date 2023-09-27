@@ -107,7 +107,6 @@ function setKeyStepField({
 }
 
 function createSchemaStep({ id }: { id: number }) {
-  console.log('createSchemaStep', id)
   const schemaStep = yup
     .object({
       [setKeyStepField({ id, field: 'name' })]: yup
@@ -147,7 +146,6 @@ const Step = ({
   register: UseFormRegister<any>
   errors: FieldErrors<any>
 }) => {
-  console.log('step <=======', step)
   const keyFieldName = setKeyStepField({ id: step, field: 'name' })
   const keyFieldDescription = setKeyStepField({
     id: step,
@@ -155,9 +153,6 @@ const Step = ({
   })
   const keyFieldLinks = setKeyStepField({ id: step, field: 'link_util' })
 
-  console.log('keyFieldName', keyFieldName)
-  console.log('keyFieldDescription', keyFieldDescription)
-  console.log('keyFieldLinks', keyFieldLinks)
   return (
     <>
       <Stack
@@ -240,7 +235,6 @@ const RegisterJob = () => {
   const { user } = useContext(loggedContext)
 
   const [steps, setSteps] = useState<number[]>([1])
-  console.log('steps', steps)
   const [socialVulnerabilities, setSocialVulnerabilities] = React.useState<
     string[]
   >([])
@@ -254,8 +248,6 @@ const RegisterJob = () => {
     const merged = merge(schema, ...stepsSchemas)
     return merged
   }, [stepsSchemas])
-
-  console.log('schemas', schemas)
 
   const {
     register,
@@ -276,9 +268,6 @@ const RegisterJob = () => {
   })
 
   const onSubmit: SubmitHandler<Inputs> = (data: any) => {
-    console.log('data', data)
-    console.log('socialVulnerabilities', socialVulnerabilities)
-
     const stepsModel = steps?.map(step => {
       const keyFieldName = setKeyStepField({ id: step, field: 'name' })
       const keyFieldDescription = setKeyStepField({
@@ -296,8 +285,6 @@ const RegisterJob = () => {
       }
     })
 
-    console.log('stepsModel', stepsModel)
-
     const model: any = {
       id_vaga: createNumberID(),
       id_recrutador: user?.id,
@@ -314,7 +301,6 @@ const RegisterJob = () => {
       etapas_processo_seletivo: stepsModel,
       // ...data,
     }
-    console.log('model', model)
     mutate(model)
   }
 
