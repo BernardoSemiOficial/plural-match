@@ -26,11 +26,14 @@ const People = () => {
   const filteredCandidatesPerJob = useMemo(() => {
     const filtered = candidates?.data?.filter(candidate => {
       const jobs = candidate?.vagasSelecionadas
-      const findJobs = jobs?.find(job => job.vaga.id_recrutador === user?.id)
+      const findJobs = jobs?.find(job => job?.vaga?.id_vaga === Number(jobId))
       return !!findJobs
     })
     return filtered
-  }, [candidates?.data, user?.id])
+  }, [candidates?.data, jobId])
+
+  console.log('filteredCandidatesPerJob', filteredCandidatesPerJob)
+  console.log('user?.id', user?.id)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

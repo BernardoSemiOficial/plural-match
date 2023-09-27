@@ -16,4 +16,6 @@ export enum Services {
   ATUALIZA_VAGA = 'atualiza-vaga', // por último
   ATUALIZA_STATUS_VAGA = 'altera-status-processo', // por último
   DELETA_VAGA = 'deleta-vaga',
+
+  GERAR_RELATORIO = 'relatorio-candidatos',
 }

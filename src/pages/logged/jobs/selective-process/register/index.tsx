@@ -299,6 +299,7 @@ const RegisterJob = () => {
         : '',
 
       etapas_processo_seletivo: stepsModel,
+      candidatos: [],
       // ...data,
     }
     mutate(model)

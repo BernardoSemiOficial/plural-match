@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 
 import {
   SectionDescription,
@@ -97,6 +97,25 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
     }
   }
 
+  const [loadingRelatorio, setLoadingRelatorio] = useState(false)
+
+  const handleRelatorio = async () => {
+    // try {
+    //   setLoadingRelatorio(true)
+    //   const response = await api.get(Services.GERAR_RELATORIO, {
+    //     params: {
+    //       idVaga: jobId,
+    //     },
+    //   })
+    //   console.log('response', response)
+    // } catch (error) {
+    //   alert('Relatório indisponível')
+    // } finally {
+    //   setLoadingRelatorio(false)
+    // }
+    window.open(`https://localhost:7260/relatorio-candidatos?idVaga=${jobId}`)
+  }
+
   return (
     <Box>
       <HeaderProfile {...header} />
@@ -116,7 +135,6 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
         </>
       )}
 
-      <Divider style={{ marginTop: 16 }} />
       {/*
       <Box mt={3}>
         <SectionChips title='Soft skills' labels={softSkillsAvailable} />
@@ -126,21 +144,47 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
       </Box> */}
 
       {user?.tipo === UserType.CANDIDATE && (
-        <Box my={3}>
-          <Button
-            fullWidth
-            variant='contained'
-            color={canApply ? 'success' : 'primary'}
-            size='medium'
-            onClick={handleButton}
-          >
-            {isLoading ? (
-              <CircularProgress color='inherit' size={20} />
-            ) : (
-              labelButton
-            )}
-          </Button>
-        </Box>
+        <>
+          <Divider style={{ marginTop: 16 }} />
+
+          <Box my={3}>
+            <Button
+              fullWidth
+              variant='contained'
+              color={canApply ? 'success' : 'primary'}
+              size='medium'
+              onClick={handleButton}
+            >
+              {isLoading ? (
+                <CircularProgress color='inherit' size={20} />
+              ) : (
+                labelButton
+              )}
+            </Button>
+          </Box>
+        </>
+      )}
+
+      {user?.tipo === UserType.RECRUITER && (
+        <>
+          <Divider style={{ marginTop: 16 }} />
+
+          <Box my={3}>
+            <Button
+              fullWidth
+              variant='contained'
+              color={'primary'}
+              size='medium'
+              onClick={handleRelatorio}
+            >
+              {loadingRelatorio ? (
+                <CircularProgress color='inherit' size={20} />
+              ) : (
+                'Gerar relatório'
+              )}
+            </Button>
+          </Box>
+        </>
       )}
 
       <Divider style={{ marginTop: 16 }} />

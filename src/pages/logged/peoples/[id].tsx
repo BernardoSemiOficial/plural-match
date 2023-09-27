@@ -29,7 +29,7 @@ const People = () => {
       idVaga: number
       idEtapa: number | null
     }) =>
-      api.post(Services.ATRELA_CANDIDATO_VAGA, {
+      api.post(Services.ATRELA_CANDIDATO_VAGA, null, {
         params: queryString,
       }),
     onSuccess() {
@@ -65,11 +65,11 @@ const People = () => {
     [jobs?.data, user?.id]
   )
 
-  const handleAtrelaCandidato = ({ idVaga }: { idVaga: number }) => {
+  const handleAtrelaCandidato = ({ idJob }: { idJob: number }) => {
     const model = {
-      idVaga,
+      idVaga: idJob,
       idCandidato: candidateId,
-      idEtapa: null,
+      idEtapa: 0,
     }
     mutate(model)
   }
