@@ -15,6 +15,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  trailingSlash: true,
 }
 
 module.exports = withVanillaExtract(nextConfig)
