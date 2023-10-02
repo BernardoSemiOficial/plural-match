@@ -83,15 +83,6 @@ const Company = () => {
   const handleClickShowConfirmationPassword = () =>
     setShowConfirmationPassword(show => !show)
 
-  const {
-    data: recruiters,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: [Services.LISTA_RECRUTADORES],
-    queryFn: async () => (await api.get(Services.LISTA_RECRUTADORES)).data,
-  })
-
   const { user } = useContext(loggedContext)
 
   const {
@@ -104,9 +95,18 @@ const Company = () => {
   })
 
   const {
-    mutate,
-    isLoading: mutateIsLoading,
-    error: mutateError,
+    data: recruiters,
+    isLoading: isLoadingListRecruiters,
+    error: errorListRecruiters,
+  } = useQuery({
+    queryKey: [Services.LISTA_RECRUTADORES],
+    queryFn: async () => (await api.get(Services.LISTA_RECRUTADORES)).data,
+  })
+
+  const {
+    mutate: mutateCreateRecruiter,
+    isLoading: isLoadingCreateRecruiter,
+    error: errorCreateRecruiter,
   } = useMutation({
     mutationFn: async (data: MutateModel) =>
       api.post(Services.CADASTRA_RECRUTADOR, data),
@@ -117,6 +117,18 @@ const Company = () => {
     },
   })
 
+  const {
+    mutate: mutateDeleteRecruiter,
+    isLoading: isLoadingDeleteRecruiter,
+    error: errorDeleteRecruiter,
+  } = useMutation({
+    mutationFn: async ({ id }: { id: string }) =>
+      api.delete(Services.DELETA_RECRUTADOR, { params: { id } }),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [Services.LISTA_RECRUTADORES] })
+    },
+  })
+
   const filteredRecruiters = useMemo(() => {
     return recruiters?.filter(
       (recruiter: Recruiter) => recruiter?.empresaId === user?.id
@@ -124,16 +136,14 @@ const Company = () => {
   }, [recruiters, user?.id])
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    if (!user?.id) {
-      return
-    }
+    if (!user?.id) return
 
     const model: MutateModel = {
       ...data,
       id: createNumberID(),
       empresaId: user?.id,
     }
-    mutate(model)
+    mutateCreateRecruiter(model)
   }
 
   const isEmptyRecruiters = filteredRecruiters?.length === 0
@@ -149,10 +159,69 @@ const Company = () => {
         Recrutadores
       </Typography>
 
+      <Fab
+        size='medium'
+        color='primary'
+        aria-label='adicionar recrutadores'
+        onClick={handleClickOpen}
+        sx={{ position: 'absolute', bottom: 24, right: 24 }}
+      >
+        <Add />
+      </Fab>
+
+      {isEmptyRecruiters && (
+        <Box textAlign='center'>
+          <Typography variant='body1' mt={6} mb={4}>
+            Cadastre um recrutador para começar
+          </Typography>
+          <Image src={recruiterAdd} title='' alt='' />
+        </Box>
+      )}
+
+      {isLoadingListRecruiters ? (
+        <Box
+          mt={4}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+        >
+          <CircularProgress size={40} />
+          <Typography variant='subtitle1'>Carregando recrutadores</Typography>
+        </Box>
+      ) : (
+        <>
+          {filteredRecruiters?.map((recruiter: Recruiter) => (
+            <Box mt={2} key={recruiter.id}>
+              <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
+                <Avatar sx={{ bgcolor: '#BA2649' }}>
+                  {firstLetterOfFirstAndLastName(recruiter.nome ?? '')}
+                </Avatar>
+                <Stack ml={2} flex={1}>
+                  <Typography variant='subtitle1'>{recruiter.nome}</Typography>
+                  <Typography variant='body1'>{recruiter.email}</Typography>
+                </Stack>
+                {!isLoadingDeleteRecruiter ? (
+                  <Close
+                    onClick={() =>
+                      mutateDeleteRecruiter({ id: String(recruiter.id ?? '') })
+                    }
+                  />
+                ) : (
+                  <CircularProgress size={30} />
+                )}
+              </Box>
+              <Box my={2}>
+                <Divider />
+              </Box>
+            </Box>
+          ))}
+        </>
+      )}
+
       <Modal maxWidth='xs' fullWidth open={open} onClose={handleClickClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box p={4} borderRadius={4}>
-            {mutateError && (
+            {errorCreateRecruiter && (
               <Box my={3}>
                 <Alert severity='error'>
                   Não foi possível adicionar o recrutador
@@ -211,6 +280,8 @@ const Company = () => {
                 margin='dense'
                 id='senha'
                 placeholder='Senha'
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
                 type={showPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
@@ -238,6 +309,8 @@ const Company = () => {
                 margin='dense'
                 id='confirmacaoSenha'
                 placeholder='Confirme sua Senha'
+                value={confirmationPassword}
+                onChange={({ target }) => setConfirmationPassword(target.value)}
                 type={showConfirmationPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
@@ -257,7 +330,7 @@ const Company = () => {
             <PasswordRules />
             <Box mt={3}>
               <Button fullWidth variant='contained' size='medium' type='submit'>
-                {mutateIsLoading ? (
+                {isLoadingCreateRecruiter ? (
                   <CircularProgress color='inherit' size={20} />
                 ) : (
                   'Adicionar'
@@ -267,57 +340,6 @@ const Company = () => {
           </Box>
         </form>
       </Modal>
-
-      <Fab
-        size='medium'
-        color='primary'
-        aria-label='adicionar recrutadores'
-        onClick={handleClickOpen}
-        sx={{ position: 'absolute', bottom: 24, right: 24 }}
-      >
-        <Add />
-      </Fab>
-
-      {isEmptyRecruiters && (
-        <Box textAlign='center'>
-          <Typography variant='body1' mt={6} mb={4}>
-            Cadastre um recrutador para começar
-          </Typography>
-          <Image src={recruiterAdd} title='' alt='' />
-        </Box>
-      )}
-
-      {isLoading ? (
-        <Box
-          mt={4}
-          display={'flex'}
-          flexDirection={'column'}
-          alignItems={'center'}
-        >
-          <CircularProgress size={40} />
-          <Typography variant='subtitle1'>Carregando recrutadores</Typography>
-        </Box>
-      ) : (
-        <>
-          {filteredRecruiters?.map((recruiter: any) => (
-            <Box mt={2} key={recruiter.id}>
-              <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
-                <Avatar sx={{ bgcolor: '#BA2649' }}>
-                  {firstLetterOfFirstAndLastName(recruiter.nome)}
-                </Avatar>
-                <Stack ml={2} flex={1}>
-                  <Typography variant='subtitle1'>{recruiter.nome}</Typography>
-                  <Typography variant='body1'>{recruiter.email}</Typography>
-                </Stack>
-                <Close />
-              </Box>
-              <Box my={2}>
-                <Divider />
-              </Box>
-            </Box>
-          ))}
-        </>
-      )}
     </Container>
   )
 }

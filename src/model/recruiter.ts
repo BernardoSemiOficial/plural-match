@@ -4,4 +4,5 @@ export type Recruiter = {
   email?: string
   senha?: string
   empresaId?: number
+  vagas?: []
 }
