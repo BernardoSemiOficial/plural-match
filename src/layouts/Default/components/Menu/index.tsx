@@ -32,8 +32,6 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
   }
 
   const handleClickProfile = () => {
-    router.push(PrivateRoutes.JOBS)
-
     router.push({
       pathname: `${PrivateRoutes.PEOPLES}/[id]`,
       query: {
@@ -66,31 +64,29 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
         horizontal: 'left',
       }}
     >
-      {user?.tipo !== UserType.COMPANY && (
-        <>
-          <MenuItem onClick={handleClickProfile}>
-            <Avatar sx={{ bgcolor: '#BA2649' }}>
-              {firstLetterOfFirstAndLastName(user?.nome ?? 'XX XX')}
-            </Avatar>
-            <Box ml={1}>Perfil</Box>
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleClickPeoples}>
-            <ListItemIcon>
-              <People color={'primary'} fontSize='small' />
-            </ListItemIcon>
-            Candidatos
-          </MenuItem>
-          <MenuItem onClick={handleClickJobs}>
-            <ListItemIcon>
-              <Work color={'primary'} fontSize='small' />
-            </ListItemIcon>
-            Vagas
-          </MenuItem>
-        </>
-      )}
+      {user?.tipo !== UserType.COMPANY && [
+        <MenuItem key={0} onClick={handleClickProfile}>
+          <Avatar sx={{ bgcolor: '#BA2649' }}>
+            {firstLetterOfFirstAndLastName(user?.nome ?? 'XX XX')}
+          </Avatar>
+          <Box ml={1}>Perfil</Box>
+        </MenuItem>,
+        <Divider key={1} />,
+        <MenuItem key={2} onClick={handleClickPeoples}>
+          <ListItemIcon is='p'>
+            <People color={'primary'} fontSize='small' />
+          </ListItemIcon>
+          Candidatos
+        </MenuItem>,
+        <MenuItem key={3} onClick={handleClickJobs}>
+          <ListItemIcon is='p'>
+            <Work color={'primary'} fontSize='small' />
+          </ListItemIcon>
+          Vagas
+        </MenuItem>,
+      ]}
       <MenuItem onClick={handleClickLogout}>
-        <ListItemIcon>
+        <ListItemIcon is='p'>
           <Logout color={'primary'} fontSize='small' />
         </ListItemIcon>
         Sair
