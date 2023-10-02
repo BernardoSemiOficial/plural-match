@@ -73,20 +73,20 @@ export const Menu = ({ open, anchor, handleClickClose }: MenuProps) => {
         </MenuItem>,
         <Divider key={1} />,
         <MenuItem key={2} onClick={handleClickPeoples}>
-          <ListItemIcon is='p'>
+          <ListItemIcon>
             <People color={'primary'} fontSize='small' />
           </ListItemIcon>
           Candidatos
         </MenuItem>,
         <MenuItem key={3} onClick={handleClickJobs}>
-          <ListItemIcon is='p'>
+          <ListItemIcon>
             <Work color={'primary'} fontSize='small' />
           </ListItemIcon>
           Vagas
         </MenuItem>,
       ]}
       <MenuItem onClick={handleClickLogout}>
-        <ListItemIcon is='p'>
+        <ListItemIcon>
           <Logout color={'primary'} fontSize='small' />
         </ListItemIcon>
         Sair
