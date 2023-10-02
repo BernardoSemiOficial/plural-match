@@ -52,7 +52,9 @@ export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
           <CreateOutlinedIcon
             color='primary'
             fontSize='medium'
+            titleAccess='Editar vaga'
             onClick={handleClickEditJob}
+            sx={{ cursor: 'pointer' }}
           />
         </Box>
       )}

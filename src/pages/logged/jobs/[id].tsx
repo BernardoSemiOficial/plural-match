@@ -16,7 +16,7 @@ const People = () => {
   const router = useRouter()
   const [value, setValue] = useState(0)
 
-  const jobId = Number(router.query?.id) ?? 0
+  const jobId = Number(router.query?.id ?? 0)
   const { jobs, candidates, user } = useContext(loggedContext)
   const job = useMemo(
     () => jobs?.data?.find(item => item?.vaga?.id_vaga === Number(jobId)),

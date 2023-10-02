@@ -8,11 +8,14 @@ import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
 import { api } from '@/services/api'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   Alert,
   Box,
   Button,
   CircularProgress,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
@@ -26,6 +29,9 @@ const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => setShowPassword(show => !show)
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: async () =>
@@ -86,10 +92,23 @@ const Login = () => {
             variant='outlined'
             margin='dense'
             id='password'
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             placeholder='Senha'
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    aria-label='Exibir senha escrita'
+                    onClick={handleClickShowPassword}
+                    edge='end'
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
       </Box>
