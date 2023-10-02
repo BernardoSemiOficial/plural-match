@@ -1,10 +1,12 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { PasswordRules } from '@/components/PasswordRules'
 import {
   RegisterCompanyProvider,
   registerCompanyContext,
 } from '@/context/RegisterCompanyContext'
+import { passwordRules } from '@/enums/passwords'
 import { QueryKeys, QueryValues } from '@/enums/querys'
 import { PublicRoutes } from '@/enums/routes'
 import { Services } from '@/enums/services'
@@ -14,11 +16,14 @@ import { Container } from '@/layouts/Default/components/Container/Container'
 import { Company } from '@/model/company'
 import { api } from '@/services/api'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   Alert,
   Box,
   Button,
   CircularProgress,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from '@mui/material'
@@ -29,6 +34,7 @@ import * as yup from 'yup'
 type Inputs = {
   email: string
   senha: string
+  confirmacaoSenha: string
 }
 
 const schema = yup
@@ -40,15 +46,29 @@ const schema = yup
       .max(200, 'O máximo de caracteres é 200'),
     senha: yup
       .string()
-      .required('A senha é obrigatória')
-      .min(6, 'O mínimo de caracteres é 6')
-      .max(20, 'O máximo de caracteres é 20'),
+      .matches(passwordRules, { message: 'Crie uma senha mais segura' })
+      .required('A senha é obrigatória'),
+    confirmacaoSenha: yup
+      .string()
+      .oneOf([yup.ref('senha')], 'As duas senhas devem corresponder')
+      .required(),
   })
   .required()
 
 const CompanyCredentials = () => {
   const router = useRouter()
   const { company } = useContext(registerCompanyContext)
+
+  const [password, setPassword] = useState('')
+  const [confirmationPassword, setConfirmationPassword] = useState('')
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmationPassword, setShowConfirmationPassword] =
+    useState(false)
+
+  const handleClickShowPassword = () => setShowPassword(show => !show)
+  const handleClickShowConfirmationPassword = () =>
+    setShowConfirmationPassword(show => !show)
 
   const {
     register,
@@ -114,20 +134,64 @@ const CompanyCredentials = () => {
             {...register('senha')}
             helperText={errors.senha?.message}
             error={!!errors.senha?.message}
-            inputProps={{
-              maxLength: 20,
-              minLength: 6,
-            }}
             fullWidth
             size='small'
             variant='outlined'
             margin='dense'
             id='senha'
-            type='password'
             placeholder='Senha'
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    aria-label='Exibir senha escrita'
+                    onClick={handleClickShowPassword}
+                    edge='end'
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
-
+        <Box mt={1}>
+          <TextField
+            {...register('confirmacaoSenha')}
+            helperText={errors.confirmacaoSenha?.message}
+            error={!!errors.confirmacaoSenha?.message}
+            fullWidth
+            size='small'
+            variant='outlined'
+            margin='dense'
+            id='confirmacaoSenha'
+            placeholder='Confirme sua Senha'
+            value={confirmationPassword}
+            onChange={({ target }) => setConfirmationPassword(target.value)}
+            type={showConfirmationPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    aria-label='Exibir senha escrita'
+                    onClick={handleClickShowConfirmationPassword}
+                    edge='end'
+                  >
+                    {showConfirmationPassword ? (
+                      <VisibilityOff />
+                    ) : (
+                      <Visibility />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+        <PasswordRules />
         <Box mt={4}>
           <Button fullWidth variant='contained' size='medium' type='submit'>
             {isLoading ? (

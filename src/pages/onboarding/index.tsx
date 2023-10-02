@@ -16,8 +16,11 @@ const HomeOnboarding = () => {
     <Container>
       <Typography variant='h6'>Qual o seu objetivo?</Typography>
       <Typography variant='subtitle1'>
-        Está procurando uma <b>vaga de trabalho</b> ou profissionais para a sua
-        empresa?
+        Está procurando uma vaga de trabalho? então clique em{' '}
+        <b>Cadastrar Candidato </b>
+        para preencher seus dados. <br />
+        Se você deseja publicar vagas de trabalho e deseja contratar
+        profissionais, então clique em <b>Cadastrar Empresa</b>.
       </Typography>
 
       <Box textAlign='center' my={4} py={4}>
@@ -31,7 +34,7 @@ const HomeOnboarding = () => {
           variant='outlined'
           size='medium'
         >
-          Profissionais
+          Cadastrar Empresa
         </Button>
       </Link>
       <Box mt={2}>
@@ -42,7 +45,7 @@ const HomeOnboarding = () => {
             variant='contained'
             size='medium'
           >
-            Vaga de trabalho
+            Cadastrar Candidato
           </Button>
         </Link>
       </Box>

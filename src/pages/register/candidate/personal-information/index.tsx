@@ -49,7 +49,9 @@ const PersonalInformation = () => {
 
   const [name, setName] = useState(candidate.nome)
   const [socialName, setSocialName] = useState(candidate.nomeSocial)
-  const [birthday, setBirthday] = useState(candidate.dataNascimento)
+  const [birthday, setBirthday] = useState(
+    candidate.dataNascimento ?? '2000-01-01'
+  )
   const [city, setCity] = useState(candidate.cidade)
   const [state, setState] = useState(candidate.estado)
 
@@ -134,7 +136,6 @@ const PersonalInformation = () => {
               margin='dense'
               id='birthday'
               type='date'
-              placeholder='Data de nascimento'
               label='Data de nascimento'
               value={birthday}
               onChange={({ target }) => setBirthday(target.value)}
