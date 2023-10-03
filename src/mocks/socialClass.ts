@@ -1,9 +1,7 @@
 export const MOCK_SOCIAL_CLASS = [
-  'Classe D/E - R$ 900,60',
-  'Classe C2 - R$ 1.965,87',
-  'Classe C1 - R$ 3.276,76',
-  'Classe B2 - R$ 5.755,23',
-  'Classe B1 - R$ 10.361,48',
-  'Classe A - 21.826,74',
+  'Classe D/E - até R$ 3.200,00',
+  'Classe C - R$ 3.200,00 até R$ 7.600,00',
+  'Classe B - R$ 7.600,00 até R$ 23.800,00',
+  'Classe A - Maior que R$ 23.800,00',
   'Prefiro não declarar',
 ]

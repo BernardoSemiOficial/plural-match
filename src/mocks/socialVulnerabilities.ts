@@ -8,8 +8,7 @@ export const MOCK_SOCIAL_VULNERABILITIES = [
   'Doenças Raras e Crônicas',
   'Prefiro não declarar',
 
-  'Classe Baixa',
-  'Classe Pobre',
+  'Classe D/E - até R$ 3.200,00',
 
   'Árabes',
   'Japoneses',
