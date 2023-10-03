@@ -7,6 +7,7 @@ import { Box } from '@mui/material'
 export interface HeaderProfileProps {
   title?: string
   age?: string
+  img?: string
   company?: string
   jobIdEdit?: number
   edit?(): void
@@ -18,6 +19,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
   company,
   jobIdEdit,
   edit,
+  img,
 }) => {
   return (
     <Box>
@@ -26,7 +28,9 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
           <CreateIcon color='primary' fontSize='large' />
         </Box>
       )}
-      <AvatarDescription people={{ name: title, age, company, jobIdEdit }} />
+      <AvatarDescription
+        people={{ name: title, age, company, jobIdEdit, img }}
+      />
     </Box>
   )
 }

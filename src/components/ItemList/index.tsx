@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import { Info } from '@mui/icons-material'
@@ -19,6 +19,7 @@ export const ItemList: React.FC<{
     hasTag?: string
   }
 }> = ({ item, onClick }) => {
+  const [imgSrc, setImgSrc] = useState<string | undefined>(item?.img)
   let labelDescription = item?.descrition
   if (item?.descrition && item?.subDescription) {
     labelDescription += ` ${item?.subDescription}`
@@ -33,15 +34,18 @@ export const ItemList: React.FC<{
     >
       <Box mt={2} key={item.id}>
         <Box flexDirection={'row'} display={'flex'} alignItems={'center'}>
-          {item?.img ? (
+          {imgSrc ? (
             <Image
               width={40}
               height={40}
               style={{ borderRadius: 8 }}
-              alt='banco brasileiro NuBank'
-              src={
-                'https://logodownload.org/wp-content/uploads/2019/08/nubank-logo-2.png'
-              }
+              alt='Logo da empresa'
+              src={imgSrc}
+              onError={() => {
+                setImgSrc(
+                  'https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/38596.png'
+                )
+              }}
             />
           ) : (
             <Avatar sx={{ bgcolor: '#BA2649' }}>

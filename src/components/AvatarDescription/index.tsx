@@ -3,18 +3,22 @@ import { calculateAge } from '@/helpers/calculateAge'
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 interface AvatarDescriptionProps {
   people: {
     name?: string
     company?: string
     age?: string
     jobIdEdit?: number
+    img?: string
   }
 }
 
 export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
   const router = useRouter()
+  const [imgSrc, setImgSrc] = useState<string | undefined>(people?.img)
 
   if (!people) return <></>
 
@@ -27,9 +31,25 @@ export const AvatarDescription = ({ people }: AvatarDescriptionProps) => {
 
   return (
     <Stack direction='row' spacing={2} alignItems={'center'}>
-      <Avatar sx={{ bgcolor: '#BA2649' }}>
-        {people?.name ? firstLetterOfFirstAndLastName(people.name) : '-'}
-      </Avatar>
+      {imgSrc ? (
+        <Image
+          width={40}
+          height={40}
+          style={{ borderRadius: 8 }}
+          alt='banco brasileiro NuBank'
+          src={imgSrc}
+          onError={() => {
+            setImgSrc(
+              'https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/38596.png'
+            )
+          }}
+        />
+      ) : (
+        <Avatar sx={{ bgcolor: '#BA2649' }}>
+          {people?.name ? firstLetterOfFirstAndLastName(people.name) : '-'}
+        </Avatar>
+      )}
+
       <Box>
         <Typography variant='h5' fontWeight='bold'>
           {people.name}

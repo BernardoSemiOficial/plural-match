@@ -101,7 +101,11 @@ const Jobs = () => {
           flexDirection={'column'}
           alignItems={'center'}
         >
-          <Typography variant='subtitle1'>Sem vagas</Typography>
+          <Typography variant='subtitle1' mt={4} fontWeight={600}>
+            {user?.tipo === UserType.CANDIDATE
+              ? 'Sem vagas'
+              : 'Adicione uma nova vaga'}
+          </Typography>
         </Box>
       )}
       {Boolean(jobs?.data?.length) && (
@@ -132,7 +136,7 @@ const Jobs = () => {
                           job?.vaga?.id_vaga
                       ) &&
                       'Em andamento',
-                    // subDescription: job.state,
+                    img: job?.empresa?.imageUri,
                   },
                 }}
               />
