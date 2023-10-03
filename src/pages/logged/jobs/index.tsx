@@ -9,7 +9,7 @@ import { UserType } from '@/enums/user-type'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Job } from '@/model/job'
-import { deepMatchValue } from '@/utils/search'
+import { deepMatchValue, verifyIfHasFilter } from '@/utils/search'
 import { AddOutlined } from '@mui/icons-material'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Fab, Typography } from '@mui/material'
@@ -52,12 +52,23 @@ const Jobs = () => {
   }, [])
 
   const filteredJobs = useMemo(() => {
-    if (!search) {
-      return jobs?.data
+    let newJobs = jobs?.data || []
+
+    if (search) {
+      newJobs = filterJobs(jobs?.data || [], search)
     }
 
-    return filterJobs(jobs?.data || [], search)
-  }, [filterJobs, jobs?.data, search])
+    if (filters?.length) {
+      newJobs = newJobs?.filter(job =>
+        verifyIfHasFilter({
+          declaracao: job?.vaga?.situacao_vulnerabilidade,
+          filters,
+        })
+      )
+    }
+
+    return newJobs
+  }, [filterJobs, filters, jobs?.data, search])
 
   return (
     <Container>
@@ -95,10 +106,6 @@ const Jobs = () => {
               return <></>
             }
 
-            let subtitle = job?.vaga?.descricao
-            if (!!subtitle && subtitle?.length > 30) {
-              subtitle = subtitle.slice(0, 30) + ' ...'
-            }
             return (
               <ItemList
                 key={job?.vaga?.id_vaga}
@@ -107,7 +114,7 @@ const Jobs = () => {
                   item: {
                     id: job?.vaga?.id_vaga,
                     title: job?.vaga?.titulo_vaga,
-                    subtitle: subtitle,
+                    subtitle: job?.vaga?.situacao_vulnerabilidade,
                     descrition: job?.empresa?.nome,
                     // subDescription: job.state,
                   },

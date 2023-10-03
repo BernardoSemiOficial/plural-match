@@ -114,6 +114,8 @@ const Company = () => {
       queryClient.invalidateQueries({ queryKey: [Services.LISTA_RECRUTADORES] })
       handleClickClose()
       reset()
+      setPassword('')
+      setConfirmationPassword('')
     },
   })
 

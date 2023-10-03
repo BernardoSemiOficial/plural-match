@@ -9,7 +9,7 @@ import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
-import { deepMatchValue } from '@/utils/search'
+import { deepMatchValue, verifyIfHasFilter } from '@/utils/search'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -31,7 +31,7 @@ const Peoples = () => {
 
   const [search, setSearch] = useState('')
 
-  const filterJobs = useCallback((jobs: Candidate[], text?: string) => {
+  const filterCandidates = useCallback((jobs: Candidate[], text?: string) => {
     if (!text || !jobs) {
       return jobs
     }
@@ -47,50 +47,24 @@ const Peoples = () => {
     )
   }, [])
 
-  const verifyIfCandidateHasFilter = useCallback(
-    ({ candidate, filters }: { candidate: Candidate; filters: string[] }) => {
-      if (!candidate?.autoDeclaracao) {
-        return
-      }
-
-      const splitSelfDeclaration = candidate?.autoDeclaracao
-        ?.split(/(?:,| e )+/)
-        ?.map(item => item?.trim())
-
-      for (let index = 0; index < filters.length; index++) {
-        const filter = filters[index]
-        const hasDeclaration = splitSelfDeclaration.includes(filter)
-        if (!hasDeclaration) {
-          return false
-        }
-      }
-
-      return true
-    },
-    []
-  )
-
   const filteredCandidates = useMemo(() => {
     let newCandidates = candidates?.data || []
 
     if (search) {
-      newCandidates = filterJobs(candidates?.data || [], search)
+      newCandidates = filterCandidates(candidates?.data || [], search)
     }
 
     if (filters?.length) {
       newCandidates = newCandidates?.filter(candidate =>
-        verifyIfCandidateHasFilter({ candidate, filters })
+        verifyIfHasFilter({
+          declaracao: candidate?.autoDeclaracao,
+          filters,
+        })
       )
     }
 
     return newCandidates
-  }, [
-    candidates?.data,
-    filterJobs,
-    filters,
-    search,
-    verifyIfCandidateHasFilter,
-  ])
+  }, [candidates?.data, filterCandidates, filters, search])
 
   return (
     <Container>
