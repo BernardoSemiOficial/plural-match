@@ -47,7 +47,9 @@ export const Header = () => {
         </Link>
         {showMenu && <span></span>}
       </div>
-      <Menu open={open} anchor={anchor} handleClickClose={handleClickClose} />
+      {showMenu && (
+        <Menu open={open} anchor={anchor} handleClickClose={handleClickClose} />
+      )}
     </header>
   )
 }
