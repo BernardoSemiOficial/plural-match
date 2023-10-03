@@ -263,7 +263,12 @@ const Detail = () => {
             </Button>
           </Box>
           <Box mt={1}>
-            <Button fullWidth variant='outlined' size='medium'>
+            <Button
+              fullWidth
+              variant='outlined'
+              size='medium'
+              onClick={handleClickCloseChat}
+            >
               Fechar Chat
             </Button>
           </Box>
