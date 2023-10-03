@@ -9,15 +9,15 @@ import {
 import { PublicRoutes } from '@/enums/routes'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
+import { MOCK_DEFICIENCIES } from '@/mocks/deficiencies'
+import { MOCK_ETHNICITY } from '@/mocks/ethnicity'
+import { MOCK_GENDERS } from '@/mocks/gender'
+import { MOCK_SEXUAL_ORIENTATION } from '@/mocks/sexualOrientation'
+import { MOCK_SOCIAL_CLASS } from '@/mocks/socialClass'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as yup from 'yup'
-import { MOCK_GENDERS } from '@/mocks/gender'
-import { MOCK_SEXUAL_ORIENTATION } from '@/mocks/sexualOrientation'
-import { MOCK_ETHNICITY } from '@/mocks/ethnicity'
-import { MOCK_SOCIAL_CLASS } from '@/mocks/socialClass'
-import { MOCK_DEFICIENCIES } from '@/mocks/deficiencies'
 
 type FormSelfDeclaration = {
   sexualGender: string
@@ -169,7 +169,7 @@ const SelfDeclaration = () => {
               variant='outlined'
               margin='dense'
               id='social-class'
-              label='Classe social'
+              label='Classe social por renda média'
               inputProps={register('socialClass')}
               error={!!errors.socialClass?.message}
               helperText={errors.socialClass?.message}
