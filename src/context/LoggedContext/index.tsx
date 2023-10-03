@@ -16,6 +16,7 @@ import { Job } from '@/model/job'
 import { User } from '@/model/user'
 import { api } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { joinDeclartion } from '@/utils/normalize'
 
 type candidateProviderProps = {
   children: ReactElement | ReactNode
@@ -66,12 +67,12 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
   })
 
   const filteredJobs = useMemo(() => {
-    if (user?.tipo === UserType.CANDIDATE || user?.tipo === UserType.COMPANY) {
-      return jobs
+    if (user?.tipo === UserType.RECRUITER) {
+      return jobs?.filter((job: Job) => job?.empresa?.id === user?.empresaId)
     }
 
-    return jobs?.filter((job: Job) => job?.vaga.id_recrutador === user?.id)
-  }, [jobs, user?.id, user?.tipo])
+    return jobs
+  }, [jobs, user?.empresaId, user?.tipo])
 
   const setLoginData = useCallback(
     (user?: User) => {
@@ -83,13 +84,22 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
     [setLocalStorageValue]
   )
 
+  const normalizeCandidates = useMemo(() => {
+    return (
+      candidates?.map(candidate => ({
+        ...candidate,
+        autoDeclaracao: joinDeclartion({ candidate }),
+      })) || []
+    )
+  }, [candidates])
+
   const loggedContextMemo = useMemo(
     () => ({
       user,
       candidates: {
         isLoading: isLoadingCandidates,
         error: errorCandidantes,
-        data: candidates ?? [],
+        data: normalizeCandidates ?? [],
       },
       jobs: {
         isLoading: isLoadingJobs,
@@ -103,7 +113,7 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
       user,
       isLoadingCandidates,
       errorCandidantes,
-      candidates,
+      normalizeCandidates,
       isLoadingJobs,
       errorJobs,
       filteredJobs,

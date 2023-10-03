@@ -47,13 +47,50 @@ const Peoples = () => {
     )
   }, [])
 
+  const verifyIfCandidateHasFilter = useCallback(
+    ({ candidate, filters }: { candidate: Candidate; filters: string[] }) => {
+      if (!candidate?.autoDeclaracao) {
+        return
+      }
+
+      const splitSelfDeclaration = candidate?.autoDeclaracao
+        ?.split(/(?:,| e )+/)
+        ?.map(item => item?.trim())
+
+      for (let index = 0; index < filters.length; index++) {
+        const filter = filters[index]
+        const hasDeclaration = splitSelfDeclaration.includes(filter)
+        if (!hasDeclaration) {
+          return false
+        }
+      }
+
+      return true
+    },
+    []
+  )
+
   const filteredCandidates = useMemo(() => {
-    if (!search) {
-      return candidates?.data
+    let newCandidates = candidates?.data || []
+
+    if (search) {
+      newCandidates = filterJobs(candidates?.data || [], search)
     }
 
-    return filterJobs(candidates?.data || [], search)
-  }, [candidates?.data, filterJobs, search])
+    if (filters?.length) {
+      newCandidates = newCandidates?.filter(candidate =>
+        verifyIfCandidateHasFilter({ candidate, filters })
+      )
+    }
+
+    return newCandidates
+  }, [
+    candidates?.data,
+    filterJobs,
+    filters,
+    search,
+    verifyIfCandidateHasFilter,
+  ])
 
   return (
     <Container>
@@ -114,21 +151,6 @@ export function CandidateList({
           if (user?.id !== candidate.id) return candidate
         })
         ?.map(candidate => {
-          const infos = [
-            candidate.sexo,
-            candidate.orientacaoSexual,
-            candidate.etnia,
-            candidate.classeSocial,
-            candidate.deficiencia,
-          ]
-          const concatInfo = infos
-            .filter(info => info !== 'nenhuma')
-            .reduce((concatInfo, info, idx, array) => {
-              if (info) concatInfo += info
-              if (idx < array.length - 2) concatInfo += ', '
-              if (idx === array.length - 2) concatInfo += ' e '
-              return concatInfo
-            }, '')
           return (
             <ItemList
               key={createUUID()}
@@ -137,7 +159,8 @@ export function CandidateList({
                 item: {
                   id: String(candidate.id),
                   title: candidate?.nome ?? 'Nome',
-                  subtitle: concatInfo ?? 'características pessoais',
+                  subtitle:
+                    candidate?.autoDeclaracao ?? 'características pessoais',
                   descrition: candidate.cidade ?? 'Campinas',
                   subDescription: candidate.estado ?? 'São Paulo',
                 },

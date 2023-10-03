@@ -13,6 +13,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as yup from 'yup'
+import { MOCK_GENDERS } from '@/mocks/gender'
+import { MOCK_SEXUAL_ORIENTATION } from '@/mocks/sexualOrientation'
+import { MOCK_ETHNICITY } from '@/mocks/ethnicity'
+import { MOCK_SOCIAL_CLASS } from '@/mocks/socialClass'
+import { MOCK_DEFICIENCIES } from '@/mocks/deficiencies'
 
 type FormSelfDeclaration = {
   sexualGender: string
@@ -102,12 +107,11 @@ const SelfDeclaration = () => {
               value={sexualGender}
               onChange={({ target }) => setSexualGender(target.value)}
             >
-              <MenuItem value='homem'>Homem</MenuItem>
-              <MenuItem value='mulher'>Mulher</MenuItem>
-              <MenuItem value='não-binário'>não-binário</MenuItem>
-              <MenuItem value='travesti'>travesti</MenuItem>
-              <MenuItem value='transgênero'>transgênero</MenuItem>
-              <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
+              {MOCK_GENDERS?.map(gender => (
+                <MenuItem key={`menu-item-gender-${gender}`} value={gender}>
+                  {gender}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={2}>
@@ -125,13 +129,14 @@ const SelfDeclaration = () => {
               value={sexualOrientation}
               onChange={({ target }) => setSexualOrientation(target.value)}
             >
-              <MenuItem value='heterossexual'>Heterossexual</MenuItem>
-              <MenuItem value='homossexual'>Homossexual</MenuItem>
-              <MenuItem value='bissexual'>Bissexual</MenuItem>
-              <MenuItem value='pansexual'>Pansexual</MenuItem>
-              <MenuItem value='assexual'>Assexual</MenuItem>
-              <MenuItem value='demissexual'>Demissexual</MenuItem>
-              <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
+              {MOCK_SEXUAL_ORIENTATION?.map(orientation => (
+                <MenuItem
+                  key={`menu-item-orientation-${orientation}`}
+                  value={orientation}
+                >
+                  {orientation}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={2}>
@@ -149,16 +154,11 @@ const SelfDeclaration = () => {
               value={ethnicity}
               onChange={({ target }) => setEthnicity(target.value)}
             >
-              <MenuItem value='árabes'>Árabes</MenuItem>
-              <MenuItem value='japoneses'>Japoneses</MenuItem>
-              <MenuItem value='europeus'>Europeus</MenuItem>
-              <MenuItem value='indígenas'>Indígenas</MenuItem>
-              <MenuItem value='africanos'>Africanos</MenuItem>
-              <MenuItem value='latino-americanos'>Latino-americanos</MenuItem>
-              <MenuItem value='judeos'>Judeus</MenuItem>
-              <MenuItem value='ciganos'>Ciganos</MenuItem>
-              <MenuItem value='coreanos'>Coreanos</MenuItem>
-              <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
+              {MOCK_ETHNICITY?.map(item => (
+                <MenuItem key={`menu-item-ethnicity-${item}`} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={2}>
@@ -176,10 +176,11 @@ const SelfDeclaration = () => {
               value={socialClass}
               onChange={({ target }) => setSocialClass(target.value)}
             >
-              <MenuItem value='classe alta'>Classe Alta</MenuItem>
-              <MenuItem value='classe média'>Classe Média</MenuItem>
-              <MenuItem value='classe baixa'>Classe Baixa</MenuItem>
-              <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
+              {MOCK_SOCIAL_CLASS?.map(item => (
+                <MenuItem key={`menu-item-social-class-${item}`} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={2}>
@@ -197,17 +198,11 @@ const SelfDeclaration = () => {
               value={deficiency}
               onChange={({ target }) => setDeficiency(target.value)}
             >
-              <MenuItem value='nenhuma'>Nenhuma</MenuItem>
-              <MenuItem value='visual'>Visual</MenuItem>
-              <MenuItem value='auditiva'>Auditiva</MenuItem>
-              <MenuItem value='física'>Física</MenuItem>
-              <MenuItem value='intelectual'>Intelectual</MenuItem>
-              <MenuItem value='múltipla'>Múltipla</MenuItem>
-              <MenuItem value='autismo'>Autismo</MenuItem>
-              <MenuItem value='raras e crônicas'>
-                Doenças Raras e Crônicas
-              </MenuItem>
-              <MenuItem value='não declarado'>Prefiro não declarar</MenuItem>
+              {MOCK_DEFICIENCIES?.map(item => (
+                <MenuItem key={`menu-item-deficiencies-${item}`} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box mt={4}>
