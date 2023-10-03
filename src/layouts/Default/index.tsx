@@ -1,3 +1,4 @@
+import { ChatProvider } from '@/context/ChatContext'
 import { LoggedProvider } from '@/context/LoggedContext'
 import { globalThemeMUI } from '@/styles/global.material'
 import { ThemeProvider } from '@mui/material'
@@ -14,10 +15,12 @@ export const Default = ({ children }: DefaultProps) => {
     <ThemeProvider theme={globalThemeMUI}>
       <QueryClientProvider client={queryClient}>
         <LoggedProvider>
-          <div className={S.container}>
-            <Header />
-            {children}
-          </div>
+          <ChatProvider>
+            <div className={S.container}>
+              <Header />
+              {children}
+            </div>
+          </ChatProvider>
         </LoggedProvider>
       </QueryClientProvider>
     </ThemeProvider>

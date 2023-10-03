@@ -64,7 +64,6 @@ const Jobs = () => {
       <Typography variant='h4' fontWeight='bold'>
         Buscar vagas
       </Typography>
-
       <InputSearch
         onChange={({ target }) => setSearch(target.value)}
         value={search}
@@ -72,10 +71,8 @@ const Jobs = () => {
         id='jobs'
         type='jobs'
       />
-
       <DropDownFilter {...{ filters, handleChangeSelectFilter }} />
-
-      {jobs?.isLoading ? (
+      {jobs?.isLoading && (
         <Box
           mt={4}
           display={'flex'}
@@ -85,7 +82,18 @@ const Jobs = () => {
           <CircularProgress size={40} />
           <Typography variant='subtitle1'>Carregando vagas</Typography>
         </Box>
-      ) : (
+      )}
+      {!jobs?.data?.length && (
+        <Box
+          mt={4}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+        >
+          <Typography variant='subtitle1'>Sem vagas</Typography>
+        </Box>
+      )}
+      {Boolean(jobs?.data?.length) && (
         <Box mt={4}>
           {filteredJobs?.map(job => {
             if (
@@ -117,7 +125,6 @@ const Jobs = () => {
           })}
         </Box>
       )}
-
       {user?.tipo === UserType.RECRUITER && (
         <div
           style={{

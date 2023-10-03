@@ -85,7 +85,6 @@ const People = () => {
           header={{
             title: job?.vaga?.titulo_vaga,
             company: job?.empresa?.nome,
-            jobIdEdit: job?.vaga.id_vaga,
           }}
           jobInfo={jobInfo}
           description={{
