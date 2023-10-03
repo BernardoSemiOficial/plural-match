@@ -94,7 +94,7 @@ const Jobs = () => {
           <Typography variant='subtitle1'>Carregando vagas</Typography>
         </Box>
       )}
-      {!jobs?.data?.length && (
+      {!jobs?.isLoading && !jobs?.data?.length && (
         <Box
           mt={4}
           display={'flex'}
