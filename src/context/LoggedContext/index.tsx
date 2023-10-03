@@ -15,8 +15,8 @@ import { Candidate } from '@/model/candidate'
 import { Job } from '@/model/job'
 import { User } from '@/model/user'
 import { api } from '@/services/api'
-import { useQuery } from '@tanstack/react-query'
 import { joinDeclartion } from '@/utils/normalize'
+import { useQuery } from '@tanstack/react-query'
 
 type candidateProviderProps = {
   children: ReactElement | ReactNode
@@ -25,6 +25,7 @@ type candidateProviderProps = {
 
 type LoggedContext = {
   user?: User
+  currentCandidate?: Candidate
   candidates: {
     isLoading: boolean
     error: any
@@ -93,9 +94,15 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
     )
   }, [candidates])
 
+  const currentCandidate = useMemo(
+    () => candidates?.find(candidate => candidate?.id === user?.id),
+    [candidates, user?.id]
+  )
+
   const loggedContextMemo = useMemo(
     () => ({
       user,
+      currentCandidate,
       candidates: {
         isLoading: isLoadingCandidates,
         error: errorCandidantes,
@@ -111,6 +118,7 @@ export const LoggedProvider = ({ children }: candidateProviderProps) => {
     }),
     [
       user,
+      currentCandidate,
       isLoadingCandidates,
       errorCandidantes,
       normalizeCandidates,

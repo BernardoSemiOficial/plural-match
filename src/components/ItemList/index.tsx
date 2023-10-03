@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { firstLetterOfFirstAndLastName } from '@/helpers/firstLetterOfFirstAndLastName'
-import { Avatar, Box, Divider, Stack, Typography } from '@mui/material'
+import { Info } from '@mui/icons-material'
+import { Avatar, Box, Chip, Divider, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import styles from './styles.module.css'
 
@@ -15,6 +16,7 @@ export const ItemList: React.FC<{
     descrition?: string
     subDescription?: string
     img?: string
+    hasTag?: string
   }
 }> = ({ item, onClick }) => {
   let labelDescription = item?.descrition
@@ -59,6 +61,9 @@ export const ItemList: React.FC<{
               </Typography>
             )}
           </Stack>
+          {!!item?.hasTag && (
+            <Chip color='primary' icon={<Info />} label={item.hasTag} />
+          )}
         </Box>
         <Box my={2}>
           <Divider />

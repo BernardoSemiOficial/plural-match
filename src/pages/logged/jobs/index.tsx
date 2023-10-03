@@ -19,7 +19,7 @@ const Jobs = () => {
   const router = useRouter()
   const [filters, setFilters] = useState<string[]>([])
 
-  const { jobs, user } = useContext(loggedContext)
+  const { jobs, user, currentCandidate } = useContext(loggedContext)
 
   const handleChangeSelectFilter = (
     event: SelectChangeEvent<typeof filters>
@@ -124,6 +124,14 @@ const Jobs = () => {
                     title: job?.vaga?.titulo_vaga,
                     subtitle: job?.vaga?.situacao_vulnerabilidade,
                     descrition: job?.empresa?.nome,
+                    hasTag:
+                      user?.tipo === UserType.CANDIDATE &&
+                      !!currentCandidate?.vagasSelecionadas?.find(
+                        jobCurrentCandidate =>
+                          jobCurrentCandidate?.vaga?.id_vaga ===
+                          job?.vaga?.id_vaga
+                      ) &&
+                      'Em andamento',
                     // subDescription: job.state,
                   },
                 }}
