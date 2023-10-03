@@ -23,6 +23,7 @@ type Job = {
 
 export type Candidate = {
   id?: number
+  autoDeclaracao?: string
   email?: string
   senha?: string
   nome?: string

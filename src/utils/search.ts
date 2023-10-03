@@ -14,3 +14,29 @@ export function removeAccents(text: string) {
   text = text.replace(new RegExp('[Ç]', 'gi'), 'c')
   return text
 }
+
+export const verifyIfHasFilter = ({
+  declaracao,
+  filters,
+}: {
+  declaracao?: string
+  filters: string[]
+}) => {
+  if (!declaracao) {
+    return
+  }
+
+  const splitSelfDeclaration = declaracao
+    ?.split(/(?:,| e )+/)
+    ?.map(item => item?.trim())
+
+  for (let index = 0; index < filters.length; index++) {
+    const filter = filters[index]
+    const hasDeclaration = splitSelfDeclaration.includes(filter)
+    if (!hasDeclaration) {
+      return false
+    }
+  }
+
+  return true
+}

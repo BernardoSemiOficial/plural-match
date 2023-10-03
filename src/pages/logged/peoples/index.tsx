@@ -9,7 +9,7 @@ import { createUUID } from '@/helpers/createUUID'
 import { Default } from '@/layouts/Default'
 import { Container } from '@/layouts/Default/components/Container/Container'
 import { Candidate } from '@/model/candidate'
-import { deepMatchValue } from '@/utils/search'
+import { deepMatchValue, verifyIfHasFilter } from '@/utils/search'
 import type { SelectChangeEvent } from '@mui/material'
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -31,7 +31,7 @@ const Peoples = () => {
 
   const [search, setSearch] = useState('')
 
-  const filterJobs = useCallback((jobs: Candidate[], text?: string) => {
+  const filterCandidates = useCallback((jobs: Candidate[], text?: string) => {
     if (!text || !jobs) {
       return jobs
     }
@@ -48,12 +48,23 @@ const Peoples = () => {
   }, [])
 
   const filteredCandidates = useMemo(() => {
-    if (!search) {
-      return candidates?.data
+    let newCandidates = candidates?.data || []
+
+    if (search) {
+      newCandidates = filterCandidates(candidates?.data || [], search)
     }
 
-    return filterJobs(candidates?.data || [], search)
-  }, [candidates?.data, filterJobs, search])
+    if (filters?.length) {
+      newCandidates = newCandidates?.filter(candidate =>
+        verifyIfHasFilter({
+          declaracao: candidate?.autoDeclaracao,
+          filters,
+        })
+      )
+    }
+
+    return newCandidates
+  }, [candidates?.data, filterCandidates, filters, search])
 
   return (
     <Container>
@@ -114,21 +125,6 @@ export function CandidateList({
           if (user?.id !== candidate.id) return candidate
         })
         ?.map(candidate => {
-          const infos = [
-            candidate.sexo,
-            candidate.orientacaoSexual,
-            candidate.etnia,
-            candidate.classeSocial,
-            candidate.deficiencia,
-          ]
-          const concatInfo = infos
-            .filter(info => info !== 'nenhuma')
-            .reduce((concatInfo, info, idx, array) => {
-              if (info) concatInfo += info
-              if (idx < array.length - 2) concatInfo += ', '
-              if (idx === array.length - 2) concatInfo += ' e '
-              return concatInfo
-            }, '')
           return (
             <ItemList
               key={createUUID()}
@@ -137,7 +133,8 @@ export function CandidateList({
                 item: {
                   id: String(candidate.id),
                   title: candidate?.nome ?? 'Nome',
-                  subtitle: concatInfo ?? 'características pessoais',
+                  subtitle:
+                    candidate?.autoDeclaracao ?? 'características pessoais',
                   descrition: candidate.cidade ?? 'Campinas',
                   subDescription: candidate.estado ?? 'São Paulo',
                 },

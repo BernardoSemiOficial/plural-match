@@ -460,11 +460,9 @@ const RegisterJob = () => {
             MenuProps={MenuProps}
           >
             {MOCK_SOCIAL_VULNERABILITIES.map(name => (
-              <MenuItem key={name.value} value={name.value}>
-                <Checkbox
-                  checked={socialVulnerabilities.indexOf(name.value) > -1}
-                />
-                <ListItemText primary={name.label} />
+              <MenuItem key={`vulnerabilities-${name}`} value={name}>
+                <Checkbox checked={socialVulnerabilities.indexOf(name) > -1} />
+                <ListItemText primary={name} />
               </MenuItem>
             ))}
           </Select>

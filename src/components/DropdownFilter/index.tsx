@@ -56,12 +56,14 @@ export const DropDownFilter: React.FC<{
             <ListSubheader key={createUUID()}>
               (<>{filter.category}</>)
             </ListSubheader>,
-            filter.items.map(item => (
-              <MenuItem key={item.id} value={item.label}>
-                <Checkbox checked={filters.indexOf(item.label) > -1} />
-                <ListItemText primary={item.label} />
-              </MenuItem>
-            )),
+            filter.items
+              ?.filter(item => !item.includes('Prefiro não declarar'))
+              ?.map(item => (
+                <MenuItem key={`filter-${item}`} value={item}>
+                  <Checkbox checked={filters.indexOf(item) > -1} />
+                  <ListItemText primary={item} />
+                </MenuItem>
+              )),
           ])}
         </Select>
       </FormControl>
